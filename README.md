@@ -10,7 +10,7 @@ You need to have [Docker][docker] and _[docker-compose][doco]_ installed on your
 The free _Docker Community Edition (CE)_ works perfectly fine.
 
 [docker]: https://docs.docker.com/install/
-[docker compose]: https://docs.docker.com/compose/install/
+[doco]: https://docs.docker.com/compose/install/
 
 Additionally you need **git** to be installed and configured.
  
