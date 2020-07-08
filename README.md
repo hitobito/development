@@ -45,7 +45,24 @@ drwxrwxr-x 18 ps ps 4.0K Jun 25 07:29 hitobito
 drwxrwxr-x 11 ps ps 4.0K Jun 24 10:53 hitobito_generic
 ```
 
-## Starting Development Containers
+## Build Docker Images
+
+First we have to build the required docker images:
+
+```bash
+docker-compose build
+```
+
+## Setup Database
+
+Now it's time to seed the database with development seeds:
+
+```bash
+docker-compose up -d db
+docker-compose run rails 'rails db:seed wagon:seed'
+```
+
+## Start Development Containers
 
 To start the Hitobito application, run the following command in your shell:
 
@@ -53,8 +70,7 @@ To start the Hitobito application, run the following command in your shell:
 docker-compose up -d
 ```
 
-It will initially take a while to prepare the initial Docker images, to prepare the database and to start the application.
-The process will be shorter on subsequent starts. After this command completed, make sure all services are up and running:
+After this command completed, make sure all services are up and running:
 
 ```bash
 docker-compose ps
@@ -73,12 +89,6 @@ development_rails-test_1    rails-entrypoint tail -f / ...   Up       8080/tcp
 development_rails_1         rails-entrypoint rails ser ...   Up       0.0.0.0:3000->3000/tcp, 8080/tcp  
 development_sphinx_1        /bin/sh -c searchd --nodet ...   Up       36307/tcp                         
 development_worker_1        rails-entrypoint rails job ...   Up       8080/tcp     
-```
-
-Now it's time to seed the database:
-
-```bash
-docker-compose run rails 'rails db:seed wagon:seed'
 ```
 
 Access webapplication by browser: http://localhost:3000
