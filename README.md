@@ -102,3 +102,11 @@ development_worker_1        rails-entrypoint rails job ...   Up      8080/tcp
 ```
 
 Access webapplication by browser: http://localhost:3000
+
+## Development
+
+Start developing by editing files locally with your prefered editor in the app/hitobito* folders. Those directories are mounted inside the containers. So every saved file is instantely available inside the containers. 
+
+🍺 finished work ? execute **docker-compose down** to shut down all running containers
+
+
