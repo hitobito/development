@@ -12,24 +12,29 @@ The free _Docker Community Edition (CE)_ works perfectly fine.
 
 Additionally you need **git** to be installed and configured.
  
-   ⚡ This manual focuses on Linux/Ubuntu. Hitobito development also runs on other plattforms with some adjustions. 
+ ⚡ This manual focuses on Linux/Ubuntu. Hitobito development also runs on other plattforms with some adjustions. 
 
 ## Preparation
 
-First, you need to clone this repository:
+First declare a instance name: (e.g. generic, pbs)
+
+```bash
+read -p "Enter hitobito instance name: " INSTANCE_NAME
+```
+
+Then you need to clone this repository:
 
 ```bash
 mkdir -p ~/git/hitobito && cd ~/git/hitobito
-git clone https://github.com/hitobito/development.git
-cd development/app
-git clone https://github.com/hitobito/hitobito.git
+git clone https://github.com/hitobito/development.git $INSTANCE_NAME && cd $INSTANCE_NAME
+(cd app && git clone https://github.com/hitobito/hitobito.git)
 ```
 
 Now you need to add at least one wagon project:
 
 ```bash
 # wagon project(s)
-git clone https://github.com/hitobito/hitobito_generic.git 
+(cd app && git clone https://github.com/hitobito/hitobito_generic.git)
 ```
 
 The final structure should look something like this:
@@ -51,7 +56,13 @@ First we have to build the required docker images:
 docker-compose build
 ```
 
-## Setup Database
+## Install Gems / Setup Database
+
+If you did not so before, create a new docker volume for storing bundled gems:
+
+```bash
+docker volume create hitobito_bundle
+```
 
 Now it's time to seed the database with development seeds:
 
@@ -59,6 +70,8 @@ Now it's time to seed the database with development seeds:
 docker-compose up -d db
 docker-compose run rails 'rails db:seed wagon:seed'
 ```
+
+⚡ This will also install all required gems which takes some time to complete if it's executed the first time.
 
 ## Start Development Containers
 
