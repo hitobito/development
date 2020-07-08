@@ -7,20 +7,23 @@ if [ ! -f "./Wagonfile" ]; then
   cp Wagonfile.ci Wagonfile
   echo "✅ Created Wagonfile"
 else
-  echo "↪️ Leaving existing Wagonfile as it is"
+  echo "↪️  Leaving existing Wagonfile as it is"
 fi
 
 echo "Running bundle install"
 bundle install
 
-echo "⚙️ Testing DB connection"
-timeout 300s /opt/app-root/src/hitobito/.docker-dev/waitfortcp "${RAILS_DB_HOST-db}" "${RAILS_DB_PORT-3306}"
-echo "✅ DB is ready"
+echo "⚙️  Testing DB connection"
+timeout 300s waitfortcp "${RAILS_DB_HOST-db}" "${RAILS_DB_PORT-3306}"
+echo "✅ DB server is ready"
 
-echo "⚙️ Performing migrations"
-bundle exec rake db:migrate wagon:migrate
-echo "✅ Migrations done"
+if [ -z "$SKIP_RAILS_MIGRATIONS" ]; then
+  echo "⚙️  Performing migrations"
+  bundle exec rails db:migrate wagon:migrate
+  echo "✅ Migrations done"
+fi
 
 echo "➡️ Handing control over to '$*''"
 
+echo "⚙️  Executing: $@"
 exec bundle exec "$@"

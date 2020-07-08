@@ -5,3 +5,5 @@ RUN INSTALL_PKGS="chromium xorg-x11-server-Xvfb" && \
   yum install -y --setopt=tsflags=nodocs $INSTALL_PKGS && \
   rpm -V $INSTALL_PKGS && \
   yum -y clean all --enablerepo='*'
+
+CMD [ "tail", "-f", "/dev/null" ]
