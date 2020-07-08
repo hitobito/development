@@ -5,6 +5,7 @@ services:
       context: .
       dockerfile: ./docker/Rails.dockerfile
     image: hitobito-dev/rails
+    user: '1000:1000'
     depends_on:
     - db
     - mailcatcher
@@ -12,7 +13,6 @@ services:
     env_file: docker/rails.env
     ports:
     - "3000:3000"
-    tmpfs: /opt/app-root/src/hitobito/tmp/pids
     volumes:
     - ./app/:/opt/app-root/src/
     - hitobito_bundle:/opt/bundle
@@ -37,6 +37,7 @@ services:
     depends_on:
     - rails
     - db
+    user: '1000:1000'
     env_file: ./docker/rails.env
     environment:
       RAILS_ENV: test
