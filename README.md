@@ -79,16 +79,15 @@ docker-compose ps
 This should look something like this:
 
 ```
-          Name                         Command               State                  Ports               
---------------------------------------------------------------------------------------------------------
-development_cache_1         docker-entrypoint.sh memca ...   Up       11211/tcp                         
-development_db_1            docker-entrypoint.sh --sor ...   Up       0.0.0.0:33066->3306/tcp, 33060/tcp
-development_indexer_1       indexer --config /opt/sphi ...   Exit 0                                     
-development_mailcatcher_1   container-entrypoint mailc ...   Up       0.0.0.0:1080->1080/tcp, 8080/tcp  
-development_rails-test_1    rails-entrypoint tail -f / ...   Up       8080/tcp                          
-development_rails_1         rails-entrypoint rails ser ...   Up       0.0.0.0:3000->3000/tcp, 8080/tcp  
-development_sphinx_1        /bin/sh -c searchd --nodet ...   Up       36307/tcp                         
-development_worker_1        rails-entrypoint rails job ...   Up       8080/tcp     
+          Name                         Command               State                 Ports               
+-------------------------------------------------------------------------------------------------------
+development_cache_1         docker-entrypoint.sh memca ...   Up      11211/tcp                         
+development_db_1            docker-entrypoint.sh --sor ...   Up      0.0.0.0:33066->3306/tcp, 33060/tcp
+development_mailcatcher_1   container-entrypoint mailc ...   Up      0.0.0.0:1080->1080/tcp, 8080/tcp  
+development_rails-test_1    rails-entrypoint tail -f / ...   Up      8080/tcp                          
+development_rails_1         rails-entrypoint rails ser ...   Up      0.0.0.0:3000->3000/tcp, 8080/tcp  
+development_sphinx_1        sphinx-start                     Up      36307/tcp                         
+development_worker_1        rails-entrypoint rails job ...   Up      8080/tcp
 ```
 
 Access webapplication by browser: http://localhost:3000
