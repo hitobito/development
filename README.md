@@ -1,5 +1,3 @@
-WIP !!!!
- 
 # Hitobito Development 👩🏽‍💻
 
 We're glad you want to setup your machine for Hitobito development 💃
