@@ -37,10 +37,10 @@ Now you need to add at least one wagon project:
 (cd app && git clone https://github.com/hitobito/hitobito_generic.git)
 ```
 
-The final structure should look something like this:
+The final structure in app/ should look something like this:
 
 ```bash
-$ ls -lah
+$ ls -lah app/
 total 16K
 drwxrwxr-x  4 ps ps 4.0K Jun 25 11:20 .
 drwxrwxr-x 17 ps ps 4.0K Jun 25 10:00 ..
