@@ -15,7 +15,7 @@ services:
     tmpfs: /opt/app-root/src/hitobito/tmp/pids
     volumes:
     - ./app/:/opt/app-root/src/
-    - bundle:/opt/bundle
+    - hitobito_bundle:/opt/bundle
 
   worker:
     <<: *rails
@@ -44,7 +44,7 @@ services:
       RAILS_DB_HOST: db
     volumes:
     - ./app/:/opt/app-root/src/
-    - bundle:/opt/bundle
+    - hitobito_bundle:/opt/bundle
 
   # Dependencies
   mailcatcher:
@@ -82,4 +82,5 @@ services:
 
 volumes:
   db:
-  bundle:
+  hitobito_bundle:
+    external: true
