@@ -1,0 +1,3 @@
+#!/bin/sh
+
+indexer --config /opt/sphinx/conf/sphinx.conf --all

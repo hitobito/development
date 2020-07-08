@@ -1,0 +1,4 @@
+#!/bin/sh
+
+indexer --config /opt/sphinx/conf/sphinx.conf --all
+searchd --nodetach --config /opt/sphinx/conf/sphinx.conf

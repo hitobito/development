@@ -61,20 +61,13 @@ services:
 
   sphinx:
     image: macbre/sphinxsearch:3.1.1
+    command: sphinx-start
     depends_on:
     - db
     volumes:
-    - sphinx:/opt/sphinx/index
     - ./docker/sphinx.conf:/opt/sphinx/conf/sphinx.conf:ro
-
-  indexer:
-    image: macbre/sphinxsearch:3.1.1
-    command: [ indexer, --config, /opt/sphinx/conf/sphinx.conf, --all ]
-    depends_on:
-    - db
-    volumes:
-    - sphinx:/opt/sphinx/index
-    - ./docker/sphinx.conf:/opt/sphinx/conf/sphinx.conf:ro
+    - ./docker/sphinx-start:/usr/local/bin/sphinx-start:ro
+    - ./docker/sphinx-indexer:/usr/local/bin/sphinx-indexer:ro
 
   db:
     image: mysql:5.7
@@ -89,5 +82,4 @@ services:
 
 volumes:
   db:
-  sphinx:
   bundle:
