@@ -64,6 +64,8 @@ If you did not so before, create a new docker volume for storing bundled gems:
 docker volume create hitobito_bundle
 ```
 
+⚡ If your user id is not 1000 (run id -u to check), you need to export this as env variable: **export UID=$UID** before running any of the further commands. Maybe you want to add this to your bashrc. 
+
 Now it's time to seed the database with development seeds:
 
 ```bash
