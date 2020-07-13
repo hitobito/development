@@ -25,5 +25,7 @@ RUN \
 RUN wget -O /usr/local/bin/direnv https://github.com/direnv/direnv/releases/download/v2.21.3/direnv.linux-amd64 && \
     chmod +x /usr/local/bin/direnv
 
+RUN mkdir /opt/bundle && chmod 777 /opt/bundle
+
 ENTRYPOINT ["rails-entrypoint"]
 CMD [ "rails", "server", "-b", "0.0.0.0" ]
