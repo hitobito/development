@@ -5,7 +5,7 @@ services:
       context: .
       dockerfile: ./docker/Rails.dockerfile
     image: hitobito-dev/rails
-    user: $UID
+    user: "$UID:-1000"
     depends_on:
     - db
     - mailcatcher
@@ -34,7 +34,7 @@ services:
     build:
       context: .
       dockerfile: ./docker/Rails-test.dockerfile
-    user: $UID
+    user: "$UID:-1000"
     depends_on:
     - rails
     - db
