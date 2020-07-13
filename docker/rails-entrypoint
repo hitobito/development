@@ -2,17 +2,17 @@
 
 set -e
 
-if [ -f "/opt/app-root/src/hitobito/.envrc" ]; then
-  direnv allow /opt/app-root/src/hitobito/.envrc
-  eval "$(direnv export bash)"
-fi
-
 if [ ! -f "./Wagonfile" ]; then
-  echo "⚙ Creating Wagonfile from defaults because it doesn't exist yet"
-  cp Wagonfile.ci Wagonfile
+  echo "⚙ Creating Wagonfile"
+  /opt/app-root/src/hitobito/bin/active_wagon.rb core
   echo "✅ Created Wagonfile"
 else
   echo "↪️  Leaving existing Wagonfile as it is"
+fi
+
+if [ -f "/opt/app-root/src/hitobito/.envrc" ]; then
+  direnv allow /opt/app-root/src/hitobito/.envrc
+  eval "$(direnv export bash)"
 fi
 
 echo "Running bundle install"
