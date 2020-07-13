@@ -12,7 +12,7 @@ The free _Docker Community Edition (CE)_ works perfectly fine.
 
 Additionally you need **git** to be installed and configured.
  
- ⚡ This manual focuses on Linux/Ubuntu. Hitobito development also runs on other plattforms with some adjustions. 
+ ⚡ This manual focuses on Linux/Ubuntu. Hitobito development also runs on other plattforms with some adjustments. 
 
 ## Preparation
 
