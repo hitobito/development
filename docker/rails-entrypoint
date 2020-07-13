@@ -2,8 +2,10 @@
 
 set -e
 
-direnv allow /opt/app-root/src/hitobito/.envrc
-eval "$(direnv export bash)"
+if [ -f "/opt/app-root/src/hitobito/.envrc" ]; then
+  direnv allow /opt/app-root/src/hitobito/.envrc
+  eval "$(direnv export bash)"
+fi
 
 if [ ! -f "./Wagonfile" ]; then
   echo "⚙ Creating Wagonfile from defaults because it doesn't exist yet"
