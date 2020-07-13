@@ -69,7 +69,6 @@ docker volume create hitobito_bundle
 Now it's time to seed the database with development seeds:
 
 ```bash
-docker-compose up -d db
 docker-compose run rails 'rails db:seed wagon:seed'
 ```
 
