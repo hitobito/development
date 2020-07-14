@@ -2,18 +2,16 @@
 
 set -e
 
-if [ ! -f "./Wagonfile" ]; then
+if [ ! -f "/opt/app-root/src/hitobito/.envrc" ]; then
   echo "⚙ Creating Wagonfile"
-  /opt/app-root/src/hitobito/bin/active_wagon.rb core
+  /opt/app-root/src/hitobito/bin/active_wagon core
   echo "✅ Created Wagonfile"
 else
   echo "↪️  Leaving existing Wagonfile as it is"
 fi
 
-if [ -f "/opt/app-root/src/hitobito/.envrc" ]; then
-  direnv allow /opt/app-root/src/hitobito/.envrc
-  eval "$(direnv export bash)"
-fi
+direnv allow /opt/app-root/src/hitobito/.envrc
+eval "$(direnv export bash)"
 
 echo "Running bundle install"
 bundle install
