@@ -15,12 +15,15 @@ COPY ./app/hitobito/images/s2i/root/opt/bin/install-nodejs /usr/local/bin
 RUN yum remove -y ${RUBY_SCL}-rubygem-bundler
 RUN bash -c 'gem install bundler -v 1.17.3'
 
-RUN \
-    bash -c 'install-nodejs' && \
+RUN yum localinstall -y \
+      "https://github.com/sphinxsearch/sphinx/releases/download/2.2.11-release/sphinx-2.2.11-1.rhel7.x86_64.rpm" && \
+    scl enable rh-ruby25 install-nodejs && \
     yum install -y python-setuptools && \
-    bash -c 'install-transifex' && \
-    yum install ImageMagick ImageMagick-devel -y && \
-    yum clean all -y
+    scl enable rh-ruby25 install-transifex && \
+    yum install ImageMagick ImageMagick-devel -y
+
+# reduce image size
+RUN yum clean all -y && rm -rf /var/cache/yum
 
 RUN wget -O /usr/local/bin/direnv https://github.com/direnv/direnv/releases/download/v2.21.3/direnv.linux-amd64 && \
     chmod +x /usr/local/bin/direnv

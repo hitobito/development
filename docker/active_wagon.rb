@@ -55,7 +55,6 @@ class Setup
 
   def environment
     <<~DIRENV
-      PATH_add bin
       export RAILS_DB_ADAPTER=mysql2
       export RUBYOPT=-W0
       export WAGONS="#{wagons.join(' ')}"
