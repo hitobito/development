@@ -16,7 +16,7 @@ services:
     volumes:
     - ./app/:/opt/app-root/src/
     - hitobito_bundle:/opt/bundle
-    - ./docker/active_wagon.rb:/opt/app-root/src/hitobito/bin/active_wagon:ro
+    - ./docker/active_wagon.rb:/opt/app-root/src/hitobito/tmp/active_wagon:ro
 
   worker:
     <<: *rails
@@ -47,7 +47,7 @@ services:
     volumes:
     - ./app/:/opt/app-root/src/
     - hitobito_bundle:/opt/bundle
-    - ./docker/active_wagon.rb:/opt/app-root/src/hitobito/bin/active_wagon:ro
+    - ./docker/active_wagon.rb:/opt/app-root/src/hitobito/tmp/active_wagon:ro
 
   # Dependencies
   mailcatcher:
