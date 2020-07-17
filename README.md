@@ -106,7 +106,7 @@ Access webapplication by browser: http://localhost:3000
 
 ## Development
 
-Start developing by editing files locally with your prefered editor in the app/hitobito* folders. Those directories are mounted inside the containers. So every saved file is instantely available inside the containers. 
+Start developing by editing files locally with your prefered editor in the app/hitobito* folders. Those directories are mounted inside the containers. So every saved file is instantly available inside the containers. 
 
 ### Running rails tasks, console
 
