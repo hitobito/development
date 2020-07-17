@@ -4,6 +4,8 @@ USER root
 
 ENV RAILS_ENV=development
 ENV BUNDLE_PATH=/opt/bundle
+# unset $APP_ROOT since this is used in hitobito to and makes specs failing
+ENV APP_ROOT=
 
 WORKDIR /opt/app-root/src/hitobito
 
