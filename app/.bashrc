@@ -2,11 +2,6 @@ alias rspec="bundle exec rspec"
 alias ls='ls -hF'
 LC_ALL="en_US.UTF-8"
 
-# active_wagon resides in core/tmp to avoid it's checked-in in core git repo
-active_wagon () {
-  (/opt/app-root/src/hitobito/tmp/active_wagon $1)
-}
-
 parse_git_branch() {
  git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/'
 }
@@ -18,3 +13,7 @@ if [ -f "/opt/app-root/src/hitobito/.envrc" ]; then
   eval "$(direnv hook bash)"
 fi
 
+# don't use these bins from hitobito/bin
+alias bundle="/opt/rh/rh-ruby26/root/usr/local/bin/bundle"
+alias spring="/opt/rh/rh-ruby26/root/usr/local/bin/spring"
+alias active_wagon.rb="/opt/app-root/src/hitobito/tmp/active_wagon.rb"

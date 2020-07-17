@@ -2,9 +2,9 @@
 
 set -e
 
-if [ ! -f "/opt/app-root/src/hitobito/.envrc" ]; then
+if [ ! -f "/opt/app-root/src/hitobito/Wagonfile" ]; then
   echo "⚙ Creating Wagonfile"
-  /opt/app-root/src/hitobito/bin/active_wagon core
+  /opt/app-root/src/hitobito/tmp/active_wagon.rb core
   echo "✅ Created Wagonfile"
 else
   echo "↪️  Leaving existing Wagonfile as it is"
