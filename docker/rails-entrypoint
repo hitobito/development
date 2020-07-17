@@ -4,14 +4,11 @@ set -e
 
 if [ ! -f "/opt/app-root/src/hitobito/Wagonfile" ]; then
   echo "⚙ Creating Wagonfile"
-  /opt/app-root/src/hitobito/tmp/active_wagon.rb core
+  cp /opt/app-root/src/hitobito/Wagonfile.ci /opt/app-root/src/hitobito/Wagonfile
   echo "✅ Created Wagonfile"
 else
   echo "↪️  Leaving existing Wagonfile as it is"
 fi
-
-direnv allow /opt/app-root/src/hitobito/.envrc
-eval "$(direnv export bash)"
 
 echo "Running bundle install"
 bundle install

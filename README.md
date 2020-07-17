@@ -113,13 +113,13 @@ Start developing by editing files locally with your prefered editor in the app/h
 For executing tasks like **rails routes** or starting the rails console in **development** environment, run the following command:
 
 ```bash
-docker-compose run rails bash
+docker-compose exec rails console
 ```
 
 For executing tests or running other commands in **test** environment, do the same for the rails-test container:
 
 ```bash
-docker-compose run rails-test bash
+docker-compose exec rails-test console
 ```
 
 🍺 finished work ? execute **docker-compose down** to shut down all running containers

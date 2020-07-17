@@ -9,6 +9,7 @@ ENV APP_ROOT=
 
 WORKDIR /opt/app-root/src/hitobito
 
+COPY ./docker/rails-console /usr/local/bin/console
 COPY ./docker/rails-entrypoint /usr/local/bin
 COPY ./docker/waitfortcp /usr/local/bin
 COPY ./app/hitobito/images/s2i/root/opt/bin/install-transifex /usr/local/bin
