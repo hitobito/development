@@ -17,9 +17,9 @@ RUN bash -c 'gem install bundler -v 1.17.3'
 
 RUN yum localinstall -y \
       "https://github.com/sphinxsearch/sphinx/releases/download/2.2.11-release/sphinx-2.2.11-1.rhel7.x86_64.rpm" && \
-    scl enable rh-ruby25 install-nodejs && \
+    scl enable rh-ruby26 install-nodejs && \
     yum install -y python-setuptools && \
-    scl enable rh-ruby25 install-transifex && \
+    scl enable rh-ruby26 install-transifex && \
     yum install ImageMagick ImageMagick-devel -y
 
 # reduce image size
