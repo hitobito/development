@@ -13,7 +13,7 @@ if [ -f "/opt/app-root/src/hitobito/.envrc" ]; then
   eval "$(direnv hook bash)"
 fi
 
-# don't use these bins from hitobito/bin
-alias bundle="/opt/rh/rh-ruby26/root/usr/local/bin/bundle"
-alias spring="/opt/rh/rh-ruby26/root/usr/local/bin/spring"
-alias active_wagon.rb="/opt/app-root/src/hitobito/tmp/active_wagon.rb"
+PATH=$PATH://opt/app-root/src/hitobito/bin
+
+# make sure APP_ROOT is NOT set
+unset APP_ROOT

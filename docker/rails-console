@@ -1,7 +1,0 @@
-#!/bin/bash
-
-# this variable is set by centos s2i image and is also
-# used by hitobito what might cause problems ...
-unset APP_ROOT
-
-exec bundle exec bash
