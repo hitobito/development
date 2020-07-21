@@ -13,7 +13,9 @@ if [ -f "/opt/app-root/src/hitobito/.envrc" ]; then
   eval "$(direnv hook bash)"
 fi
 
-PATH=$PATH://opt/app-root/src/hitobito/bin
+PATH=$PATH:/opt/app-root/src/hitobito/bin
 
 # make sure APP_ROOT is NOT set
 unset APP_ROOT
+
+alias rake="/opt/app-root/src/hitobito/bin/rake"
