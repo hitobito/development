@@ -2,6 +2,8 @@
 
 set -e
 
+rm -f tmp/pids/server.pid
+
 if [ ! -f "/opt/app-root/src/hitobito/Wagonfile" ]; then
   echo "⚙ Creating Wagonfile"
   cp /opt/app-root/src/hitobito/Wagonfile.ci /opt/app-root/src/hitobito/Wagonfile
