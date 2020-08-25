@@ -102,7 +102,7 @@ development_sphinx_1        sphinx-start                     Up      36307/tcp
 development_worker_1        rails-entrypoint rails job ...   Up      8080/tcp
 ```
 
-Access webapplication by browser: http://localhost:3000
+Access webapplication by browser: http://localhost:3000 and log in using *hitobito@puzzle.ch* and password *hito42bito*
 
 ## Development
 
