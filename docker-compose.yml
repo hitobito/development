@@ -69,6 +69,7 @@ services:
     - ./docker/sphinx.conf:/opt/sphinx/conf/sphinx.conf:ro
     - ./docker/sphinx-start:/usr/local/bin/sphinx-start:ro
     - ./docker/sphinx-indexer:/usr/local/bin/sphinx-indexer:ro
+    - sphinx_indexes:/opt/sphinx/indexes
 
   db:
     image: mysql:5.7
@@ -85,3 +86,4 @@ volumes:
   db:
   hitobito_bundle:
     external: true
+  sphinx_indexes:
