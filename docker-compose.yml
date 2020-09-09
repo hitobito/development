@@ -43,9 +43,11 @@ services:
       RAILS_ENV: test
       RAILS_DB_NAME: hitobito_test
       RAILS_DB_HOST: db
+      DISPLAY: "${DISPLAY}"
     volumes:
     - ./app/:/opt/app-root/src/
     - hitobito_bundle:/opt/bundle
+    - /tmp/.X11-unix:/tmp/.X11-unix
 
   # Dependencies
   mailcatcher:
