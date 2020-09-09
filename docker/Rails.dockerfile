@@ -32,5 +32,8 @@ RUN wget -O /usr/local/bin/direnv https://github.com/direnv/direnv/releases/down
 
 RUN mkdir /opt/bundle && chmod 777 /opt/bundle
 
+# create symlink to make cmds like rails available (/opt/app-root/bin is part of $PATH)
+RUN ln -s /opt/app-root/src/hitobito/bin /opt/app-root/bin
+
 ENTRYPOINT ["rails-entrypoint"]
 CMD [ "rails", "server", "-b", "0.0.0.0" ]
