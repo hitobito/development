@@ -50,11 +50,13 @@ drwxrwxr-x 11 ps ps 4.0K Jun 24 10:53 hitobito_generic
 
 ## Build Docker Images
 
-First we have to build the required docker images:
+First we have to import and build the required docker images:
 
 ```bash
-docker-compose build
+./bin/build
 ```
+
+ ⚡ Use this command also for updating your dev setup at a later time
 
 ## Install Gems / Setup Database
 
