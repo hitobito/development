@@ -6,6 +6,8 @@ services:
       dockerfile: ./docker/Rails.dockerfile
     image: hitobito-dev/rails
     user: "${UID:-1000}"
+    tty: true
+    stdin_open: true
     depends_on:
     - db
     - mailcatcher

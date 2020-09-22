@@ -124,4 +124,16 @@ For executing tests or running other commands in **test** environment, do the sa
 docker-compose exec rails-test bash
 ```
 
+### HTTP request debugging with pry
+
+For debugging with pry during a HTTP request, you can attach to the running docker container:
+
+```bash
+docker attach $(docker-compose ps | grep _rails_1 | cut -d ' ' -f 1)
+```
+
+For detaching after debugging, you use CTRL+p followed by CTRL+q
+
+### Shutdown
+
 🍺 finished work ? execute **docker-compose down** to shut down all running containers
