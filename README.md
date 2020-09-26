@@ -104,7 +104,7 @@ development_sphinx_1        sphinx-start                     Up      36307/tcp
 development_worker_1        rails-entrypoint rails job ...   Up      8080/tcp
 ```
 
-Access webapplication by browser: http://localhost:3000 and log in using *hitobito@puzzle.ch* and password *hito42bito*
+Access webapplication by browser: http://localhost:3000 and log in using *hitobito@puzzle.ch* and password *hito42bito*. For some wagons, the e-mail address is different. Go to the file ```/config/settings.yml``` inside your wagon repository and look out for the field "root_email". Use this e-mail address to login.
 
 ## Development
 
