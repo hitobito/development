@@ -94,10 +94,10 @@ services:
       context: .
       dockerfile: ./docker/Rails.dockerfile
     image: hitobito-dev/rails
+    entrypoint: [ "webpack-entrypoint" ]
     env_file: docker/rails.env
     environment:
       WEBPACKER_DEV_SERVER_HOST: webpack
-      SKIP_RAILS_MIGRATIONS: 1
     user: "${UID:-1000}"
     command: /opt/app-root/src/hitobito/bin/webpack-dev-server
     ports:
