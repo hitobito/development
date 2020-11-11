@@ -48,16 +48,6 @@ drwxrwxr-x 18 ps ps 4.0K Jun 25 07:29 hitobito
 drwxrwxr-x 11 ps ps 4.0K Jun 24 10:53 hitobito_generic
 ```
 
-## Build Docker Images
-
-First we have to import and build the required docker images:
-
-```bash
-./bin/build
-```
-
- ⚡ Use this command also for updating your dev setup at a later time
-
 ## Install Gems / Setup Database
 
 If you did not so before, create a new docker volume for storing bundled gems:
@@ -137,3 +127,11 @@ For detaching after debugging, you use CTRL+p followed by CTRL+q
 ### Shutdown
 
 🍺 finished work ? execute **docker-compose down** to shut down all running containers
+
+### Updating Images
+
+When the images of this project change, execute the following command to update them locally:
+
+```bash
+docker-compose build --no-cache
+```

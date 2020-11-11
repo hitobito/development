@@ -1,7 +1,0 @@
-#!/bin/bash
-
-docker pull memcached:1.5-alpine
-docker pull macbre/sphinxsearch:3.1.1
-docker pull mysql:5.7
-docker pull centos/ruby-26-centos7
-docker-compose build
