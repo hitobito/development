@@ -137,3 +137,11 @@ For detaching after debugging, you use CTRL+p followed by CTRL+q
 ### Shutdown
 
 🍺 finished work ? execute **docker-compose down** to shut down all running containers
+
+### Updating Images
+
+When the images of this project change, execute the following command to update them locally:
+
+```bash
+docker-compose build --no-cache
+```
