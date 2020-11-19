@@ -54,7 +54,7 @@ If you did not so before, create new docker volumes for storing bundled gems and
 
 ```bash
 docker volume create hitobito_bundle
-docker volume create yarn_cache
+docker volume create hitobito_yarn_cache
 ```
 
 ⚡ If your user id is not 1000 (run id -u to check), you need to export this as env variable: **export UID=$UID** before running any of the further commands. Maybe you want to add this to your bashrc. 
