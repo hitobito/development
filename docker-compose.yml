@@ -105,12 +105,12 @@ services:
     volumes:
     - ./app/:/opt/app-root/src/
     - hitobito_bundle:/opt/bundle
-    - yarn_cache:/opt/app-root/src/.cache/yarn
+    - hitobito_yarn_cache:/opt/app-root/src/.cache/yarn
 
 volumes:
   db:
   hitobito_bundle:
     external: true
-  yarn_cache:
+  hitobito_yarn_cache:
     external: true
   sphinx_indexes:
