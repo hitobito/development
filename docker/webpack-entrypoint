@@ -1,0 +1,24 @@
+#!/bin/bash
+
+set -e
+
+rm -f tmp/pids/server.pid
+
+if [ ! -f "/opt/app-root/src/hitobito/Wagonfile" ]; then
+  echo "⚙ Creating Wagonfile"
+  cp /opt/app-root/src/Wagonfile.dev /opt/app-root/src/hitobito/Wagonfile
+  echo "✅ Created Wagonfile"
+else
+  echo "↪️  Leaving existing Wagonfile as it is"
+fi
+
+echo "Running bundle install"
+bundle install
+
+echo "Running yarn install"
+bundle exec rails webpacker:yarn_install
+
+echo "➡️ Handing control over to '$*''"
+
+echo "⚙️  Executing: $@"
+exec bundle exec "$@"
