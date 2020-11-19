@@ -97,6 +97,10 @@ development_worker_1        rails-entrypoint rails job ...   Up      8080/tcp
 
 Access webapplication by browser: http://localhost:3000 and log in using *hitobito@puzzle.ch* and password *hito42bito*. For some wagons, the e-mail address is different. Go to the file ```/config/settings.yml``` inside your wagon repository and look out for the field "root_email". Use this e-mail address to login.
 
+## Emails sent by hitobito
+
+:email: When you someone requests a password reset or registers for an event, an email is usually sent out from hitobito to that user. In your local hitobito, these emails are not really sent to the real recipients, but instead all end up in **mailcatcher**. You can access these emails by visiting http://localhost:1080 in your browser.
+
 ## Development
 
 Start developing by editing files locally with your prefered editor in the app/hitobito* folders. Those directories are mounted inside the containers. So every saved file is instantly available inside the containers. 
