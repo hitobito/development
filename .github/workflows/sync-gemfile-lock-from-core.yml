@@ -1,0 +1,20 @@
+name: Sync Gemfile.lock with the one from hitobito core
+
+on:
+  schedule:
+    - cron: '0 4 * * *' # Sync at 4 A.M.
+
+jobs:
+  sync-gemfile-lock:
+    runs-on: ubuntu-latest
+    steps:
+
+      - uses: adrianjost/files-sync-action@v1.1.0
+        with:
+          FILE_PATTERNS: |
+            ^Gemfile.lock$
+          SRC_REPO: hitobito/hitobito
+          TARGET_REPOS: ${{ github.repository }}
+          GITHUB_TOKEN: ${{ secrets.SYNC_TOKEN }}
+          SKIP_DELETE: true
+          COMMIT_MESSAGE: Sync Gemfile.lock with hitobito core
