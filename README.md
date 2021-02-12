@@ -37,6 +37,9 @@ Now you need to add at least one wagon project:
 (cd app && git clone https://github.com/hitobito/hitobito_generic.git)
 ```
 
+⚡ If you like to contribute to an existing wagon/organisation please adapt this e.g. `(cd app && git clone https://github.com/hitobito/hitobito_youth.git && git clone https://github.com/hitobito/hitobito_pbs.git)`
+
+
 The final structure in app/ should look something like this:
 
 ```bash
