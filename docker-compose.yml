@@ -48,6 +48,7 @@ services:
       RAILS_ENV: test
       RAILS_DB_NAME: hitobito_test
       RAILS_DB_HOST: db
+      RAILS_HOST_NAME: 
       DISPLAY: "${DISPLAY}"
     volumes:
     - ./app/:/opt/app-root/src/
