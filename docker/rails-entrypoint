@@ -4,9 +4,9 @@ set -e
 
 rm -f tmp/pids/server.pid
 
-if [ ! -f "/opt/app-root/src/hitobito/Wagonfile" ]; then
+if [ ! -f "/usr/src/app/hitobito/Wagonfile" ]; then
   echo "⚙ Creating Wagonfile"
-  cp /opt/app-root/src/Wagonfile.dev /opt/app-root/src/hitobito/Wagonfile
+  cp /usr/src/app/Wagonfile.dev /usr/src/app/hitobito/Wagonfile
   echo "✅ Created Wagonfile"
 else
   echo "↪️  Leaving existing Wagonfile as it is"

@@ -1,4 +1,4 @@
-FROM centos/ruby-26-centos7
+FROM ruby:2.6
 
 USER root
 
