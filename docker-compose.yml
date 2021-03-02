@@ -12,7 +12,6 @@ services:
     - db
     - mailcatcher
     - cache
-    - webpack
     env_file: docker/rails.env
     environment:
       WEBPACKER_DEV_SERVER_HOST: webpack
