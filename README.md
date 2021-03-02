@@ -138,6 +138,12 @@ For detaching after debugging, you use CTRL+p followed by CTRL+q
 
 ### Updating Images
 
+if you have installed a previous development setup before 03.2021, please run the following command inside one project:
+```bash
+docker-compose run --entrypoint='bash -c "rm -rf /opt/bundle/*"' rails
+```
+
+
 When the images of this project change, execute the following command to update them locally:
 
 ```bash
