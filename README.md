@@ -140,7 +140,7 @@ For detaching after debugging, you use CTRL+p followed by CTRL+q
 
 if you have installed a previous development setup before 03.2021, please run the following command inside one project:
 ```bash
-docker-compose run --entrypoint='bash -c "rm -rf /opt/bundle/*"' rails
+docker volume rm hitobito_bundle && docker docker volume create hitobito_bundle
 ```
 
 
