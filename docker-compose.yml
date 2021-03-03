@@ -87,7 +87,7 @@ services:
     volumes:
     - ./app/:/usr/src/app
     - hitobito_bundle:/opt/bundle
-    - hitobito_yarn_cache:/usr/src/app/.cache/yarn
+    - hitobito_yarn_cache:/home/developer/.cache/yarn
 
 volumes:
   db:
