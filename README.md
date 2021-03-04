@@ -140,7 +140,7 @@ For detaching after debugging, you use CTRL+p followed by CTRL+q
 
 :calendar: If you have installed a previous development setup before 03.2021, please run the following command inside one project, and then update your images:
 ```bash
-docker volume rm hitobito_bundle && docker docker volume create hitobito_bundle
+docker-compose down && docker volume rm hitobito_bundle && docker volume create hitobito_bundle
 ```
 
 
