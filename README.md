@@ -91,8 +91,7 @@ This should look something like this:
 -------------------------------------------------------------------------------------------------------
 development_cache_1         docker-entrypoint.sh memca ...   Up      11211/tcp                         
 development_db_1            docker-entrypoint.sh --sor ...   Up      0.0.0.0:33066->3306/tcp, 33060/tcp
-development_mailcatcher_1   container-entrypoint mailc ...   Up      0.0.0.0:1080->1080/tcp, 8080/tcp  
-development_rails-test_1    rails-entrypoint tail -f / ...   Up      8080/tcp                          
+development_mailcatcher_1   container-entrypoint mailc ...   Up      0.0.0.0:1080->1080/tcp, 8080/tcp                       
 development_rails_1         rails-entrypoint rails ser ...   Up      0.0.0.0:3000->3000/tcp, 8080/tcp  
 development_sphinx_1        sphinx-start                     Up      36307/tcp                         
 development_worker_1        rails-entrypoint rails job ...   Up      8080/tcp
@@ -102,7 +101,7 @@ Access webapplication by browser: http://localhost:3000 and log in using *hitobi
 
 ## Emails sent by hitobito
 
-:email: When you someone requests a password reset or registers for an event, an email is usually sent out from hitobito to that user. In your local hitobito, these emails are not really sent to the real recipients, but instead all end up in **mailcatcher**. You can access these emails by visiting http://localhost:1080 in your browser.
+:email: All mails sent by your local development environment end up in **mailcatcher**. You can access these e-mails by visiting http://localhost:1080.
 
 ## Development
 
@@ -142,7 +141,6 @@ For detaching after debugging, you use CTRL+p followed by CTRL+q
 ```bash
 docker-compose down && docker volume rm hitobito_bundle && docker volume create hitobito_bundle
 ```
-
 
 When the images of this project change, execute the following command to update them locally:
 
