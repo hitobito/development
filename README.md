@@ -5,7 +5,10 @@ We're glad you want to setup your machine for Hitobito development 💃
 ## System Requirements
 
 You need to have [Docker][docker] and _[docker-compose][doco]_ installed on your computer.
-The free _Docker Community Edition (CE)_ works perfectly fine.
+The free _Docker Community Edition (CE)_ works perfectly fine. Make sure your user is part of the docker group:
+```bash
+usermod -a -G docker $MY_USER
+```
 
 [docker]: https://docs.docker.com/install/
 [doco]: https://docs.docker.com/compose/install/
