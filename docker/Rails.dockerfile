@@ -1,40 +1,30 @@
-FROM centos/ruby-26-centos7
+FROM ruby:2.6
 
 USER root
 
 ENV RAILS_ENV=development
+ENV RAILS_DB_ADAPTER=mysql2
 ENV BUNDLE_PATH=/opt/bundle
-# unset $APP_ROOT since this is used in hitobito to and makes specs failing
-ENV APP_ROOT=
 
-WORKDIR /opt/app-root/src/hitobito
+WORKDIR /usr/src/app/hitobito
+
+RUN bash -c 'gem install bundler -v 1.17.3'
 
 COPY ./docker/rails-entrypoint /usr/local/bin
 COPY ./docker/webpack-entrypoint /usr/local/bin
 COPY ./docker/waitfortcp /usr/local/bin
 COPY ./app/hitobito/images/s2i/root/opt/bin/install-transifex /usr/local/bin
-COPY ./app/hitobito/images/s2i/root/opt/bin/install-nodejs /usr/local/bin
 
-RUN yum remove -y ${RUBY_SCL}-rubygem-bundler
-RUN bash -c 'gem install bundler -v 1.17.3'
-
-RUN yum localinstall -y \
-      "https://github.com/sphinxsearch/sphinx/releases/download/2.2.11-release/sphinx-2.2.11-1.rhel7.x86_64.rpm" && \
-    scl enable rh-ruby26 install-nodejs && \
-    yum install -y python-setuptools && \
-    scl enable rh-ruby26 install-transifex && \
-    yum install ImageMagick ImageMagick-devel -y
-
-# reduce image size
-RUN yum clean all -y && rm -rf /var/cache/yum
-
-RUN wget -O /usr/local/bin/direnv https://github.com/direnv/direnv/releases/download/v2.21.3/direnv.linux-amd64 && \
-    chmod +x /usr/local/bin/direnv
+RUN apt update
+RUN apt-get install nodejs yarnpkg -y && ln -s /usr/bin/yarnpkg /usr/bin/yarn
+RUN apt-get install python-setuptools -y && install-transifex
+RUN apt-get install direnv -y
+RUN apt-get install -y xvfb chromium chromium-driver
 
 RUN mkdir /opt/bundle && chmod 777 /opt/bundle
 
-# create symlink to make cmds like rails available (/opt/app-root/bin is part of $PATH)
-RUN ln -s /opt/app-root/src/hitobito/bin /opt/app-root/bin
+RUN mkdir /home/developer && chmod 777 /home/developer
+ENV HOME=/home/developer
 
 ENTRYPOINT ["rails-entrypoint"]
 CMD [ "rails", "server", "-b", "0.0.0.0" ]
