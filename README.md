@@ -15,7 +15,7 @@ usermod -a -G docker $MY_USER
 
 Additionally you need **git** to be installed and configured.
  
- ⚡ This manual focuses on Linux/Ubuntu. Hitobito development also runs on other plattforms with some adjustments. 
+ 🐧 This manual focuses on Linux/Ubuntu. Hitobito development also runs on other plattforms with some adjustments. 
 
 ## Preparation
 
@@ -99,7 +99,7 @@ development_worker_1        rails-entrypoint rails job ...   Up      8080/tcp
 
 Access webapplication by browser: http://localhost:3000 and log in using *hitobito@puzzle.ch* and password *hito42bito*. For some wagons, the e-mail address is different. Go to the file ```/config/settings.yml``` inside your wagon repository and look out for the field "root_email". Use this e-mail address to login.
 
-## Emails sent by hitobito
+## E-Mails
 
 :email: All mails sent by your local development environment end up in **mailcatcher**. You can access these e-mails by visiting http://localhost:1080.
 
