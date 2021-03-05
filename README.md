@@ -1,13 +1,13 @@
 # Hitobito Development 👩🏽‍💻
 
-We're glad you want to setup your machine for Hitobito development 💃
+We're glad you want to setup your machine for hitobito development 💃
 
 ## System Requirements
 
 You need to have [Docker][docker] and _[docker-compose][doco]_ installed on your computer.
 The free _Docker Community Edition (CE)_ works perfectly fine. Make sure your user is part of the docker group:
 ```bash
-usermod -a -G docker $MY_USER
+usermod -a -G docker $USER
 ```
 
 [docker]: https://docs.docker.com/install/
@@ -47,6 +47,8 @@ $ ls -lah app/
 total 16K
 drwxrwxr-x  4 ps ps 4.0K Jun 25 11:20 .
 drwxrwxr-x 17 ps ps 4.0K Jun 25 10:00 ..
+-rw-r--r-x  1 ps ps    2 Jun 25 10:00 .gitignore
+-rw-r--r-x  1 ps ps  226 Jun 25 10:00 Wagonfile.dev
 drwxrwxr-x 18 ps ps 4.0K Jun 25 07:29 hitobito
 drwxrwxr-x 11 ps ps 4.0K Jun 24 10:53 hitobito_generic
 ```
