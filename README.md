@@ -136,6 +136,10 @@ docker attach $(docker-compose ps | grep _rails_1 | cut -d ' ' -f 1)
 
 For detaching after debugging, you use CTRL+p followed by CTRL+q
 
+### Access Development Database
+```bash
+docker exec -t -i $(docker-compose ps | grep _db_1 | cut -d ' ' -f 1) /bin/bash -c "mysql hitobito_development -uroot -phitobito"
+```
 ### Shutdown
 
 🍺 finished work ? execute **docker-compose down** to shut down all running containers
