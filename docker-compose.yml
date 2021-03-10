@@ -21,7 +21,7 @@ services:
     volumes:
     - ./app/:/usr/src/app
     - hitobito_bundle:/opt/bundle
-    - ./docker/rails.bashrc:/home/developer/.bashrc
+    - ./docker/home/rails:/home/developer
     - /tmp/.X11-unix:/tmp/.X11-unix
 
   worker:
