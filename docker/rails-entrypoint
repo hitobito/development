@@ -25,6 +25,16 @@ if [ -z "$SKIP_RAILS_MIGRATIONS" ]; then
   echo "✅ Migrations done"
 fi
 
+if [ -z "$SKIP_SEEDS" ]; then
+  if [ ! -f /seed/done ]; then
+    echo "⚙️  Seeding DB"
+    bundle exec rails db:seed wagon:seed && date > /seed/done
+    echo "✅ Seeding done"
+  else
+    echo "↪️  Skipping seeding because already done on $(cat /seed/done)"
+  fi
+fi
+
 echo "➡️ Handing control over to '$*''"
 
 echo "⚙️  Executing: $@"

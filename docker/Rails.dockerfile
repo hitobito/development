@@ -22,7 +22,7 @@ RUN apt-get install direnv -y
 RUN apt-get install -y xvfb chromium chromium-driver
 
 RUN mkdir /opt/bundle && chmod 777 /opt/bundle
-
+RUN mkdir /seed && chmod 777 /seed
 RUN mkdir /home/developer && chmod 777 /home/developer
 ENV HOME=/home/developer
 

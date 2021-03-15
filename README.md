@@ -56,7 +56,7 @@ drwxrwxr-x 18 ps ps 4.0K Jun 25 07:29 hitobito
 drwxrwxr-x 11 ps ps 4.0K Jun 24 10:53 hitobito_generic
 ```
 
-## Install Gems / Setup Database
+## Prepare storage space for dependencies
 
 If you did not so before, create new docker volumes for storing bundled gems and yarn packages:
 
@@ -66,12 +66,6 @@ docker volume create hitobito_yarn_cache
 ```
 
 ⚡ If your user id is not 1000 (run id -u to check), you need to export this as env variable: **export UID=$UID** before running any of the further commands. Maybe you want to add this to your bashrc. 
-
-Now it's time to seed the database with development seeds:
-
-```bash
-docker-compose run rails 'rails db:seed wagon:seed'
-```
 
 ⚡ This will also install all required gems which takes some time to complete if it's executed the first time.
 
