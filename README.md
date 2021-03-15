@@ -65,9 +65,7 @@ docker volume create hitobito_bundle
 docker volume create hitobito_yarn_cache
 ```
 
-⚡ If your user id is not 1000 (run id -u to check), you need to export this as env variable: **export UID=$UID** before running any of the further commands. Maybe you want to add this to your bashrc. 
-
-⚡ This will also install all required gems which takes some time to complete if it's executed the first time.
+⚡ If your user id is not 1000 (run id -u to check), you need to export this as env variable: **export UID=$UID** before running any of the further commands. Maybe you want to add this to your bashrc.
 
 ## Start Development Containers
 
@@ -77,7 +75,9 @@ To start the Hitobito application, run the following command in your shell:
 docker-compose up -d
 ```
 
-After this command completed, make sure all services are up and running:
+⚡ This will also install all required gems and seed the database, which takes some time to complete if it's executed the first time. You can follow the progress using `docker-compose logs --follow rails` (exit with Ctrl+C).
+
+After the startup has completed (once you see `Listening on tcp://0.0.0.0:3000` in the logs), make sure all services are up and running:
 
 ```bash
 docker-compose ps
@@ -96,7 +96,7 @@ development_sphinx_1        sphinx-start                     Up      36307/tcp
 development_worker_1        rails-entrypoint rails job ...   Up      8080/tcp
 ```
 
-Access webapplication by browser: http://localhost:3000 and log in using *hitobito@puzzle.ch* and password *hito42bito*. For some wagons, the e-mail address is different. Go to the file ```/config/settings.yml``` inside your wagon repository and look out for the field "root_email". Use this e-mail address to login.
+Access the web application by browser: http://localhost:3000 and log in using *hitobito@puzzle.ch* and password *hito42bito*. For some wagons, the e-mail address is different. Go to the file ```/config/settings.yml``` inside your wagon repository and look out for the field "root_email". Use this e-mail address to login.
 
 ## E-Mails
 
