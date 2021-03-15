@@ -112,6 +112,7 @@ services:
     - ./app/:/usr/src/app
     - hitobito_bundle:/opt/bundle
     - hitobito_yarn_cache:/home/developer/.cache/yarn
+    - ./Gemfile.lock:/usr/src/app/hitobito/Gemfile.lock
 
 volumes:
   db:
