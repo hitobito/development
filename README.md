@@ -138,7 +138,7 @@ For detaching after debugging, you use CTRL+p followed by CTRL+q
 
 ### Access Development Database
 ```bash
-docker exec -t -i $(docker-compose ps | grep _db_1 | cut -d ' ' -f 1) /bin/bash -c "mysql hitobito_development -uroot -phitobito"
+docker-compose exec db mysql hitobito_development -uroot -phitobito
 ```
 ### Shutdown
 
