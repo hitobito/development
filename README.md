@@ -114,16 +114,10 @@ Start developing by editing files locally with your prefered editor in the app/h
 
 ### Running rails tasks, console
 
-For executing tasks like **rails routes** or starting the rails console in **development** environment, run the following command:
+For running tests, executing tasks like **rails routes** or starting the rails console in **development** environment, run the following command:
 
 ```bash
 docker-compose exec rails bash
-```
-
-For executing tests or running other commands in **test** environment, do the same for the rails-test container:
-
-```bash
-docker-compose exec rails-test bash
 ```
 
 ### HTTP request debugging with pry
