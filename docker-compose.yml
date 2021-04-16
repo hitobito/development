@@ -21,6 +21,7 @@ services:
     volumes:
     - ./app/:/usr/src/app
     - hitobito_bundle:/opt/bundle
+    - seed:/seed
     - ./docker/home/rails:/home/developer
     - /tmp/.X11-unix:/tmp/.X11-unix
 
@@ -91,6 +92,7 @@ services:
 
 volumes:
   db:
+  seed:
   hitobito_bundle:
     external: true
   hitobito_yarn_cache:
