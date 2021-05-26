@@ -13,11 +13,10 @@ RUN bash -c 'gem install bundler -v 1.17.3'
 COPY ./docker/rails-entrypoint /usr/local/bin
 COPY ./docker/webpack-entrypoint /usr/local/bin
 COPY ./docker/waitfortcp /usr/local/bin
-COPY ./app/hitobito/images/s2i/root/opt/bin/install-transifex /usr/local/bin
 
 RUN apt update
 RUN apt-get install nodejs yarnpkg -y && ln -s /usr/bin/yarnpkg /usr/bin/yarn
-RUN apt-get install python-setuptools -y && install-transifex
+RUN apt-get install python-pip -y && pip install transifex-client
 RUN apt-get install direnv -y
 RUN apt-get install -y xvfb chromium chromium-driver
 
