@@ -108,10 +108,35 @@ Start developing by editing files locally with your prefered editor in the app/h
 
 ### Running rails tasks, console
 
-For running tests, executing tasks like **rails routes** or starting the rails console in **development** environment, run the following command:
+For executing tasks like **rails routes** or starting the rails console in **development** environment, run the following command:
 
 ```bash
 docker-compose exec rails bash
+```
+
+### Running tests
+
+To run the core tests:
+```bash
+# Open a testing console in the container
+docker-compose exec -e RAILS_ENV=test rails bash
+# Run all the specs
+rspec
+# Run specs from a single file
+rspec spec/models/person_spec.rb
+```
+
+
+To run the wagon tests of a specific wagon MYWAGON:
+```bash
+# Open a testing console in the container
+docker-compose exec -e RAILS_ENV=test rails bash
+# Change to the wagon directory
+cd ../hitobito_MYWAGON
+# Run all the specs
+rspec
+# Run specs from a single file
+rspec spec/models/person_spec.rb
 ```
 
 ### HTTP request debugging with pry
