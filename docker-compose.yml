@@ -47,7 +47,7 @@ services:
     - "1080:1080"
 
   cache:
-    image: memcached:1.5-alpine
+    image: memcached:1.6-alpine
     command: [ memcached, -l, '0.0.0.0', -p, '11211' ]
 
   sphinx:
