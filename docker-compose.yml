@@ -24,6 +24,7 @@ services:
     - seed:/seed
     - ./docker/home/rails:/home/developer
     - /tmp/.X11-unix:/tmp/.X11-unix
+    - ./Gemfile.lock:/usr/src/app/hitobito/Gemfile.lock
 
   worker:
     <<: *rails
@@ -89,6 +90,7 @@ services:
     - ./app/:/usr/src/app
     - hitobito_bundle:/opt/bundle
     - hitobito_yarn_cache:/home/developer/.cache/yarn
+    - ./Gemfile.lock:/usr/src/app/hitobito/Gemfile.lock
 
 volumes:
   db:
