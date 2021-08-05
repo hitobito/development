@@ -135,6 +135,8 @@ To run the wagon tests of a specific wagon MYWAGON:
 docker-compose exec -e RAILS_ENV=test rails bash
 # Change to the wagon directory
 cd ../hitobito_MYWAGON
+# Initialize the DB for the wagon tests
+bundle exec rails db:test:prepare
 # Run all the specs
 rspec
 # Run specs from a single file
