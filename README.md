@@ -148,7 +148,7 @@ rspec spec/models/person_spec.rb
 For debugging with pry during a HTTP request, you can attach to the running docker container:
 
 ```bash
-docker attach $(docker-compose ps | grep _rails_1 | cut -d ' ' -f 1)
+docker attach $(docker-compose ps -q rails)
 ```
 
 For detaching after debugging, you use CTRL+p followed by CTRL+q
