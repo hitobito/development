@@ -67,6 +67,8 @@ services:
     command:
     - --sort_buffer_size=2M
     env_file: ./docker/mysql.env
+    environment:
+      TZ: ${TIMEZONE}
     ports:
     - "33066:3306"
     volumes:
@@ -82,6 +84,7 @@ services:
     env_file: docker/rails.env
     environment:
       WEBPACKER_DEV_SERVER_HOST: webpack
+      TZ: ${TIMEZONE}
     user: "${UID:-1000}"
     command: /usr/src/app/hitobito/bin/webpack-dev-server
     ports:
