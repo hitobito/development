@@ -16,6 +16,7 @@ services:
     env_file: docker/rails.env
     environment:
       WEBPACKER_DEV_SERVER_HOST: webpack
+      TZ: ${TIMEZONE}
     ports:
     - "3000:3000"
     volumes:

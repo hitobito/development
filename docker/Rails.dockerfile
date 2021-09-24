@@ -5,6 +5,7 @@ USER root
 ENV RAILS_ENV=development
 ENV RAILS_DB_ADAPTER=mysql2
 ENV BUNDLE_PATH=/opt/bundle
+ENV TZ Europe/Zurich
 
 WORKDIR /usr/src/app/hitobito
 
@@ -19,6 +20,7 @@ RUN apt-get install nodejs yarnpkg -y && ln -s /usr/bin/yarnpkg /usr/bin/yarn
 RUN apt-get install python3-pip -y && pip3 install transifex-client
 RUN apt-get install direnv -y
 RUN apt-get install -y xvfb chromium chromium-driver
+RUN apt install -y tzdata
 
 RUN mkdir /opt/bundle && chmod 777 /opt/bundle
 RUN mkdir /seed && chmod 777 /seed
