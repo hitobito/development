@@ -16,7 +16,7 @@ COPY ./docker/waitfortcp /usr/local/bin
 
 RUN apt update
 RUN apt-get install nodejs yarnpkg -y && ln -s /usr/bin/yarnpkg /usr/bin/yarn
-RUN apt-get install python3-pip -y && pip install transifex-client
+RUN apt-get install python3-pip -y && pip3 install transifex-client
 RUN apt-get install direnv -y
 RUN apt-get install -y xvfb chromium chromium-driver
 
