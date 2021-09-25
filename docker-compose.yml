@@ -5,7 +5,7 @@ services:
       context: .
       dockerfile: ./docker/rails.dockerfile
     image: ghcr.io/hitobito/development/rails
-    user: "${UID:-1000}"
+    user: "${RAILS_UID:-1000}"
     tty: true
     stdin_open: true
     depends_on:
@@ -81,7 +81,7 @@ services:
     env_file: docker/rails.env
     environment:
       WEBPACKER_DEV_SERVER_HOST: webpack
-    user: "${UID:-1000}"
+    user: "${RAILS_UID:-1000}"
     command: /usr/src/app/hitobito/bin/webpack-dev-server
     ports:
     - "3035:3035"
