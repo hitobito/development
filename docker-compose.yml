@@ -31,6 +31,7 @@ services:
     ports: []
     environment:
       SKIP_RAILS_MIGRATIONS: 1
+      SKIP_SEEDS: 1
     depends_on:
     - rails
     - db
