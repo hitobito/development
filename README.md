@@ -72,6 +72,7 @@ docker volume create hitobito_yarn_cache
 To start the Hitobito application, run the following command in your shell:
 
 ```bash
+docker-compose pull
 docker-compose up -d
 ```
 
