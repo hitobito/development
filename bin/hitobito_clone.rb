@@ -1,4 +1,4 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 # frozen_string_literal: true
 
 require 'net/http'
@@ -8,15 +8,56 @@ require 'optparse'
 WAGON_DEPENDENCIES = { hitobito_pbs: 'hitobito_youth' }
 
 # ssh cloning as default
-options = {https_clone: false}
+options = { https_clone: false }
+
+# read hitobito repos from github
+url = URI.parse('https://api.github.com/users/hitobito/repos')
+raw_repo_data = Net::HTTP.get(url)
+repo_data = JSON.parse(raw_repo_data)
+
+# get repos of hitohito wagons
+repos_to_skip = %w[ose_ github.io.git$ docs.git$]
+repos = []
+repos_with_dependencies = []
+development_repo = {}
+core_repo = {}
+
+
+def clone_repo(repo, development_repo, core_repo)
+  shortened_repo_name = repo[:name].gsub('hitobito_', '')
+
+  # clone development repo
+  system "cd hitobito && git clone #{development_repo[:url]} #{shortened_repo_name}" unless repo_path_exists?(shortened_repo_name)
+
+  # clone core repo
+  system "cd hitobito/#{shortened_repo_name}/app && git clone #{core_repo[:url]}" unless repo_path_exists?(shortened_repo_name, core_repo[:name])
+
+  # clone wagon
+  system "cd hitobito/#{shortened_repo_name}/app && git clone #{repo[:url]}" unless repo_path_exists?(shortened_repo_name, repo[:name])
+end
+
+def clone_repo_with_dependency(repo_with_dependency, development_repo, core_repo)
+  repo = repo_with_dependency[:repo]
+  dependant_repo = repo_with_dependency[:dependant]
+
+  clone_repo repo, development_repo, core_repo
+
+  shortened_repo_name = repo[:name].gsub('hitobito_', '')
+
+  # clone dependant
+  system "cd hitobito/#{shortened_repo_name}/app && git clone #{dependant_repo[:url]}" unless repo_path_exists?(shortened_repo_name, dependant_repo[:name])
+end
+
+def repo_path_exists?(name, wagon_name = nil)
+  dir = "./hitobito/#{name}"
+  dir = dir + "/app/#{wagon_name}" unless wagon_name.nil?
+  puts dir
+  Dir.exist?(dir)
+end
 
 # define usable options
 OptionParser.new do |opts|
   opts.banner = "Usage: hitobito_clone.rb [options]"
-
-  opts.on("-a", "--all", "Clone every repo") do |a|
-    options[:all] = a
-  end
 
   opts.on("-t", "--https", "Clone repos via https") do |t|
     options[:https_clone] = t
@@ -32,17 +73,6 @@ OptionParser.new do |opts|
   end
 
 end.parse!
-
-# read hitobito repos from github
-url = URI.parse('https://api.github.com/users/hitobito/repos')
-raw_repo_data = Net::HTTP.get(url)
-repo_data = JSON.parse(raw_repo_data)
-
-# get repos of hitohito wagons
-repos_to_skip = %w[ose_ github.io.git$ docs.git$]
-repos = []
-development_repo = {}
-core_repo = {}
 
 repo_data.each do |repo|
   # just take name, clone_url and ssh_url
@@ -70,7 +100,6 @@ repo_data.each do |repo|
 end
 
 # filter repos with dependencies
-repos_with_dependencies = []
 WAGON_DEPENDENCIES.each do |repo_name, dependant_repo_name|
   filtered_repos = {}
   repos.delete_if do |repo|
@@ -93,49 +122,23 @@ WAGON_DEPENDENCIES.each do |repo_name, dependant_repo_name|
   repos_with_dependencies.push({ repo: filtered_repos[repo_name.to_s], dependant: filtered_repos[dependant_repo_name]})
 end
 
-# check for repo option to be present
-if options[:all].nil? && options[:repo].empty?
-  puts 'No repository specified!'
-  exit 1
-end
-
-# filter repos according to given options
+# select repos according to given options
 unless options[:repo].nil?
   repos = repos.select { |repo| repo[:name] == options[:repo] }
   repos_with_dependencies = repos_with_dependencies.select { |repo| repo[:repo][:name] == options[:repo] || repo[:dependant][:name] == options[:repo] }
 end
 
+# give the user some nice information about what's going to happen
 puts options[:repo].nil? ? 'Now cloning every hitobito dev repository 🚀' : "Now cloning #{options[:repo]} 🚀"
 
+# create the hitobito directory if it does not exist
 system "mkdir hitobito" unless Dir.exist?("./hitobito")
 
 # cloning process
 repos.each do |repo|
-  # clone development repo
-  system "cd hitobito && git clone #{development_repo[:url]} #{repo[:name]}" unless Dir.exist?("./hitobito/#{repo[:name]}")
-
-  # clone core repo
-  system "cd hitobito/#{repo[:name]}/app && git clone #{core_repo[:url]}" unless Dir.exist?("./hitobito/#{repo[:name]}/app/#{core_repo[:name]}")
-
-  # clone wagon
-  system "cd hitobito/#{repo[:name]}/app && git clone #{repo[:url]}" unless Dir.exist?("./hitobito/#{repo[:name]}/app/#{repo[:name]}")
+  clone_repo repo, development_repo, core_repo
 end
 
 repos_with_dependencies.each do |repo_with_dependency|
-  repo_name = repo_with_dependency[:repo][:name]
-  repo_url = repo_with_dependency[:repo][:url]
-  dependant_url = repo_with_dependency[:dependant][:url]
-  dependant_name = repo_with_dependency[:dependant][:name]
-
-  # clone development repo
-  system "cd hitobito && git clone #{development_repo[:url]} #{repo_name}" unless Dir.exist?("./hitobito/#{repo_name}")
-
-  # clone core repo
-  system "cd hitobito/#{repo_name}/app && git clone #{core_repo[:url]}" unless Dir.exist?("./hitobito/#{repo_name}/app/#{core_repo[:name]}")
-
-  # clone main repo
-  system "cd hitobito/#{repo_name}/app && git clone #{repo_url}" unless Dir.exist?("./hitobito/#{repo_name}/app/#{repo_name}")
-
-  # clone dependant
-  system "cd hitobito/#{repo_name}/app && git clone #{dependant_url}" unless Dir.exist?("./hitobito/#{repo_name}/app/#{dependant_name}")
+  clone_repo_with_dependency repo_with_dependency, development_repo, core_repo
 end
