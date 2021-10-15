@@ -24,7 +24,7 @@ You can straight go ahead and clone your hitobito dev setup by taking full advan
 Make sure you execute the script in the folder you want to have your hitobito setup.
 
 ```bash
-wget -qO- https://raw.githubusercontent.com/hitobito/development/master/bin/hitobito_clone.rb | bash
+wget -O - https://raw.githubusercontent.com/hitobito/development/master/bin/hitobito_clone.rb | ruby
 ```
 
 &ast;Note: by adding the -h option, you get some good information about what the script is able to do further.
