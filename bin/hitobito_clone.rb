@@ -7,6 +7,7 @@ require 'optparse'
 
 WAGON_DEPENDENCIES = {
   hitobito_pbs: 'hitobito_youth',
+  hitobito_jubla: 'hitobito_youth',
   hitobito_cevi: 'hitobito_youth',
   hitobito_pro_natura: 'hitobito_youth'
 }
