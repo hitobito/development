@@ -17,18 +17,6 @@ Additionally you need **git** to be installed and configured.
  
  🐧 This manual focuses on Linux/Ubuntu. Hitobito development also runs on other plattforms with some adjustments. 
 
-## Quick start
-
-You can straight go ahead and clone your hitobito dev setup by taking full advantage of the `hitobito_clone` script located within `bin/hitobito_clone.rb`
-
-Make sure you execute the script in the folder you want to have your hitobito setup.
-
-```bash
-wget -O - https://raw.githubusercontent.com/hitobito/development/master/bin/hitobito_clone.rb | ruby
-```
-
-&ast;Note: by adding the -h option, you get some good information about what the script is able to do further.
-
 ## Preparation
 
 First declare a instance name: (e.g. generic, pbs)
@@ -186,3 +174,28 @@ When the images of this project change, execute the following command to update 
 ```bash
 docker-compose build --no-cache
 ```
+
+### Cloning wagons quickly  
+
+:race_car: You go ahead and clone your hitobito dev setup by taking full advantage of the `hitobito_clone` script located within `bin/hitobito_clone.rb`
+
+Make sure you execute the script in the folder you want to have your hitobito setup. Make sure you have the following things preinstalled on your device:
+
+```text
+# For script exec
+- Ruby
+# To retrieve the script
+- wget
+# Local development with docker
+- docker + docker-compose
+# Version control
+- git
+```
+
+Then execute the following, which clones all hitobito repositories within a new or existing hitobito directory.
+
+```bash
+wget -O - https://raw.githubusercontent.com/hitobito/development/master/bin/hitobito_clone.rb | ruby
+```
+
+&ast;Note: by adding the -h option, you get some good information about what the script is able to do further.

@@ -5,7 +5,11 @@ require 'net/http'
 require 'json'
 require 'optparse'
 
-WAGON_DEPENDENCIES = { hitobito_pbs: 'hitobito_youth' }
+WAGON_DEPENDENCIES = {
+  hitobito_pbs: 'hitobito_youth',
+  hitobito_cevi: 'hitobito_youth',
+  hitobito_pro_natura: 'hitobito_youth'
+}
 
 # ssh cloning as default
 options = { https_clone: false }
@@ -15,7 +19,7 @@ url = URI.parse('https://api.github.com/users/hitobito/repos')
 raw_repo_data = Net::HTTP.get(url)
 repo_data = JSON.parse(raw_repo_data)
 
-# get repos of hitohito wagons
+# get repos of hitobito wagons
 repos_to_skip = %w[ose_ github.io.git$ docs.git$]
 repos = []
 repos_with_dependencies = []
@@ -24,16 +28,14 @@ core_repo = {}
 
 
 def clone_repo(repo, development_repo, core_repo)
-  shortened_repo_name = repo[:name].gsub('hitobito_', '')
-
   # clone development repo
-  system "cd hitobito && git clone #{development_repo[:url]} #{shortened_repo_name}" unless repo_path_exists?(shortened_repo_name)
+  system "cd hitobito && git clone #{development_repo[:url]} #{shortened_repo_name(repo)}" unless repo_path_exists?(shortened_repo_name(repo))
 
   # clone core repo
-  system "cd hitobito/#{shortened_repo_name}/app && git clone #{core_repo[:url]}" unless repo_path_exists?(shortened_repo_name, core_repo[:name])
+  system "cd hitobito/#{shortened_repo_name(repo)}/app && git clone #{core_repo[:url]}" unless repo_path_exists?(shortened_repo_name(repo), core_repo[:name])
 
   # clone wagon
-  system "cd hitobito/#{shortened_repo_name}/app && git clone #{repo[:url]}" unless repo_path_exists?(shortened_repo_name, repo[:name])
+  system "cd hitobito/#{shortened_repo_name(repo)}/app && git clone #{repo[:url]}" unless repo_path_exists?(shortened_repo_name(repo), repo[:name])
 end
 
 def clone_repo_with_dependency(repo_with_dependency, development_repo, core_repo)
@@ -42,10 +44,12 @@ def clone_repo_with_dependency(repo_with_dependency, development_repo, core_repo
 
   clone_repo repo, development_repo, core_repo
 
-  shortened_repo_name = repo[:name].gsub('hitobito_', '')
-
   # clone dependant
-  system "cd hitobito/#{shortened_repo_name}/app && git clone #{dependant_repo[:url]}" unless repo_path_exists?(shortened_repo_name, dependant_repo[:name])
+  system "cd hitobito/#{shortened_repo_name(repo)}/app && git clone #{dependant_repo[:url]}" unless repo_path_exists?(shortened_repo_name(repo), dependant_repo[:name])
+end
+
+def shortened_repo_name(repo)
+  repo[:name].gsub('hitobito_', '')
 end
 
 def repo_path_exists?(name, wagon_name = nil)
@@ -116,10 +120,15 @@ WAGON_DEPENDENCIES.each do |repo_name, dependant_repo_name|
     end
 
     # return value for delete if
-    name == dependant_repo_name || name == repo_name.to_s
+    name == repo_name.to_s
   end
 
   repos_with_dependencies.push({ repo: filtered_repos[repo_name.to_s], dependant: filtered_repos[dependant_repo_name]})
+end
+
+# remove dependants from non-dependants
+repos.delete_if do |repo|
+  WAGON_DEPENDENCIES.any? {|wagon| wagon.last == repo[:name]}
 end
 
 # select repos according to given options
