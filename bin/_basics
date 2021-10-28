@@ -1,0 +1,14 @@
+set -euo pipefail
+
+cd $(dirname $0)/..
+
+repos() {
+  echo "app/hitobito*"
+}
+
+bold_seq=$(tput bold)
+normal_seq=$(tput sgr0)
+
+bold() {
+  echo "${bold_seq}$1${normal_seq}"
+}

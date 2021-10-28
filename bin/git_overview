@@ -1,0 +1,33 @@
+#!/bin/bash
+
+# Summarizes the state of the core and wagon repositories
+
+source $(dirname $0)/_basics
+
+main() {
+  for repo in $(repos); do
+    git_summary $repo
+  done
+}
+
+pretty_name() {
+  name=$1
+  echo $name | sed 's/hitobito\_/Wagon /; s/hitobito/Core/'
+}
+
+git_summary() {
+  repo=$1
+
+  cd $repo
+
+  name=$(pretty_name $(basename $repo))
+
+  branch=$(git rev-parse --abbrev-ref HEAD)
+  echo "$(bold "$name") (Branch $branch, $repo)"
+  git status --short
+  echo
+
+  cd - > /dev/null
+}
+
+main
