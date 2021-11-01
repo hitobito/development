@@ -25,6 +25,22 @@ services:
     - ./docker/home/rails:/home/developer
     - /tmp/.X11-unix:/tmp/.X11-unix
 
+  # `exec` into this to execute the tests of the core
+  rails_test_core:
+    <<: *rails
+    command: [ 'sleep', 'infinity' ]
+    ports: []
+    environment:
+      WAGONS: ''
+      RAILS_ENV: test
+      RAILS_TEST_DB_NAME: "hitobito_test_core"
+      WEBPACKER_DEV_SERVER_HOST: null
+      RAILS_SPHINX_HOST: null
+      SKIP_SEEDS: 1
+      SKIP_BUNDLE_INSTALL: 1
+    depends_on:
+    - db
+
   worker:
     <<: *rails
     command: [ 'rails', 'jobs:work' ]
@@ -32,6 +48,7 @@ services:
     environment:
       SKIP_RAILS_MIGRATIONS: 1
       SKIP_SEEDS: 1
+      SKIP_BUNDLE_INSTALL: 1
     depends_on:
     - rails
     - db
@@ -84,6 +101,7 @@ services:
     env_file: docker/rails.env
     environment:
       WEBPACKER_DEV_SERVER_HOST: webpack
+      SKIP_BUNDLE_INSTALL: 1
     user: "${RAILS_UID:-1000}"
     command: /usr/src/app/hitobito/bin/webpack-dev-server
     ports:

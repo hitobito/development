@@ -4,16 +4,15 @@ set -e
 
 rm -f tmp/pids/server.pid
 
-if [ ! -f "/usr/src/app/hitobito/Wagonfile" ]; then
-  echo "⚙ Creating Wagonfile"
-  cp /usr/src/app/Wagonfile.dev /usr/src/app/hitobito/Wagonfile
-  echo "✅ Created Wagonfile"
-else
-  echo "↪️  Leaving existing Wagonfile as it is"
-fi
+while [ ! -f "/usr/src/app/hitobito/Wagonfile" ]; do
+    echo "Waiting for Wagonfile"
+    sleep 1
+done
 
-echo "Running bundle install"
-bundle install
+while ! bundle check >/dev/null 2>&1; do
+    echo -n "."
+    sleep 1
+done
 
 echo "Running yarn install"
 bundle exec rails webpacker:yarn_install

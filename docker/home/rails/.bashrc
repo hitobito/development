@@ -1,11 +1,12 @@
 alias rspec="bundle exec rspec"
 alias ls='ls -hF'
 
-parse_git_branch() {
- git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/'
+shortened_git_branch() {
+    git rev-parse --abbrev-ref HEAD 2> /dev/null | \
+        awk -v len=15 '{ if (length($0) > len) print "..." substr($0, length($0)-len+3, len); else print; }'
 }
 
-PS1="🚃($RAILS_ENV)🕎$(parse_git_branch)\[\033[00m\]\$: "
+PS1="🚃 \$RAILS_ENV 🕎 \$(shortened_git_branch) 📁 \w \$ "
 
 if [ -f "/usr/src/app/hitobito/.envrc" ]; then
   direnv allow /usr/src/app/hitobito/.envrc

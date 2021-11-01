@@ -1,41 +1,56 @@
-#!/bin/bash
+#!/bin/bash -i
+#
+# -i is required so .bashrc is read
 
 set -e
 
-rm -f tmp/pids/server.pid
+initialize() {
+    cd /usr/src/app/hitobito
 
-if [ ! -f "/usr/src/app/hitobito/Wagonfile" ]; then
-  echo "⚙ Creating Wagonfile"
-  cp /usr/src/app/Wagonfile.dev /usr/src/app/hitobito/Wagonfile
-  echo "✅ Created Wagonfile"
-else
-  echo "↪️  Leaving existing Wagonfile as it is"
+    rm -f tmp/pids/server.pid
+
+    if [ -z "$SKIP_WAGONFILE" ]; then
+        echo "⚙ Activating Wagonfile.development"
+        cp /usr/src/app/hitobito/Wagonfile{.development,}
+    fi
+
+    if [ -z "$SKIP_BUNDLE_INSTALL" ]; then
+        echo "Installing gems if necessary"
+        bundle check >/dev/null 2>&1 || bundle install
+    else
+        echo "Waiting for gems to be installed"
+        while ! bundle check >/dev/null 2>&1; do
+            echo -n "."
+            sleep 1
+        done
+    fi
+
+    echo "⚙️  Testing DB connection"
+    timeout 300s waitfortcp "${RAILS_DB_HOST-db}" "${RAILS_DB_PORT-3306}"
+    echo "✅ DB server is ready"
+
+    if [ -z "$SKIP_RAILS_MIGRATIONS" ]; then
+        echo "⚙️  Performing migrations"
+        bundle exec rails db:migrate wagon:migrate
+        echo "✅ Migrations done"
+    fi
+
+    if [ -z "$SKIP_SEEDS" ]; then
+        if [ ! -f /seed/done ]; then
+            echo "⚙️  Seeding DB"
+            bundle exec rails db:seed wagon:seed && date > /seed/done
+            echo "✅ Seeding done"
+        else
+            echo "↪️  Skipping seeding because already done on $(cat /seed/done)"
+        fi
+    fi
+
+    cd - >/dev/null
+}
+
+if [ -z "$SKIP_INIT" ]; then
+    initialize
+    echo "⚙️  Executing: $@"
 fi
 
-echo "Running bundle install"
-bundle install
-
-echo "⚙️  Testing DB connection"
-timeout 300s waitfortcp "${RAILS_DB_HOST-db}" "${RAILS_DB_PORT-3306}"
-echo "✅ DB server is ready"
-
-if [ -z "$SKIP_RAILS_MIGRATIONS" ]; then
-  echo "⚙️  Performing migrations"
-  bundle exec rails db:migrate wagon:migrate
-  echo "✅ Migrations done"
-fi
-
-if [ -z "$SKIP_SEEDS" ]; then
-  if [ ! -f /seed/done ]; then
-    echo "⚙️  Seeding DB"
-    bundle exec rails db:seed wagon:seed && date > /seed/done
-    echo "✅ Seeding done"
-  else
-    echo "↪️  Skipping seeding because already done on $(cat /seed/done)"
-  fi
-fi
-
-echo "➡️ Handing control over to '$*''"
-
-echo "⚙️  Executing: $@"
-exec bundle exec "$@"
+exec "$@"

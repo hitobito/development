@@ -1,6 +1,0 @@
-group :development do
-  # Load all wagons found in ../hitobito_*
-  Dir[File.expand_path('../hitobito_*/*.gemspec', __dir__)].each do |spec|
-    gem File.basename(spec, '.gemspec'), path: File.expand_path('..', spec)
-  end
-end
