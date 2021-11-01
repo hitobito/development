@@ -10,17 +10,12 @@ main() {
   done
 }
 
-pretty_name() {
-  name=$1
-  echo $name | sed 's/hitobito\_/Wagon /; s/hitobito/Core/'
-}
-
 git_summary() {
   repo=$1
 
   cd $repo
 
-  name=$(pretty_name $(basename $repo))
+  name=$(pretty_repo_name $(basename $repo))
 
   branch=$(git rev-parse --abbrev-ref HEAD)
   echo "$(bold "$name") (Branch $branch, $repo)"

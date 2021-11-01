@@ -12,3 +12,8 @@ normal_seq=$(tput sgr0)
 bold() {
   echo "${bold_seq}$1${normal_seq}"
 }
+
+pretty_repo_name() {
+    name=$1
+    echo $name | sed 's/hitobito\_/Wagon /; s/hitobito/Core/'
+}

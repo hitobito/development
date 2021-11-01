@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+
+# Changes into every repo directory in app/
+# and executes the given command.
+#
+# E.g.
+#   bin/all_repos git checkout -b feature/my-feature
+
+source $(dirname $0)/_basics
+
+if (( $# == 0 )); then
+    echo "Usage: all_repos COMMAND"
+    exit 1
+fi
+
+command="$@"
+
+main() {
+    for repo in $(repos); do
+        cd $repo
+
+        name=$(pretty_repo_name $(basename $repo))
+        echo "In $(bold "$name"):"
+
+        set +e
+        $command
+        set -e
+
+        echo
+
+        cd - > /dev/null
+    done
+}
+
+main
