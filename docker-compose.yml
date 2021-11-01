@@ -2,8 +2,8 @@ version: '3.4'
 services:
   rails: &rails
     build:
-      context: .
-      dockerfile: ./docker/rails.dockerfile
+      context: ./docker
+      dockerfile: rails.dockerfile
     image: ghcr.io/hitobito/development/rails
     user: "${RAILS_UID:-1000}"
     tty: true
@@ -42,8 +42,8 @@ services:
   mailcatcher:
     image: ghcr.io/hitobito/development/mailcatcher
     build:
-      context: .
-      dockerfile: ./docker/mailcatcher.dockerfile
+      context: ./docker
+      dockerfile: mailcatcher.dockerfile
     ports:
     - "1080:1080"
 
@@ -77,8 +77,8 @@ services:
 
   webpack:
     build:
-      context: .
-      dockerfile: ./docker/rails.dockerfile
+      context: ./docker
+      dockerfile: rails.dockerfile
     image: ghcr.io/hitobito/development/rails
     entrypoint: [ "webpack-entrypoint" ]
     env_file: docker/rails.env
