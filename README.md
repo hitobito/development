@@ -51,7 +51,6 @@ total 16K
 drwxrwxr-x  4 ps ps 4.0K Jun 25 11:20 .
 drwxrwxr-x 17 ps ps 4.0K Jun 25 10:00 ..
 -rw-r--r-x  1 ps ps    2 Jun 25 10:00 .gitignore
--rw-r--r-x  1 ps ps  226 Jun 25 10:00 Wagonfile.dev
 drwxrwxr-x 18 ps ps 4.0K Jun 25 07:29 hitobito
 drwxrwxr-x 11 ps ps 4.0K Jun 24 10:53 hitobito_generic
 ```
@@ -119,28 +118,33 @@ docker-compose exec rails bash
 
 ### Running tests
 
-To run the core tests:
+#### Open a test shell
+
+Either, to run tests for the core:
+
 ```bash
-# Open a testing console in the container
-docker-compose exec -e RAILS_ENV=test rails bash
-# Run all the specs
-rspec
-# Run specs from a single file
-rspec spec/models/person_spec.rb
+bin/test_env_core
 ```
 
+or, to run tests for a wagon:
 
-To run the wagon tests of a specific wagon MYWAGON:
+
 ```bash
-# Open a testing console in the container
-docker-compose exec -e RAILS_ENV=test rails bash
-# Change to the wagon directory
-cd ../hitobito_MYWAGON
-# Initialize the DB for the wagon tests
-bundle exec rails db:test:prepare
-# Run all the specs
+export WAGON=MYWAGON # e.g. WAGON=pbs
+bin/test_env_wagon bundle exec rspec
+```
+
+#### Run desired tests
+
+Either, to run all tests
+
+```bash
 rspec
-# Run specs from a single file
+```
+
+or, to run specific tests:
+
+```bash
 rspec spec/models/person_spec.rb
 ```
 

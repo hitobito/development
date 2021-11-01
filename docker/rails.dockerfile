@@ -1,4 +1,6 @@
-FROM ruby:2.6
+# Keep ruby version in sync with the Hitobito S2I image.
+# Some tests depend on the ruby version.
+FROM ruby:2.5
 
 USER root
 
@@ -10,15 +12,19 @@ WORKDIR /usr/src/app/hitobito
 
 RUN bash -c 'gem install bundler -v 1.17.3'
 
-COPY ./docker/rails-entrypoint /usr/local/bin
-COPY ./docker/webpack-entrypoint /usr/local/bin
-COPY ./docker/waitfortcp /usr/local/bin
+RUN \
+  apt update && \
+  apt install -y \
+    nodejs yarnpkg \
+    python3-pip direnv \
+    xvfb chromium chromium-driver \
+    less &&  \
+  pip3 install transifex-client && \
+  ln -s /usr/bin/yarnpkg /usr/bin/yarn
 
-RUN apt update
-RUN apt-get install nodejs yarnpkg -y && ln -s /usr/bin/yarnpkg /usr/bin/yarn
-RUN apt-get install python3-pip -y && pip3 install transifex-client
-RUN apt-get install direnv -y
-RUN apt-get install -y xvfb chromium chromium-driver
+COPY ./rails-entrypoint /usr/local/bin
+COPY ./webpack-entrypoint /usr/local/bin
+COPY ./waitfortcp /usr/local/bin
 
 RUN mkdir /opt/bundle && chmod 777 /opt/bundle
 RUN mkdir /seed && chmod 777 /seed

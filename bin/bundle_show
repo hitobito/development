@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+# Use this like `bundle show` to have a look at or modify the gem source code using your local IDE.
+
+source $(dirname $0)/_basics
+
+if (( $# != 1 )); then
+    echo "Usage: bundle_show GEM_NAME"
+    exit 1
+fi
+
+gem=$1
+
+volume_dir=$(docker volume inspect hitobito_bundle | jq -r '.[].Mountpoint')
+gem_path=$(docker-compose exec rails bundle show $gem)
+
+echo $gem_path | sed "s#/opt/bundle#$volume_dir#"

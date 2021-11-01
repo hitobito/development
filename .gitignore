@@ -1,3 +1,5 @@
 .idea
 .bash_history
 .local
+.yarnrc
+/dumps
