@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+# Removes traces of any wagons from Gemfile.lock
+
+source $(dirname $0)/_basics
+
+docker-compose run -e SKIP_INIT=1 -e WAGONS='' rails bundle install
