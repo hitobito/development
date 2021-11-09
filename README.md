@@ -150,17 +150,15 @@ rspec spec/models/person_spec.rb
 
 ### HTTP request debugging with pry
 
-For debugging with pry during a HTTP request, you can attach to the running docker container:
+For debugging with pry during a HTTP request, you can attach to the running docker container (detach with Ctrl+c):
 
 ```bash
-docker attach $(docker-compose ps -q rails)
+bin/attach_to_rails
 ```
-
-For detaching after debugging, you use CTRL+p followed by CTRL+q
 
 ### Access Development Database
 ```bash
-docker-compose exec db mysql hitobito_development -uroot -phitobito
+bin/database_console
 ```
 ### Shutdown
 
