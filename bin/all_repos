@@ -37,7 +37,7 @@ run_command() {
         fi
 
         set +e
-        $command
+        "$@"
         set -e
 
         if (( $quiet == 0 )); then
@@ -51,6 +51,5 @@ run_command() {
 if (( $# == 0 )); then
     list_repos
 else
-    command="$@"
-    run_command
+    run_command "$@"
 fi
