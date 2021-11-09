@@ -8,7 +8,7 @@ source $(dirname $0)/_basics
 if (( $# != 1 )); then
     echo "Usage: update_copyright GIT_DIFF_RANGE";
     echo ""
-    echo "E.g, to fix copright in files changed from working copy to master"
+    echo "E.g, to fix copyright in files changed from working copy to master"
     echo "  bin/update_copyright ..master"
     exit 1
 fi
