@@ -16,12 +16,12 @@ fi
 git_range="$1"
 
 find_files() {
-    range=$1
+    range="$1"
     for repo in $(repos); do
         cd $repo
-        files=$(git diff --name-only ..master)
+        files=$(git diff --name-only "$range")
         if [ ! -z "$files" ]; then
-            git diff --name-only ..master | xargs realpath
+            git diff --name-only "$range" | xargs realpath
         fi
         cd - >/dev/null
     done
