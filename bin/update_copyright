@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+
+# Finds changed files and fixes copyright strings.
+#
+
+source $(dirname $0)/_basics
+
+if (( $# != 1 )); then
+    echo "Usage: update_copyright GIT_DIFF_RANGE";
+    echo ""
+    echo "E.g, to fix copright in files changed from working copy to master"
+    echo "  bin/update_copyright ..master"
+    exit 1
+fi
+
+git_range="$1"
+
+find_files() {
+    range=$1
+    for repo in $(repos); do
+        cd $repo
+        files=$(git diff --name-only ..master)
+        if [ ! -z "$files" ]; then
+            git diff --name-only ..master | xargs realpath
+        fi
+        cd - >/dev/null
+    done
+}
+
+update_copyright() {
+    files="$@"
+
+    year=$(date +%Y)
+    # Copyright (c) 2018,
+    # Copyright (c) 2018-2021,
+    sed -i -r "
+      s/Copyright \(c\) (([[:digit:]]{4})(-[[:digit:]]{4})?),/Copyright \(c\) \2-$year,/g
+      s/Copyright \(c\) $year-$year,/Copyright \(c\) $year,/g
+    " $files
+}
+
+main() {
+    update_copyright $(find_files $git_range)
+    bin/git_overview
+}
+
+main
