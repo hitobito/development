@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+# Pulls all repositories.
+
+
+source $(dirname $0)/_basics
+
+if (( $# != 0 )); then
+    echo "Usage: git_pull"
+    exit 1
+fi
+
+git pull
+
+bin/all_repos git pull
