@@ -18,6 +18,7 @@ RUN \
     nodejs yarnpkg \
     python3-pip direnv \
     xvfb chromium chromium-driver \
+    default-mysql-client pv \
     less &&  \
   pip3 install transifex-client && \
   ln -s /usr/bin/yarnpkg /usr/bin/yarn
