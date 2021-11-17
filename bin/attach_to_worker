@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+# Use this to attach your terminal to the running dj worker
+#
+# This way you can use irb to interactively debug.
+
+source $(dirname $0)/_basics
+
+project=$(basename $(pwd))
+
+container() {
+    docker ps | grep "${project}_worker_1"
+}
+
+if ! container >/dev/null; then
+    echo "Worker is not running. Try 'docker-compose up' to start or 'docker-compose ps' to debug."
+    exit 1
+fi
+
+docker attach $(container | awk '{ print $1 }')\
+   \
+  --detach-keys "ctrl-c"
