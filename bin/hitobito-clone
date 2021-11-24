@@ -134,7 +134,13 @@ end
 
 # select repos according to given options
 unless options[:repo].nil?
+  all_repo_names = repos.collect { |r| r[:name] }
   repos = repos.select { |repo| repo[:name] == options[:repo] }
+  if repos.empty?
+    puts "No hitobito repo with name '#{options[:repo]}' available"
+    puts "Available repos are: #{all_repo_names.join(', ')}"
+    abort
+  end
   repos_with_dependencies = repos_with_dependencies.select { |repo| repo[:repo][:name] == options[:repo] || repo[:dependant][:name] == options[:repo] }
 end
 
