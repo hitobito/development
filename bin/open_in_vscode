@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+# Correctly opens the dev repo in VS Code.
+#
+# The contained wagon/core repos have to be opened before 
+# the dev repo or search accross all repos won't work.
+# https://github.com/microsoft/vscode/issues/37947
+
+source $(dirname $0)/_basics
+
+code -g $(repos) .
