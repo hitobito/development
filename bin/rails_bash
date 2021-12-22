@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+# Changes into every repo directory in app/
+# and executes the given command.
+#
+# If given no arguments, lists paths to all repositories.
+#
+# E.g.
+#   bin/all_repos git checkout -b feature/my-feature
+
+source $(dirname $0)/_basics
+
+docker-compose run \
+  -e SKIP_INIT=1 \
+  rails \
+  bash
