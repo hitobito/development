@@ -69,6 +69,11 @@ services:
     image: memcached:1.6-alpine
     command: [ memcached, -l, '0.0.0.0', -p, '11211' ]
 
+  redis:
+    image: redis:6.2
+    ports:
+      - "6379:6379"
+
   sphinx:
     image: macbre/sphinxsearch:3.1.1
     command: sphinx-start
