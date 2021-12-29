@@ -16,13 +16,13 @@ RUN \
   curl -sL https://deb.nodesource.com/setup_14.x | bash - && \
   apt update && \
   apt install -y \
-    nodejs yarnpkg \
+    nodejs \
     python3-pip direnv \
     xvfb chromium chromium-driver \
     default-mysql-client pv \
     less &&  \
   pip3 install transifex-client && \
-  ln -s /usr/bin/yarnpkg /usr/bin/yarn
+  npm install -g yarn
 
 COPY ./rails-entrypoint /usr/local/bin
 COPY ./webpack-entrypoint /usr/local/bin
