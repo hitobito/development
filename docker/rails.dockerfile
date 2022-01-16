@@ -1,6 +1,6 @@
 # Keep ruby version in sync with the Hitobito S2I image.
 # Some tests depend on the ruby version.
-FROM ruby:2.5
+FROM ruby:2.7
 
 USER root
 
@@ -10,7 +10,7 @@ ENV BUNDLE_PATH=/opt/bundle
 
 WORKDIR /usr/src/app/hitobito
 
-RUN bash -c 'gem install bundler -v 1.17.3'
+RUN bash -c 'gem install bundler -v 2.1.4'
 
 RUN \
   curl -sL https://deb.nodesource.com/setup_14.x | bash - && \
