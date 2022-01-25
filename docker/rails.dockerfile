@@ -10,8 +10,6 @@ ENV BUNDLE_PATH=/opt/bundle
 
 WORKDIR /usr/src/app/hitobito
 
-RUN bash -c 'gem install bundler -v 2.1.4'
-
 RUN \
   curl -sL https://deb.nodesource.com/setup_14.x | bash - && \
   apt update && \
@@ -23,6 +21,8 @@ RUN \
     less &&  \
   pip3 install transifex-client && \
   npm install -g yarn
+
+RUN bash -c 'gem install bundler -v 2.1.4'
 
 COPY ./rails-entrypoint /usr/local/bin
 COPY ./webpack-entrypoint /usr/local/bin
