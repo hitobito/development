@@ -146,6 +146,9 @@ or, to run specific tests:
 
 ```bash
 rspec spec/models/person_spec.rb
+
+# To run a capybara feature spec, which runs inside a real browser, pass the following flag:
+rspec --tag type:feature spec/features/person/person_tags_spec.rb
 ```
 
 ### HTTP request debugging with pry
