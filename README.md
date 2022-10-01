@@ -243,7 +243,7 @@ Return to the Ubuntu terminal and confirm the installation.
 ```terminal
 docker --version
 ```
-Verion and build informations should appear. That's it, terminate Ubuntu.
+Version and build informations should appear. That's it, terminate Ubuntu.
 ```terminal
 exit
 ```
@@ -263,12 +263,12 @@ Search for and install the following extensions:
 - Remote - WSL (Microsoft)
 - Dev Containers (Microsoft)
 - Docker (Microsoft)
-You will find the _Extensions_ menu on the left.
+
+:bulb: You will find the _Extensions_ menu on the left.
 
 Start a remote Ubuntu session by clicking on the buttom left corner which should be highlighted in green, and select _New WSL window_.
 
 A new VSCode instance opens with remote Ubuntu enabled.
-
 Confirm the buttom left corner highlighted in green and indicating the Ubuntu session.
 
 Start the terminal within VSCode.
