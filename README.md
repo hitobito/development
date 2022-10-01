@@ -16,7 +16,7 @@ usermod -a -G docker $USER
 Additionally you need **git** to be installed and configured.
  
  🐧 This manual focuses on Linux/Ubuntu. Hitobito development also runs on other plattforms with some adjustments. 
- Follow the prerequisits in section [Windows preparation][windows_preparation] to set up a Windows platform for Hitobito development, before continuing below.
+ Follow the prerequisits in section _[Windows preparation][windows_preparation]_ to set up a Windows platform for Hitobito development, before continuing below.
 
 [windows_preparation]: #windows-preparation
 
@@ -210,7 +210,7 @@ wget -O - https://raw.githubusercontent.com/hitobito/development/master/bin/hito
 
 
 ## Windows preparation
-The suggested approach for Hitobito development on Windows uses VSCode. VSCode provides the required extensions for integration of Docker and WSL 2. The next steps will prepare Windows for WSL 2, Docker and VSCode.
+The suggested approach for Hitobito development on Windows uses VSCode. VSCode provides extensions for integration of Docker and WSL 2. The next steps will prepare Windows for WSL 2, Docker and VSCode.
 
 ### WSL 2
 
