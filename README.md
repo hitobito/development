@@ -218,14 +218,15 @@ Install WSL 2 with Ubuntu using PowerShell.
 ```bash
 wsl --install
 ```
-Conider a look at _[Install Linux on Windows with WSL][wsl_install]_ for troubleshooting.
+Consider a look at _[Install Linux on Windows with WSL][wsl_install]_ for troubleshooting.
 
 Open _Ubuntu on Windows_ using the Start menu.
-A remote terminal opens.
+An Ubuntu terminal opens.
 You will be prompted to specify user name and password. Update and upgrade packages.
 ```terminal
 sudo apt update && sudo apt upgrade
 ```
+:bulb: Don't close the Ubuntu terminal yet.
 
 [wsl_install]: https://learn.microsoft.com/en-us/windows/wsl/install
 
@@ -233,6 +234,7 @@ sudo apt update && sudo apt upgrade
 
 Download and install [Docker Desktop][docker_desktop].
 The installation will promt you to enable WSL 2.
+
 Open _Docker Desktop_ using the Start menu. 
 Select Settings > Generals and enable the _Use WSL 2 based engine_.
 
@@ -253,13 +255,22 @@ See _[Get started with Docker remote containers on WSL 2][docker_install]_ for a
 ### VSCode
 
 Download and install [VSCode][vs_code].
+
 Open _VSCode_ using the Start menu.
-Install the Remote - WSL extention, the Dev Containers extension and the Docker extension from Microsoft.
+
+Search for and install the following extensions:
+- Remote - WSL (Microsoft)
+- Dev Containers (Microsoft)
+- Docker (Microsoft)
 You will find the _Extensions_ menu on the left.
 
-Start a remote Ubuntu by clicking on the buttom left corner which should be highlighted in green, and select _New WSL window_.
-A new VSCode instance opens with a remote Ubuntu session.
-Confirm the buttom left corner indicating the Ubuntu session. Start the terminal within VSCode.
+Start a remote Ubuntu session by clicking on the buttom left corner which should be highlighted in green, and select _New WSL window_.
+
+A new VSCode instance opens with the remote Ubuntu session enabled.
+
+Confirm the buttom left corner highlighted in green and indicating the Ubuntu session.
+
+Start the terminal within VSCode.
 
 Well donne! You are set to follow the instructions of section _[Preparation][preparation]_, using the remote Ubuntu session within the VSCode terminal.
 
