@@ -16,7 +16,7 @@ usermod -a -G docker $USER
 Additionally you need **git** to be installed and configured.
  
  🐧 This manual focuses on Linux/Ubuntu. Hitobito development also runs on other plattforms with some adjustments. 
- Follow the prerequisits in section [Windows preparation][windows_preparation] to setup a Windows platform for Hitobito development, before continuing below.
+ Follow the prerequisits in section [Windows preparation][windows_preparation] to set up a Windows platform for Hitobito development, before continuing below.
 
 [windows_preparation]: #windows-preparation
 
@@ -210,3 +210,58 @@ wget -O - https://raw.githubusercontent.com/hitobito/development/master/bin/hito
 
 
 ## Windows preparation
+The proposed approach for Hitobito development on Windows uses VSCode as it provides extensions for integration of Docker and WSL 2. The next steps prepare Windows for WSL 2, Docker and VSCode.
+
+### WSL 2
+
+Install WSL 2 with Ubuntu using PowerShell.
+```bash
+wsl --install
+```
+Conider a look at _[Install Linux on Windows with WSL][wsl_install]_ for troubleshooting.
+
+Open _Ubuntu on Windows_ using the Start menu.
+A remote terminal opens.
+You will be prompted to specify user name and password. Update and upgrade packages.
+```terminal
+sudo apt update && sudo apt upgrade
+```
+
+[wsl_install]: https://learn.microsoft.com/en-us/windows/wsl/install
+
+### Docker
+
+Download and install [Docker Desktop][docker_desktop].
+The installation will promt you to enable WSL 2.
+Open _Docker Desktop_ using the Start menu. 
+Select Settings > Generals and enable the _Use WSL 2 based engine_.
+
+Return to the Ubuntu terminal and confirm the installation.
+```terminal
+docker --version
+```
+Verion and build informations should appear. That's it, terminate Ubuntu.
+```terminal
+exit
+```
+
+See _[Get started with Docker remote containers on WSL 2][docker_install]_ for a more detailed description.
+
+[docker_desktop]: https://docs.docker.com/desktop/windows/wsl/#download
+[docker_install]: https://learn.microsoft.com/en-us/windows/wsl/tutorials/wsl-containers
+
+### VSCode
+
+Download and install [VSCode][vs_code].
+Open _VSCode_ using the Start menu.
+Install the Remote - WSL extention and the Docker extension from Microsoft.
+You will find the _Extensions_ menu on the left.
+
+Start a remote Ubuntu by clicking on the buttom left corner which should be highlighted in green, and select _New WSL window_.
+A new VSCode instance opens with a remote Ubuntu session.
+Confirm the buttom left corner indicating the Ubuntu session. Start the terminal within VSCode.
+
+Well donne! You are set to follow the instructions of section _[Preparation][preparation]_, using the remote Ubuntu session within the VSCode terminal.
+
+[vs_code]: https://code.visualstudio.com/download
+[preparation]: #preparation
