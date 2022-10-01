@@ -227,7 +227,7 @@ You will be prompted to specify user name and password. Then, update and upgrade
 ```terminal
 sudo apt update && sudo apt upgrade
 ```
-:bulb: Don't close the Ubuntu terminal yet.
+⚡ Don't close the Ubuntu terminal yet.
 
 [wsl_install]: https://learn.microsoft.com/en-us/windows/wsl/install
 
@@ -273,7 +273,7 @@ Confirm the buttom left corner highlighted in green and indicating the Ubuntu se
 
 Start the terminal within VSCode.
 
-Well donne! You are set to follow the instructions of section _[Preparation][preparation]_, using the Ubuntu session within the VSCode terminal.
+:sparkles: Well donne! You are set to follow the instructions of section _[Preparation][preparation]_, using the Ubuntu session within the VSCode terminal.
 
 [vs_code]: https://code.visualstudio.com/download
 [preparation]: #preparation
