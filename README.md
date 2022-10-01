@@ -220,9 +220,10 @@ wsl --install
 ```
 Consider a look at _[Install Linux on Windows with WSL][wsl_install]_ for troubleshooting.
 
-Open _Ubuntu on Windows_ using the Start menu.
+Open _Ubuntu_ using the Start menu.
 An Ubuntu terminal opens.
-You will be prompted to specify user name and password. Update and upgrade packages.
+
+You will be prompted to specify user name and password. Then, update and upgrade packages.
 ```terminal
 sudo apt update && sudo apt upgrade
 ```
