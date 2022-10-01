@@ -18,7 +18,7 @@ Additionally you need **git** to be installed and configured.
  🐧 This manual focuses on Linux/Ubuntu. Hitobito development also runs on other plattforms with some adjustments. 
  Development on Windows requires a view additional prerequisits which are described in the section [Windows preparation][windows_preparation].
 
-[windows_preparation]: ./readme_windows#windows-preparation
+[windows_preparation]: https://github.com/sniederberger/hitobito_development/tree/feature/readme_windows#windows-preparation
 
 ## Preparation
 
