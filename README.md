@@ -16,7 +16,9 @@ usermod -a -G docker $USER
 Additionally you need **git** to be installed and configured.
  
  🐧 This manual focuses on Linux/Ubuntu. Hitobito development also runs on other plattforms with some adjustments. 
- Follow the additional prerequisits in section [Windows preparation][#windows-preparation] to setup a Windows platform for Hitobito development.
+ Follow the prerequisits in section [Windows preparation][windows_preparation] to setup a Windows platform for Hitobito development, before continuing below.
+
+[windows_preparation]: #windows-preparation
 
 ## Preparation
 
