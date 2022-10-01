@@ -254,7 +254,7 @@ See _[Get started with Docker remote containers on WSL 2][docker_install]_ for a
 
 Download and install [VSCode][vs_code].
 Open _VSCode_ using the Start menu.
-Install the Remote - WSL extention and the Docker extension from Microsoft.
+Install the Remote - WSL extention, the Dev Containers extension and the Docker extension from Microsoft.
 You will find the _Extensions_ menu on the left.
 
 Start a remote Ubuntu by clicking on the buttom left corner which should be highlighted in green, and select _New WSL window_.
