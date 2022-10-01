@@ -210,7 +210,7 @@ wget -O - https://raw.githubusercontent.com/hitobito/development/master/bin/hito
 
 
 ## Windows preparation
-The proposed approach for Hitobito development on Windows uses VSCode. VSCode provides extensions for integration of Docker and WSL 2. The next steps will prepare Windows for WSL 2, Docker and VSCode.
+The suggested approach for Hitobito development on Windows uses VSCode. VSCode provides the required extensions for integration of Docker and WSL 2. The next steps will prepare Windows for WSL 2, Docker and VSCode.
 
 ### WSL 2
 
