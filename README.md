@@ -214,7 +214,7 @@ The suggested approach for Hitobito development on Windows uses VSCode. VSCode p
 
 ### WSL 2
 
-Install WSL 2 with Ubuntu using PowerShell.
+Install WSL 2 with Ubuntu using PowerShell (running as administrator).
 ```bash
 wsl --install
 ```
