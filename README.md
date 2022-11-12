@@ -220,6 +220,8 @@ wsl --install
 ```
 Consider a look at _[Install Linux on Windows with WSL][wsl_install]_ for troubleshooting.
 
+Next, you will have to reboot your computer, before you are able to use WSL 2.
+
 Open _Ubuntu_ using the Start menu.
 An Ubuntu terminal opens.
 
