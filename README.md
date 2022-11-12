@@ -271,7 +271,7 @@ Search for and install the following extensions:
 Start a remote Ubuntu session by clicking on the buttom left corner which should be highlighted in green, and select _New WSL window_.
 
 A new VSCode instance opens with remote Ubuntu enabled.
-Confirm the buttom left corner highlighted in green and indicating the Ubuntu session.
+Confirm the button in the bottom left corner highlighted in green and indicating the Ubuntu session.
 
 Start the terminal within VSCode.
 
