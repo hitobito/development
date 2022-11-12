@@ -245,7 +245,7 @@ Return to the Ubuntu terminal and confirm the installation.
 ```terminal
 docker --version
 ```
-Version and build informations should appear. That's it, terminate Ubuntu.
+Version and build information should appear. That's it, terminate Ubuntu.
 ```terminal
 exit
 ```
