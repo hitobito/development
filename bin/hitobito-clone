@@ -105,6 +105,18 @@ repo_data.each do |repo|
   repos.push(repo_attrs)
 end
 
+# select repos according to given options
+unless options[:repo].nil?
+  all_repo_names = repos.collect { |r| r[:name] }
+  repos = repos.select { |repo| repo[:name] == options[:repo] }
+  if repos.empty?
+    puts "No hitobito repo with name '#{options[:repo]}' available"
+    puts "Available repos are: #{all_repo_names.join(', ')}"
+    abort
+  end
+  repos_with_dependencies = repos_with_dependencies.select { |repo| repo[:repo][:name] == options[:repo] || repo[:dependant][:name] == options[:repo] }
+end
+
 # filter repos with dependencies
 WAGON_DEPENDENCIES.each do |repo_name, dependant_repo_name|
   filtered_repos = {}
@@ -131,18 +143,6 @@ end
 # remove dependants from non-dependants
 repos.delete_if do |repo|
   WAGON_DEPENDENCIES.any? {|wagon| wagon.last == repo[:name]}
-end
-
-# select repos according to given options
-unless options[:repo].nil?
-  all_repo_names = repos.collect { |r| r[:name] }
-  repos = repos.select { |repo| repo[:name] == options[:repo] }
-  if repos.empty?
-    puts "No hitobito repo with name '#{options[:repo]}' available"
-    puts "Available repos are: #{all_repo_names.join(', ')}"
-    abort
-  end
-  repos_with_dependencies = repos_with_dependencies.select { |repo| repo[:repo][:name] == options[:repo] || repo[:dependant][:name] == options[:repo] }
 end
 
 # give the user some nice information about what's going to happen
