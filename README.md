@@ -9,6 +9,7 @@ The free _Docker Community Edition (CE)_ works perfectly fine. Make sure your us
 ```bash
 usermod -a -G docker $USER
 ```
+You probably have to log out and log in back again or run `newgrp docker`.
 
 [docker]: https://docs.docker.com/install/
 [doco]: https://docs.docker.com/compose/install/
