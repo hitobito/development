@@ -19,7 +19,7 @@ RUN \
     xvfb chromium chromium-driver \
     default-mysql-client pv \
     less &&  \
-  pip3 install transifex-client && \
+  curl -o- https://raw.githubusercontent.com/transifex/cli/master/install.sh | bash && \
   npm install -g yarn
 
 RUN bash -c 'gem install bundler -v 2.1.4'
