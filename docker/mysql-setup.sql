@@ -1,2 +1,1 @@
 CREATE DATABASE IF NOT EXISTS hitobito_test;
-CREATE DATABASE IF NOT EXISTS hitobito_test_core;
