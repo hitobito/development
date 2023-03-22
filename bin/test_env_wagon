@@ -2,7 +2,7 @@
 
 source $(dirname $0)/_basics
 
-docker-compose run \
+docker-compose run --rm \
   --workdir=/usr/src/app/hitobito_$WAGON \
   -e RAILS_ENV=test \
   rails \
