@@ -89,15 +89,19 @@ docker-compose ps
 This should look something like this:
 
 ```
-          Name                         Command               State                 Ports               
--------------------------------------------------------------------------------------------------------
-development_cache_1         docker-entrypoint.sh memca ...   Up      11211/tcp                         
-development_db_1            docker-entrypoint.sh --sor ...   Up      0.0.0.0:33066->3306/tcp, 33060/tcp
-development_mailcatcher_1   container-entrypoint mailc ...   Up      0.0.0.0:1080->1080/tcp, 8080/tcp                       
-development_rails_1         rails-entrypoint rails ser ...   Up      0.0.0.0:3000->3000/tcp, 8080/tcp  
-development_sphinx_1        sphinx-start                     Up      36307/tcp                         
-development_worker_1        rails-entrypoint rails job ...   Up      8080/tcp
+          Name                            Command               State                 Ports               
+----------------------------------------------------------------------------------------------------------
+development_cache_1            docker-entrypoint.sh memca ...   Up      11211/tcp                         
+development_db_1               docker-entrypoint.sh --sor ...   Up      0.0.0.0:33066->3306/tcp, 33060/tcp
+development_mailcatcher_1      container-entrypoint mailc ...   Up      0.0.0.0:1080->1080/tcp, 8080/tcp                       
+development_rails_1            rails-entrypoint rails ser ...   Up      0.0.0.0:3000->3000/tcp, 8080/tcp  
+development_rails_test_core_1  rails-entrypoint sleep inf ...   Up 
+development_sphinx_1           sphinx-start                     Up      36307/tcp 
+development_webpack_1          webpack-entrypoint /usr/sr ...   Up      0.0.0.0:3035->3035/tcp
+development_worker_1           rails-entrypoint rails job ...   Up      8080/tcp
 ```
+
+*The `_sphinx_1` container seems to be flaky. You can safely ignore a state `Exit 2`.*
 
 Access the web application by browser: http://localhost:3000 and log in using *hitobito@puzzle.ch* and password *hito42bito*. For some wagons, the e-mail address is different. Go to the file ```/config/settings.yml``` inside your wagon repository and look out for the field "root_email". Use this e-mail address to login.
 
