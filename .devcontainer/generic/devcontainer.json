@@ -24,9 +24,9 @@
 
 	"initializeCommand": ".devcontainer/initialize.sh https://github.com/hitobito/hitobito.git https://github.com/hitobito/hitobito_generic.git",
 
-	"onCreateCommand": ".devcontainer/create.sh",
+	"onCreateCommand": "/workspace/.devcontainer/create.sh",
 
-	"updateContentCommand": ".devcontainer/update.sh",
+	"updateContentCommand": "/workspace/.devcontainer/update.sh",
 
 	"customizations": {
 		"vscode": {

@@ -23,5 +23,3 @@ do
   echo "Cloning $url into app/$(basename $url .git)"
   git clone "$url" "app/$(basename $url .git)"
 done
-
-/usr/local/bin/rails-entrypoint exit 0

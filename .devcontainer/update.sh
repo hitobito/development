@@ -18,4 +18,4 @@ do
   fi
 done
 
-SKIP_SEEDS=1 SKIP_WAGONFILE=1 /usr/local/bin/rails-entrypoint exit 0
+SKIP_SEEDS=1 SKIP_WAGONFILE=1 /usr/local/bin/rails-entrypoint echo "All up to date!"
