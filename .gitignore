@@ -3,3 +3,6 @@
 .local
 .yarnrc
 /dumps
+docker/home/rails
+app/*
+!app/.vscode
