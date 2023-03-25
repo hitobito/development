@@ -43,15 +43,11 @@ COPY ./waitfortcp /usr/local/bin
 RUN mkdir /opt/bundle && chmod 777 /opt/bundle
 RUN mkdir /seed && chmod 777 /seed
 RUN mkdir /home/developer && chmod 777 /home/developer
+
+USER $USERNAME
+
 ENV HOME=/home/developer
 ENV NODE_PATH=/usr/lib/nodejs
-
-# ********************************************************
-# * Anything else you want to do like clean up goes here *
-# ********************************************************
-
-# [Optional] Set the default user. Omit if you want to keep the default as root.
-USER $USERNAME
 
 ENTRYPOINT ["rails-entrypoint"]
 CMD [ "rails", "server", "-b", "0.0.0.0" ]
