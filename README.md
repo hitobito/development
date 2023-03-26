@@ -2,6 +2,10 @@
 
 We're glad you want to setup your machine for hitobito development 💃
 
+> For an easy to use quick start solution you can use [devcontainers and codespaces][devcontainers].
+
+[devcontainers]: docs/Devcontainer.md
+
 ## System Requirements
 
 You need to have [Docker][docker] and _[docker-compose][doco]_ installed on your computer.
