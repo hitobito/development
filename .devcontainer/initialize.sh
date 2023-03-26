@@ -11,6 +11,7 @@ then
 fi
 
 if [ -d "app/hitobito" ]; then
+    echo "Already cloned, skipping…"
     exit 0
 fi
 

@@ -4,7 +4,7 @@ This repository has devcontainers available. They are a standard way to run deve
 This documentation focuses on getting up and running and will not get into details about how devcontainers work.
 
 Devcontainers can be run locally or in the cloud with GitHub Codespaces. Each have their advantages and drawbacks.  
-**Codespaces** are generally instant to start and immediately ready to run. However you need a (somewhat) stable internetconnection to work and they might cost something (for hobby use the free usafe will probably be enough: https://github.com/features/codespaces#pricing).  
+**Codespaces** are generally instant to start and immediately ready to run. However you need a (somewhat) stable internetconnection to work and they might cost something (for hobby use, the free usage will probably be enough: https://github.com/features/codespaces#pricing). To learn more about codespaces, see [here](https://docs.github.com/en/codespaces). GitHubs documentation is quite thorough.  
 **Locallly** running the devcontainers has the advantage that it's always free and doesn't need an internet connection to work but they need some time to pull all the docker images and ruby gems and to seed the database with initial test data.
 
 ## Locally running
@@ -24,11 +24,25 @@ _You'll find more detailed requirements [here](https://code.visualstudio.com/doc
 
 ## Running on GitHub Codespaces
 
-_TBD_
+In general, see here: https://docs.github.com/en/codespaces/developing-in-codespaces/creating-a-codespace-for-a-repository#creating-a-codespace-for-a-repository
+
+Some notes for starting a hitobito codespace:
+
+- Make sure to select "New with options" and then select the desired configuration. Otherwise it launches without any setup and won't be able to run.
+- No need to change the branch, as it only changes the branch of the development environment, but not hitobito itself.
+
+If you want to get familiar with codespaces, check the quickstart guide here: https://docs.github.com/en/codespaces/getting-started/quickstart
+
 
 ## Rebuilding
 
-_TBD_
+If you change something with the docker setup and/or change the Gemfile, simply rebuild the codespace. In VS Code this can easily be achieved by pressing <kbd>Shift</kbd>+<kbd>Command</kbd>+<kbd>P</kbd> (Mac) or <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>P</kbd> and then Entering `Rebuild Container`.
+
+To also freshly seed your database, type `Full Rebuild Container`.
+
+With both rebuilds, your changes are kept. To get a totally clean setup, delete your codespace and create a new one.
+
+If rebuild fails, you probably should update your hitobito repos first…
 
 ## A note about committing and pushing
 
