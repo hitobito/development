@@ -17,7 +17,7 @@ services:
     environment:
       WEBPACKER_DEV_SERVER_HOST: webpack
     ports:
-    - "3000:3000"
+    - "127.0.0.1::3000"
     volumes:
     - ./app/:/usr/src/app
     - hitobito_bundle:/opt/bundle
@@ -63,7 +63,7 @@ services:
       context: ./docker
       dockerfile: mailcatcher.dockerfile
     ports:
-    - "1080:1080"
+    - "127.0.0.1::1080"
 
   cache:
     image: memcached:1.6-alpine
@@ -88,7 +88,7 @@ services:
     - --collation-server=utf8mb4_unicode_ci
     env_file: ./docker/mysql.env
     ports:
-    - "33066:3306"
+    - "127.0.0.1::3306"
     volumes:
     - ./docker/mysql-setup.sql:/docker-entrypoint-initdb.d/mysql-setup.sql:ro
     - ./docker/test-setup.sql:/docker-entrypoint-initdb.d/test-setup.sql:ro
@@ -107,7 +107,7 @@ services:
     user: "${RAILS_UID:-1000}"
     command: /usr/src/app/hitobito/bin/webpack-dev-server
     ports:
-    - "3035:3035"
+    - "127.0.0.1::3035"
     volumes:
     - ./app/:/usr/src/app
     - hitobito_bundle:/opt/bundle
