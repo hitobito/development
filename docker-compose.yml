@@ -93,6 +93,11 @@ services:
     - ./docker/mysql-setup.sql:/docker-entrypoint-initdb.d/mysql-setup.sql:ro
     - ./docker/test-setup.sql:/docker-entrypoint-initdb.d/test-setup.sql:ro
     - db:/var/lib/mysql
+    ulimits:
+      nproc: 65535
+      nofile:
+        soft: 26677
+        hard: 46677
 
   webpack:
     build:
