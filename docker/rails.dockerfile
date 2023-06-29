@@ -1,6 +1,6 @@
 # Keep ruby version in sync with the Hitobito S2I image.
 # Some tests depend on the ruby version.
-FROM ruby:2.7
+FROM ruby:3.2
 
 USER root
 
@@ -19,8 +19,11 @@ RUN \
     xvfb chromium chromium-driver \
     default-mysql-client pv \
     less &&  \
-  curl -o- https://raw.githubusercontent.com/transifex/cli/master/install.sh | bash && \
-  npm install -g yarn
+  curl -o- https://raw.githubusercontent.com/transifex/cli/master/install.sh | bash
+
+# yarn sources
+RUN curl https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
+RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
 
 RUN bash -c 'gem install bundler -v 2.1.4'
 
