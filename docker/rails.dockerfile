@@ -22,7 +22,7 @@ RUN \
   curl -o- https://raw.githubusercontent.com/transifex/cli/master/install.sh | bash && \
   npm install -g yarn
 
-RUN bash -c 'gem install bundler -v 2.1.4'
+RUN bash -c 'gem install bundler -v 2.4.15'
 
 COPY ./rails-entrypoint /usr/local/bin
 COPY ./webpack-entrypoint /usr/local/bin
