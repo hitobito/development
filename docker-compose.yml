@@ -89,6 +89,11 @@ services:
     env_file: ./docker/mysql.env
     ports:
     - "33066:3306"
+    ulimits:
+      nproc: 65535
+      nofile:
+        soft: 20000
+        hard: 40000
     volumes:
     - ./docker/mysql-setup.sql:/docker-entrypoint-initdb.d/mysql-setup.sql:ro
     - ./docker/test-setup.sql:/docker-entrypoint-initdb.d/test-setup.sql:ro
