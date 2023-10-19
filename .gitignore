@@ -3,3 +3,6 @@
 .local
 .yarnrc
 /dumps
+docker/home/rails/.gem/
+docker/home/rails/.irb_history
+docker/home/rails/.viminfo
