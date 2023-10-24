@@ -1,1 +1,2 @@
 CREATE DATABASE IF NOT EXISTS hitobito_test;
+GRANT ALL PRIVILEGES ON *.* TO 'hitobito'@'%';
