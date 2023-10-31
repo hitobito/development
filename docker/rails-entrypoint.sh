@@ -9,6 +9,20 @@ initialize() {
 
     rm -f tmp/pids/server.pid
 
+    if [ -d /shared ]; then
+        if [ ! -f /shared/.env.generated ]; then
+            echo "⚙ Generating some environment values"
+            touch /shared/.env.generated
+            echo "NEXTCLOUD_OIDC_CLIENT_ID=$(openssl rand -base64 33)" >> /shared/.env.generated
+            echo "NEXTCLOUD_OIDC_CLIENT_SECRET=$(openssl rand -base64 33)" >> /shared/.env.generated
+        fi
+    fi
+
+    if [ ! -f ./jwt_signing_key.pem ]; then
+        echo "⚙ Generating a JWT signing key"
+        openssl genpkey -algorithm RSA -out jwt_signing_key.pem -pkeyopt rsa_keygen_bits:2048
+    fi
+
     if [ -z "$SKIP_WAGONFILE" ]; then
         echo "⚙ Activating Wagonfile.development"
         cp /usr/src/app/hitobito/Wagonfile{.development,}
@@ -38,6 +52,11 @@ initialize() {
     if [ -z "$SKIP_SEEDS" ]; then
         if [ ! -f /seed/done ]; then
             echo "⚙️  Seeding DB"
+            if [ -f /shared/.env.generated ]; then
+                set -o allexport
+                source /shared/.env.generated
+                set +o allexport
+            fi
             bundle exec rails db:seed wagon:seed && date > /seed/done
             echo "✅ Seeding done"
         else
@@ -51,6 +70,10 @@ initialize() {
 if [ -z "$SKIP_INIT" ]; then
     initialize
     echo "⚙️  Executing: $@"
+fi
+
+if [ -z "$JWT_SIGNING_KEY" ]; then
+    export JWT_SIGNING_KEY=$(cat jwt_signing_key.pem)
 fi
 
 exec "$@"

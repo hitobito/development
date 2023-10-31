@@ -6,3 +6,4 @@
 docker/home/rails/.gem/
 docker/home/rails/.irb_history
 docker/home/rails/.viminfo
+/shared/.env.generated

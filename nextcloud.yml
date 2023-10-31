@@ -1,0 +1,23 @@
+services:
+  rails:
+    volumes:
+    - ./nextcloud/nextcloud_oauth_app_seed.rb:/usr/src/app/hitobito/db/seeds/development/nextcloud_oauth_app_seed.rb
+    - ./shared:/shared
+
+  nextcloud:
+    image: nextcloud
+    environment:
+      SMTP_HOST: mailcatcher
+      SMTP_PORT: 1025
+      SMTP_AUTHTYPE: PLAIN
+    network_mode: host
+    restart: on-failure
+    volumes:
+    - nextcloud_data:/var/www/html/data
+    - nextcloud_config:/var/www/html/config
+    - ./nextcloud/setup:/docker-entrypoint-hooks.d/before-starting
+    - ./shared:/shared
+
+volumes:
+  nextcloud_data:
+  nextcloud_config:
