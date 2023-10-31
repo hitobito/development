@@ -283,7 +283,31 @@ Confirm the button in the bottom left corner highlighted in green and indicating
 
 Start the terminal within VSCode, by clicking the _Toggle panel_ button in the top right.
 
-:sparkles: Well donne! You are set to follow the instructions of section _[Preparation][preparation]_, using the Ubuntu session within the VSCode terminal.
+:sparkles: Well done! You are set to follow the instructions of section _[Preparation][preparation]_, using the Ubuntu session within the VSCode terminal.
 
 [vs_code]: https://code.visualstudio.com/download
 [preparation]: #preparation
+
+## Nextcloud
+
+Hitobito has official support for nextcloud. You can start a nextcloud instance ready and set up for OIDC authentication via hitobito as follows:
+```bash
+docker-compose -f docker-compose.yml -f nextcloud.yml up
+```
+
+You can then access your local nextcloud instance at http://localhost.
+To test the hitobito Login part, you can then click on "Login with hitobito".
+Alternatively, to manage the local nextcloud, you can use the credentials `admin` / `hito42bito`.
+
+In case you get the following error:
+> Client-Autorisierung MKIM ist fehlgeschlagen: Unbekannter Client, keine Autorisierung mitgeliefert oder Autorisierungsmethode nicht unterstützt.
+
+The reason is that the connection between hitobito and nextcloud is set up during hitobito's seeding process, and you probably already had a seeded database before, so no re-seed was done.
+To fix it, you first have to clear your database and then start again:
+```bash
+# Clear the database
+docker-compose -f docker-compose.yml -f nextcloud.yml down --volumes
+# Start again
+docker-compose -f docker-compose.yml -f nextcloud.yml up
+# Now it should work
+```

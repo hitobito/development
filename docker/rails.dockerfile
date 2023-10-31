@@ -24,8 +24,8 @@ RUN \
 
 RUN bash -c 'gem install bundler -v 2.4.19'
 
-COPY ./rails-entrypoint /usr/local/bin
-COPY ./webpack-entrypoint /usr/local/bin
+COPY ./rails-entrypoint.sh /usr/local/bin
+COPY ./webpack-entrypoint.sh /usr/local/bin
 COPY ./waitfortcp /usr/local/bin
 
 RUN mkdir /opt/bundle && chmod 777 /opt/bundle
@@ -34,5 +34,5 @@ RUN mkdir /home/developer && chmod 777 /home/developer
 ENV HOME=/home/developer
 ENV NODE_PATH=/usr/lib/nodejs
 
-ENTRYPOINT ["rails-entrypoint"]
+ENTRYPOINT ["rails-entrypoint.sh"]
 CMD [ "rails", "server", "-b", "0.0.0.0" ]

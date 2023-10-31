@@ -106,7 +106,7 @@ services:
       context: ./docker
       dockerfile: rails.dockerfile
     image: ghcr.io/hitobito/development/rails
-    entrypoint: [ "webpack-entrypoint" ]
+    entrypoint: [ "webpack-entrypoint.sh" ]
     env_file: docker/rails.env
     environment:
       WEBPACKER_DEV_SERVER_HOST: webpack
