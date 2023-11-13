@@ -22,6 +22,15 @@ RUN \
   curl -o- https://raw.githubusercontent.com/transifex/cli/master/install.sh | bash && \
   npm install -g yarn
 
+RUN \
+  mkdir /tmp/sphinx && \
+  wget -q -O /tmp/sphinx/sphinx.tar.gz https://sphinxsearch.com/files/sphinx-3.3.1-b72d67b-linux-amd64.tar.gz && \
+  tar -zxf /tmp/sphinx/sphinx.tar.gz -C /opt && \
+  mv /opt/sphinx-3.3.1* /opt/sphinx && \
+  rm -rf /tmp/sphinx && \
+  ln -s /opt/sphinx/bin/indexer /usr/bin/indexer && \
+  ln -s /opt/sphinx/bin/searchd /usr/bin/searchd
+
 RUN bash -c 'gem install bundler -v 2.4.19'
 
 COPY ./rails-entrypoint.sh /usr/local/bin
