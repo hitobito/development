@@ -100,6 +100,16 @@ services:
     - ./docker/mysql-setup.sql:/docker-entrypoint-initdb.d/mysql-setup.sql:ro
     - ./docker/test-setup.sql:/docker-entrypoint-initdb.d/test-setup.sql:ro
     - db:/var/lib/mysql
+    
+  phpmyadmin:
+    image: phpmyadmin
+    restart: always
+    ports:
+      - 127.0.0.1:9001:80
+    environment:
+      - PMA_HOST=db
+    depends_on:
+      - db
 
   webpack:
     build:
