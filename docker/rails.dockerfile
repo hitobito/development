@@ -5,7 +5,7 @@ FROM ruby:3.0
 USER root
 
 ENV RAILS_ENV=development
-ENV RAILS_DB_ADAPTER=mysql2
+ENV RAILS_DB_ADAPTER=postgresql
 ENV BUNDLE_PATH=/opt/bundle
 
 WORKDIR /usr/src/app/hitobito
