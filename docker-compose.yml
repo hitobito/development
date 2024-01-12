@@ -90,6 +90,7 @@ services:
     - --character-set-server=utf8mb4
     - --collation-server=utf8mb4_unicode_ci
     - --innodb-lock-wait-timeout=2
+    - --max_allowed_packet=3250585600
     env_file: ./docker/mysql.env
     ports:
     - "33066:3306"
