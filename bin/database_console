@@ -2,6 +2,6 @@
 
 source $(dirname $0)/_basics
 
-docker-compose exec db bash -c '
-    mysql -uroot -p$MYSQL_ROOT_PASSWORD -D $MYSQL_DATABASE
+docker-compose exec postgres bash -c '
+    PGPASSWORD=$POSTGRES_PASSWORD psql -U $POSTGRES_USER -d $POSTGRES_DB
 '
