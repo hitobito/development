@@ -88,6 +88,8 @@ services:
   #   - --sort_buffer_size=2M
   #   - --character-set-server=utf8mb4
   #   - --collation-server=utf8mb4_unicode_ci
+  #   environment:
+  #     - START_SERVICE=${START_SERVICE:-false}
   #   env_file: ./docker/mysql.env
   #   ports:
   #   - "33066:3306"
@@ -107,10 +109,10 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - ./docker/mysql-setup.sql:/docker-entrypoint-initdb.d/mysql-setup.sql:ro
-      - ./docker/test-setup.sql:/docker-entrypoint-initdb.d/test-setup.sql:ro
-      - postgres:/var/lib/postgres
-
+      - ./docker/postgresql-setup.sql:/docker-entrypoint-initdb.d/postgresql-setup.sql:ro
+      - ./docker/test-setup-postgresql.sql:/docker-entrypoint-initdb.d/test-setup-postgresql.sql:ro
+      - postgres:/var/lib/postgresql/data
+      
   webpack:
     build:
       context: ./docker
