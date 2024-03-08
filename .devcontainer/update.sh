@@ -3,6 +3,7 @@
 # Set the directory containing git repositories
 repositories_dir=.
 
+ssh-keyscan github.com >> /home/$USER/.ssh/known_hosts
 # Loop over the directories in the repositories directory
 for repository_dir in "$repositories_dir"/*/
 do
