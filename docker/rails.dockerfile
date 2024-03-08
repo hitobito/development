@@ -1,6 +1,26 @@
-# Keep ruby version in sync with the Hitobito S2I image.
+#################################
+#          Variables            #
+#################################
+
+# Keep ruby version in sync with the Hitobito Dockerfile
 # Some tests depend on the ruby version.
-FROM ruby:2.7
+
+# Versioning
+ARG RUBY_VERSION="3.2"
+ARG BUNDLER_VERSION="2.5.6"
+ARG NODEJS_VERSION="16"
+ARG YARN_VERSION="1.22.19"
+ARG TRANSIFEX_VERSION="1.6.4"
+
+# Packages
+ARG BUILD_PACKAGES="nodejs git sqlite3 libsqlite3-dev imagemagick build-essential default-libmysqlclient-dev"
+ARG DEV_PACKAGES="direnv xvfb chromium chromium-driver default-mysql-client pv vim curl less sudo"
+
+#################################
+#          Build Stage          #
+#################################
+
+FROM ruby:${RUBY_VERSION} AS build
 
 USER root
 
@@ -13,18 +33,34 @@ ARG USER_GID=$USER_UID
 
 WORKDIR /usr/src/app/hitobito
 
-RUN \
-  curl -sL https://deb.nodesource.com/setup_14.x | bash - && \
-  apt update && \
-  apt install -y \
-    nodejs \
-    python3-pip direnv \
-    xvfb chromium chromium-driver \
-    default-mysql-client pv \
-    less \
-    sudo &&  \
-  curl -o- https://raw.githubusercontent.com/transifex/cli/master/install.sh | bash && \
-  npm install -g yarn
+ARG NODEJS_VERSION
+RUN export DEBIAN_FRONTEND=noninteractive \
+ && apt-get update \
+ && apt-get install -y ca-certificates curl gnupg \
+ && mkdir -p /etc/apt/keyrings \
+ && curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg \
+ && echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_${NODEJS_VERSION}.x nodistro main" > /etc/apt/sources.list.d/nodesource.list \
+ && echo "Package: nodejs" >> /etc/apt/preferences.d/preferences \
+ && echo "Pin: origin deb.nodesource.com" >> /etc/apt/preferences.d/preferences \
+ && echo "Pin-Priority: 1001" >> /etc/apt/preferences.d/preferences
+
+ARG BUILD_PACKAGES
+ARG DEV_PACKAGES
+RUN export DEBIAN_FRONTEND=noninteractive \
+ && apt-get update \
+ && apt-get upgrade -y \
+ && apt-get install -y --no-install-recommends ${BUILD_PACKAGES} \
+ && apt-get install -y --no-install-recommends ${DEV_PACKAGES}
+
+ARG YARN_VERSION
+RUN node -v && npm -v && npm install -g yarn && yarn set version "${YARN_VERSION}"
+
+ARG TRANSIFEX_VERSION
+RUN curl -L "https://github.com/transifex/cli/releases/download/v${TRANSIFEX_VERSION}/tx-linux-amd64.tar.gz" | tar xz -C /usr/local/bin/
+
+ARG BUNDLER_VERSION
+RUN bash -vxc "gem install bundler -v ${BUNDLER_VERSION}"
+
 
 # Create the user
 RUN groupadd --gid $USER_GID $USERNAME \
@@ -34,10 +70,11 @@ RUN groupadd --gid $USER_GID $USERNAME \
     && echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME \
     && chmod 0440 /etc/sudoers.d/$USERNAME
 
-RUN bash -c 'gem install bundler -v 2.1.4'
+# for release and version-scripts
+RUN bash -vxc 'gem install cmdparse pastel'
 
-COPY ./rails-entrypoint /usr/local/bin
-COPY ./webpack-entrypoint /usr/local/bin
+COPY ./rails-entrypoint.sh /usr/local/bin
+COPY ./webpack-entrypoint.sh /usr/local/bin
 COPY ./waitfortcp /usr/local/bin
 
 RUN mkdir /opt/bundle && chmod 777 /opt/bundle
@@ -49,5 +86,7 @@ USER $USERNAME
 ENV HOME=/home/developer
 ENV NODE_PATH=/usr/lib/nodejs
 
-ENTRYPOINT ["rails-entrypoint"]
+USER $USERNAME
+
+ENTRYPOINT ["rails-entrypoint.sh"]
 CMD [ "rails", "server", "-b", "0.0.0.0" ]
