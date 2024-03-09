@@ -84,8 +84,7 @@ services:
     - sphinx_indexes:/opt/sphinx/indexes
 
   db:
-    image: mysql:5.7
-    platform: linux/amd64
+    image: mariadb:10.2
     command:
     - --sort_buffer_size=2M
     - --character-set-server=utf8mb4
