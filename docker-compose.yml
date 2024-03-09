@@ -5,6 +5,7 @@ services:
       context: ./docker
       dockerfile: rails.dockerfile
     image: ghcr.io/hitobito/development/rails
+    restart: unless-stopped
     user: "${RAILS_UID:-1000}"
     tty: true
     stdin_open: true
@@ -80,6 +81,7 @@ services:
 
   # Dependencies
   mailcatcher:
+    restart: unless-stopped
     image: ghcr.io/hitobito/development/mailcatcher
     build:
       context: ./docker
@@ -91,10 +93,12 @@ services:
       interval: 5s
       timeout: 5s
   cache:
+    restart: unless-stopped
     image: memcached:1.6-alpine
     command: [ memcached, -l, '0.0.0.0', -p, '11211' ]
 
   sphinx:
+    restart: unless-stopped
     image: macbre/sphinxsearch:3.1.1
     command: sphinx-start
     depends_on:
@@ -109,6 +113,7 @@ services:
     - sphinx_indexes:/opt/sphinx/indexes
 
   db:
+    restart: unless-stopped
     image: mariadb:10.2
     command:
     - --sort_buffer_size=2M
@@ -134,6 +139,7 @@ services:
       timeout: 5s
 
   webpack:
+    restart: unless-stopped
     build:
       context: ./docker
       dockerfile: rails.dockerfile
