@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# This script will be run _outside_ the container everytime you create a devcontainer (locally or in the cloud)
+
 docker volume create hitobito_bundle
 docker volume create hitobito_yarn_cache
 

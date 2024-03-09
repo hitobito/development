@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# This scipt will be run _inside_ the container everytime you create a devontainer (or on a schedule in the cloud). This happens after the initialize.sh and after the create.sh script.
+
 # Set the directory containing git repositories
 repositories_dir=.
 

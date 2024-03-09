@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# This script will be run _inside_ the container everytime you create a devontainer. This happens after the initialize.sh script.
+
 sudo gem install debug
 
 echo "github.com ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOMqqnkVzrm0SdG6UOoqKLsabgH5C9okWi0dh2l9GKJl

@@ -7,4 +7,21 @@ services:
     # Skip entrypoint which would try to migrate on entry
     entrypoint: []
     # Overrides default command so things don't shut down after the process ends.
-    command: /bin/bash -c "while sleep 1000; do :; done"
+    command: sleep infinity
+    healthcheck: {}
+  worker:
+    depends_on:
+      rails:
+        condition: service_started
+      db:
+        condition: service_healthy
+      mailcatcher:
+        condition: service_healthy
+      cache:
+        condition: service_started
+  sphinx:
+    depends_on:
+      db:
+        condition: service_healthy
+      rails:
+        condition: service_started
