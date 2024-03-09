@@ -9,10 +9,14 @@ services:
     tty: true
     stdin_open: true
     depends_on:
-    - db
-    - mailcatcher
-    - cache
-    - webpack
+      db:
+        condition: service_healthy
+      mailcatcher:
+        condition: service_healthy
+      cache:
+        condition: service_started
+      webpack:
+        condition: service_started
     env_file: docker/rails.env
     environment:
       WEBPACKER_DEV_SERVER_HOST: webpack
@@ -28,6 +32,11 @@ services:
     - ./docker/rails/work_around_docker_fs_bug.rb:/usr/src/app/hitobito/config/initializers/work_around_docker_fs_bug.rb:ro
     - /etc/timezone:/etc/timezone:ro
     - /etc/localtime:/etc/localtime:ro
+    healthcheck:
+      test: [ "CMD", "curl", "--fail", "http://localhost:3000/healthz" ]
+      interval: 5s
+      timeout: 5s
+      start_period: 30m
 
   # `exec` into this to execute the tests of the core
   rails_test_core:
@@ -43,7 +52,8 @@ services:
       SKIP_SEEDS: 1
       SKIP_BUNDLE_INSTALL: 1
     depends_on:
-    - db
+      db:
+        condition: service_healthy
 
   worker:
     <<: *rails
@@ -54,10 +64,15 @@ services:
       SKIP_SEEDS: 1
       SKIP_BUNDLE_INSTALL: 1
     depends_on:
-    - rails
-    - db
-    - mailcatcher
-    - cache
+      rails:
+        condition: service_healthy
+      db:
+        condition: service_healthy
+      mailcatcher:
+        condition: service_healthy
+      cache:
+        condition: service_started
+
 
   # Dependencies
   mailcatcher:
@@ -67,7 +82,10 @@ services:
       dockerfile: mailcatcher.dockerfile
     ports:
     - "1080:1080"
-
+    healthcheck:
+      test: [ "CMD", "curl", "--fail", "http://localhost:1080" ]
+      interval: 5s
+      timeout: 5s
   cache:
     image: memcached:1.6-alpine
     command: [ memcached, -l, '0.0.0.0', -p, '11211' ]
@@ -76,7 +94,10 @@ services:
     image: macbre/sphinxsearch:3.1.1
     command: sphinx-start
     depends_on:
-    - db
+      db:
+        condition: service_healthy
+      rails:
+        condition: service_healthy
     volumes:
     - ./docker/sphinx.conf:/opt/sphinx/conf/sphinx.conf:ro
     - ./docker/sphinx-start:/usr/local/bin/sphinx-start:ro
@@ -103,6 +124,10 @@ services:
     - ./docker/mysql-setup.sql:/docker-entrypoint-initdb.d/mysql-setup.sql:ro
     - ./docker/test-setup.sql:/docker-entrypoint-initdb.d/test-setup.sql:ro
     - db:/var/lib/mysql
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "--silent" ]
+      interval: 5s
+      timeout: 5s
 
   webpack:
     build:
@@ -122,6 +147,9 @@ services:
     - ./app/:/usr/src/app
     - hitobito_bundle:/opt/bundle
     - hitobito_yarn_cache:/home/developer/.cache/yarn
+    depends_on:
+      db:
+        condition: service_healthy
 
 volumes:
   db:
