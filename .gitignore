@@ -3,6 +3,7 @@
 .local
 .yarnrc
 /dumps
-docker/home/rails
+docker/home/rails/
+/shared/.env.generated
 app/*
 !app/.vscode

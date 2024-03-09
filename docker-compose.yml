@@ -16,6 +16,7 @@ services:
     env_file: docker/rails.env
     environment:
       WEBPACKER_DEV_SERVER_HOST: webpack
+      DISABLE_SPRING: 'true'
     ports:
     - "3000:3000"
     volumes:
@@ -25,6 +26,8 @@ services:
     - ./docker/home/rails:/home/developer
     - /tmp/.X11-unix:/tmp/.X11-unix
     - ./docker/rails/work_around_docker_fs_bug.rb:/usr/src/app/hitobito/config/initializers/work_around_docker_fs_bug.rb:ro
+    - /etc/timezone:/etc/timezone:ro
+    - /etc/localtime:/etc/localtime:ro
 
   # `exec` into this to execute the tests of the core
   rails_test_core:
@@ -86,10 +89,17 @@ services:
     command:
     - --sort_buffer_size=2M
     - --character-set-server=utf8mb4
-    - --collation-server=utf8mb4_unicode_ci
+    - --collation-server=utf8mb4_general_ci
+    - --innodb-lock-wait-timeout=2
+    - --max_allowed_packet=3250585600
     env_file: ./docker/mysql.env
     ports:
     - "33066:3306"
+    ulimits:
+      nproc: 65535
+      nofile:
+        soft: 20000
+        hard: 40000
     volumes:
     - ./docker/mysql-setup.sql:/docker-entrypoint-initdb.d/mysql-setup.sql:ro
     - ./docker/test-setup.sql:/docker-entrypoint-initdb.d/test-setup.sql:ro
@@ -100,7 +110,7 @@ services:
       context: ./docker
       dockerfile: rails.dockerfile
     image: ghcr.io/hitobito/development/rails
-    entrypoint: [ "webpack-entrypoint" ]
+    entrypoint: [ "webpack-entrypoint.sh" ]
     env_file: docker/rails.env
     environment:
       WEBPACKER_DEV_SERVER_HOST: webpack

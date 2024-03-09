@@ -2,4 +2,4 @@
 
 sudo gem install debug
 
-/usr/local/bin/rails-entrypoint echo "Finished initializing!"
+/usr/local/bin/rails-entrypoint.sh echo "Finished initializing!"
