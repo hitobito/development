@@ -31,7 +31,8 @@ services:
     - ./docker/home/rails/.ssh:/home/developer/.ssh
     - ./docker/home/rails/.bashrc:/home/developer/.bashrc
     - ./docker/home/rails/.pryrc:/home/developer/.pryrc
-    - /tmp/.X11-unix:/tmp/.X11-unix
+    # Capybara can show the browser window on the host if the X11 socket is mounted… however this can brick on some systems (eg. Apple Silicon Macs)
+    #- /tmp/.X11-unix:/tmp/.X11-unix
     - ./docker/rails/work_around_docker_fs_bug.rb:/usr/src/app/hitobito/config/initializers/work_around_docker_fs_bug.rb:ro
     - /etc/timezone:/etc/timezone:ro
     - /etc/localtime:/etc/localtime:ro
