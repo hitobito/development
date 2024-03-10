@@ -37,6 +37,7 @@ services:
     - ./docker/rails/work_around_docker_fs_bug.rb:/usr/src/app/hitobito/config/initializers/work_around_docker_fs_bug.rb:ro
     - /etc/timezone:/etc/timezone:ro
     - /etc/localtime:/etc/localtime:ro
+    - /var/run/docker.sock:/var/run/docker.sock
     healthcheck:
       test: [ "CMD", "curl", "--fail", "http://localhost:3000/healthz" ]
       interval: 5s
