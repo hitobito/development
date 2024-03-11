@@ -4,6 +4,9 @@
 .yarnrc
 /dumps
 docker/home/rails/
+!docker/home/rails/.pryrc
+!docker/home/rails/.bashrc
+!docker/home/rails/.gitignore
 /shared/.env.generated
 app/*
 !app/.vscode

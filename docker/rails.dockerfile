@@ -101,7 +101,5 @@ USER $USERNAME
 ENV HOME=/home/developer
 ENV NODE_PATH=/usr/lib/nodejs
 
-USER $USERNAME
-
 ENTRYPOINT ["rails-entrypoint.sh"]
 CMD [ "rails", "server", "-b", "0.0.0.0" ]

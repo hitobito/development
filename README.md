@@ -2,6 +2,7 @@
 
 We're glad you want to setup your machine for hitobito development 💃
 
+> [!IMPORTANT]
 > For an easy to use quick start solution you can use [devcontainers and codespaces][devcontainers].
 
 [devcontainers]: doc/Devcontainer.md

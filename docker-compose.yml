@@ -28,8 +28,6 @@ services:
     - ./app/:/usr/src/app
     - hitobito_bundle:/opt/bundle
     - seed:/seed
-    - ./docker/home/rails/.gnupg:/home/developer/.gnupg
-    - ./docker/home/rails/.ssh:/home/developer/.ssh
     - ./docker/home/rails/.bashrc:/home/developer/.bashrc
     - ./docker/home/rails/.pryrc:/home/developer/.pryrc
     # Capybara can show the browser window on the host if the X11 socket is mounted… however this can brick on some systems (eg. Apple Silicon Macs)
