@@ -3,7 +3,10 @@
 .local
 .yarnrc
 /dumps
-docker/home/rails/.gem/
-docker/home/rails/.irb_history
-docker/home/rails/.viminfo
+docker/home/rails/
+!docker/home/rails/.pryrc
+!docker/home/rails/.bashrc
+!docker/home/rails/.gitignore
 /shared/.env.generated
+app/*
+!app/.vscode
