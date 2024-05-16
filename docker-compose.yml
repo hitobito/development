@@ -97,6 +97,14 @@ services:
       - hitobito_yarn_cache:/home/developer/.cache/yarn
       - ./docker/rails/Gemfile.lock:/usr/src/app/hitobito/Gemfile.lock
 
+  sftp:
+    image: "emberstack/sftp"
+    ports:
+      - "3022:22"
+    volumes:
+      - ./docker/sample.sftp.json:/app/config/sftp.json:ro
+      - ./sftp:/home/demo/sftp
+
 volumes:
   postgres:
   seed:
