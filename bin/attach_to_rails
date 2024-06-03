@@ -9,7 +9,7 @@ source $(dirname $0)/_basics
 project=$(basename $(pwd))
 
 container() {
-    docker ps | grep "${project}_rails_1"
+    docker ps | grep "${project}-rails-1"
 }
 
 if ! container >/dev/null; then
