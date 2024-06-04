@@ -78,6 +78,8 @@ To start the Hitobito application, run the following command in your shell:
 docker-compose up -d
 ```
 
+&ast;Note: If you want to test with sphinx running you need to pass `--profile sphinx` to `docker-compose`.
+
 ⚡ This will also install all required gems and seed the database, which takes some time to complete if it's executed the first time. You can follow the progress using `docker-compose logs --follow rails` (exit with Ctrl+C).
 
 After the startup has completed (once you see `Listening on tcp://0.0.0.0:3000` in the logs), make sure all services are up and running:
