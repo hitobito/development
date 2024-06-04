@@ -81,6 +81,7 @@ services:
     - ./docker/sphinx-start:/usr/local/bin/sphinx-start:ro
     - ./docker/sphinx-indexer:/usr/local/bin/sphinx-indexer:ro
     - sphinx_indexes:/opt/sphinx/indexes
+    profiles: [sphinx]
 
   db:
     image: mysql:5.7
