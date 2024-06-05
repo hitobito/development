@@ -1,11 +1,33 @@
 #!/usr/bin/env bash
+set -euo pipefail
 
 SCRIPT_PATH="$(dirname $0)"
 source "$SCRIPT_PATH/_basics"
 
-WAGONS=($SCRIPT_PATH/../app/hitobito_*/)
+WAGONS=($SCRIPT_PATH/../app/hitobito_*)
+# Remove prefix
+WAGONS=("${WAGONS[@]//$SCRIPT_PATH\/..\/app\/hitobito_/}")
 
-echo $WAGONS
+echo "${WAGONS[@]}"
+#echo "${WAGONS_2[@]}"
+#echo "${WAGONS[@]//$SCRIPT_PATH\/..\/app\/hitobito_}"
+
+WAGON="${1:-${WAGON:-}}"
+echo $WAGON
+
+if [[ ! " ${WAGONS[@]} " =~ " ${WAGON:-} " ]]; then
+  echo 'select a wagon'
+  PS3="Enter a number: "
+  select WAGON in ${WAGONS[@]} ; do
+    echo selected $WAGON
+    break
+  done
+
+  echo $WAGON selected with ${REPLY}
+fi
+
+
+echo would use $WAGON selected
 
 exit 0
 
