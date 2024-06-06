@@ -4,7 +4,7 @@ source $(dirname $0)/_basics
 
 dump=dumps/$(date +%F-%H-%M).sql.gz
 
-docker-compose exec db bash -e -c '
+docker compose exec db bash -e -c '
     export MYSQL_PWD="$MYSQL_ROOT_PASSWORD"
     mysqldump -u root $MYSQL_DATABASE
 ' | gzip -c > $dump

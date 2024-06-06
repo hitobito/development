@@ -12,6 +12,6 @@ fi
 gem=$1
 
 volume_dir=$(docker volume inspect hitobito_bundle | jq -r '.[].Mountpoint')
-gem_path=$(docker-compose exec rails bundle show $gem)
+gem_path=$(docker compose exec rails bundle show $gem)
 
 echo $gem_path | sed "s#/opt/bundle#$volume_dir#"

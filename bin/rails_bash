@@ -10,7 +10,7 @@
 
 source $(dirname $0)/_basics
 
-docker-compose run \
+docker compose run \
   -e SKIP_INIT=1 \
   rails \
   bash

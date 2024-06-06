@@ -13,7 +13,7 @@ container() {
 }
 
 if ! container >/dev/null; then
-    echo "Worker is not running. Try 'docker-compose up' to start or 'docker-compose ps' to debug."
+    echo "Worker is not running. Try 'docker compose up' to start or 'docker compose ps' to debug."
     exit 1
 fi
 

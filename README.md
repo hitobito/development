@@ -4,7 +4,7 @@ We're glad you want to setup your machine for hitobito development 💃
 
 ## System Requirements
 
-You need to have [Docker][docker] and _[docker-compose][doco]_ installed on your computer.
+You need to have [Docker][docker] and _[docker compose][doco]_ installed on your computer.
 The free _Docker Community Edition (CE)_ works perfectly fine. Make sure your user is part of the docker group:
 ```bash
 usermod -a -G docker $USER
@@ -75,17 +75,17 @@ docker volume create hitobito_yarn_cache
 To start the Hitobito application, run the following command in your shell:
 
 ```bash
-docker-compose up -d
+docker compose up -d
 ```
 
-&ast;Note: If you want to test with sphinx running you need to pass `--profile sphinx` to `docker-compose`.
+&ast;Note: If you want to test with sphinx running you need to pass `--profile sphinx` to `docker compose`.
 
-⚡ This will also install all required gems and seed the database, which takes some time to complete if it's executed the first time. You can follow the progress using `docker-compose logs --follow rails` (exit with Ctrl+C).
+⚡ This will also install all required gems and seed the database, which takes some time to complete if it's executed the first time. You can follow the progress using `docker compose logs --follow rails` (exit with Ctrl+C).
 
 After the startup has completed (once you see `Listening on tcp://0.0.0.0:3000` in the logs), make sure all services are up and running:
 
 ```bash
-docker-compose ps
+docker compose ps
 ```
 
 This should look something like this:
@@ -121,7 +121,7 @@ Start developing by editing files locally with your prefered editor in the app/h
 For executing tasks like **rails routes** or starting the rails console in **development** environment, run the following command:
 
 ```bash
-docker-compose exec rails bash
+docker compose exec rails bash
 ```
 
 ### Running tests
@@ -173,19 +173,19 @@ bin/database_console
 ```
 ### Shutdown
 
-🍺 finished work ? execute **docker-compose down** to shut down all running containers
+🍺 finished work ? execute **docker compose down** to shut down all running containers
 
 ### Updating Images
 
 :calendar: If you have installed a previous development setup before 03.2021, please run the following command inside one project, and then update your images:
 ```bash
-docker-compose down && docker volume rm hitobito_bundle && docker volume create hitobito_bundle
+docker compose down && docker volume rm hitobito_bundle && docker volume create hitobito_bundle
 ```
 
 When the images of this project change, execute the following command to update them locally:
 
 ```bash
-docker-compose build --no-cache
+docker compose build --no-cache
 ```
 
 ### Cloning wagons quickly  
@@ -200,7 +200,7 @@ Make sure you execute the script in the folder you want to have your hitobito se
 # To retrieve the script
 - wget
 # Local development with docker
-- docker + docker-compose
+- docker + docker compose
 # Version control
 - git
 ```
@@ -293,7 +293,7 @@ Start the terminal within VSCode, by clicking the _Toggle panel_ button in the t
 
 Hitobito has official support for nextcloud. You can start a nextcloud instance ready and set up for OIDC authentication via hitobito as follows:
 ```bash
-docker-compose -f docker-compose.yml -f nextcloud.yml up
+docker compose -f docker-compose.yml -f nextcloud.yml up
 ```
 
 You can then access your local nextcloud instance at http://localhost.
@@ -307,8 +307,8 @@ The reason is that the connection between hitobito and nextcloud is set up durin
 To fix it, you first have to clear your database and then start again:
 ```bash
 # Clear the database
-docker-compose -f docker-compose.yml -f nextcloud.yml down --volumes
+docker compose -f docker-compose.yml -f nextcloud.yml down --volumes
 # Start again
-docker-compose -f docker-compose.yml -f nextcloud.yml up
+docker compose -f docker-compose.yml -f nextcloud.yml up
 # Now it should work
 ```

@@ -14,7 +14,7 @@ if [ ! -f $dump ]; then
     exit 2
 fi
 
-zcat $dump | docker-compose exec -T db bash -c '
+zcat $dump | docker compose exec -T db bash -c '
     mysql -uroot -p$MYSQL_ROOT_PASSWORD -D $MYSQL_DATABASE
 '
 
