@@ -11,10 +11,9 @@ services:
     - db
     - mailcatcher
     - cache
-    - webpack
+    - dev
     env_file: docker/rails.env
     environment:
-      WEBPACKER_DEV_SERVER_HOST: webpack
       DISABLE_SPRING: 'true'
     ports:
     - "3000:3000"
@@ -37,7 +36,6 @@ services:
       WAGONS: ''
       RAILS_ENV: test
       RAILS_TEST_DB_NAME: "hitobito_test_core"
-      WEBPACKER_DEV_SERVER_HOST: null
       RAILS_SPHINX_HOST: null
       SKIP_SEEDS: 1
       SKIP_BUNDLE_INSTALL: 1
@@ -104,20 +102,18 @@ services:
     - ./docker/test-setup.sql:/docker-entrypoint-initdb.d/test-setup.sql:ro
     - db:/var/lib/mysql
 
-  webpack:
+  dev:
     build:
       context: ./docker
       dockerfile: rails.dockerfile
     image: ghcr.io/hitobito/development/rails
-    entrypoint: [ "webpack-entrypoint.sh" ]
+    entrypoint: [ "dev-entrypoint.sh" ]
     env_file: docker/rails.env
     environment:
-      WEBPACKER_DEV_SERVER_HOST: webpack
       SKIP_BUNDLE_INSTALL: 1
+      
     user: "${RAILS_UID:-1000}"
-    command: /usr/src/app/hitobito/bin/webpack-dev-server
-    ports:
-    - "3035:3035"
+    command: /usr/src/app/hitobito/bin/dev
     volumes:
     - ./app/:/usr/src/app
     - hitobito_bundle:/opt/bundle

@@ -15,7 +15,7 @@ while ! bundle check >/dev/null 2>&1; do
 done
 
 echo "Running yarn install"
-bundle exec rails webpacker:yarn_install
+yarn install
 
 echo "⚙️  Testing DB connection"
 timeout 300s waitfortcp "${RAILS_DB_HOST-db}" "${RAILS_DB_PORT-3306}"
