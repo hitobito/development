@@ -1,6 +1,6 @@
 #!/bin/bash
 
-SCRIPT_DIR="$(dirname "$(realpath "${BASH_SOURCE[0]}")")"
+SCRIPT_DIR="$(dirname "$(realpath "${BASH_SOURCE[0]:-$_}")")"
 source $SCRIPT_DIR/db/_hit
 source $SCRIPT_DIR/rails/_hit
 
