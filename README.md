@@ -18,6 +18,11 @@ For executing tasks like **rails routes** or starting the rails console in **dev
 hit rails bash
 ```
 
+Or maybe better directly to the rails console ?
+```bash
+hit rails console
+```
+
 ### Running tests
 
 #### Open a test shell
