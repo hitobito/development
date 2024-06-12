@@ -8,12 +8,14 @@ Start developing by editing files locally with your prefered editor in the app/h
 
 :bulb: If you don't know where to begin changing something, have a look at our hitobito cheatsheet in [English](./doc/hitobito-cheatsheet-en.pdf) and [German](./doc/hitobito-cheatsheet.pdf).
 
+to initialize the `hit` command, run `source bin/dev-env.sh` in your console.
+
 ### Running rails tasks, console
 
 For executing tasks like **rails routes** or starting the rails console in **development** environment, run the following command:
 
 ```bash
-docker compose exec rails bash
+hit rails bash
 ```
 
 ### Running tests
