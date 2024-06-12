@@ -12,10 +12,13 @@ TEST_DB_NAME=hitobito_test_core
 # reset/create mysql db
 setup_test_db $TEST_DB_NAME
 
+PREPARE_RAILS_SPEC_CMD="rails db:schema:load"
+
 # run test env
 docker compose run --rm \
   --workdir=$WORKDIR \
   -e RAILS_ENV=test \
   -e RAILS_TEST_DB_NAME=$TEST_DB_NAME \
+  -e SKIP_INIT=1 \
   rails_test \
-  bundle exec bash "$@"
+  bundle exec "$PREPARE_RAILS_SPEC_CMD && bash"
