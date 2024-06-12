@@ -9,8 +9,7 @@ source $SCRIPT_DIR/rails/_hit
 function hit {
     case "$1" in
         test)
-            echo "Running tests..."
-            # Add your test logic here
+            $SCRIPT_DIR/test/env
             ;;
         attach)
             echo "Attaching to process..."

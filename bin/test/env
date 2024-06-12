@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+source $(dirname $0)/../_basics
+source $(dirname $0)/test_db_setup
+WORKDIR=/usr/src/app/hitobito
+HIT_TEST_ENV=core
+TEST_DB_NAME=hitobito_test_core
+
+# ask user for environment
+#test_env_menu
+
+# reset/create mysql db
+setup_test_db $TEST_DB_NAME
+
+# run test env
+docker compose run --rm \
+  --workdir=$WORKDIR \
+  -e RAILS_ENV=test \
+  -e RAILS_TEST_DB_NAME=$TEST_DB_NAME \
+  rails_test \
+  bundle exec bash "$@"
