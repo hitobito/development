@@ -29,7 +29,7 @@ services:
     - /etc/localtime:/etc/localtime:ro
 
   # `exec` into this to execute the tests of the core
-  rails_test_core:
+  rails_test:
     <<: *rails
     command: [ 'sleep', 'infinity' ]
     ports: []
