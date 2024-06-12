@@ -2,6 +2,7 @@
 
 SCRIPT_DIR="$(dirname "$(realpath "${BASH_SOURCE[0]}")")"
 source $SCRIPT_DIR/db/_hit
+source $SCRIPT_DIR/rails/_hit
 
 
 # Define the 'hit' command with subcommands
@@ -18,6 +19,10 @@ function hit {
         db)
             shift
             hit_db "$@"
+            ;;
+        rails)
+            shift
+            hit_rails "$@"
             ;;
         *)
             echo "Usage: hit {test|attach|db}"
