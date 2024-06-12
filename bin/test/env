@@ -2,17 +2,24 @@
 
 source $(dirname $0)/../_basics
 source $(dirname $0)/test_db_setup
-WORKDIR=/usr/src/app/hitobito
-HIT_TEST_ENV=core
-TEST_DB_NAME=hitobito_test_core
+source $(dirname $0)/select_test_env
 
 # ask user for environment
-#test_env_menu
+HIT_TEST_ENV=$(select_test_env)
+TEST_DB_NAME="hitobito_test_$HIT_TEST_ENV"
+
+echo "Starting test env for: $HIT_TEST_ENV"
 
 # reset/create mysql db
 setup_test_db $TEST_DB_NAME
 
-PREPARE_RAILS_SPEC_CMD="rails db:schema:load"
+if [[ "$HIT_TEST_ENV" == "core" ]]; then
+  PREPARE_RAILS_SPEC_CMD="rails db:schema:load"
+  WORKDIR=/usr/src/app/hitobito
+else
+  PREPARE_RAILS_SPEC_CMD="rake app:db:schema:load app:wagon:migrate"
+  WORKDIR="/usr/src/app/hitobito_$HIT_TEST_ENV"
+fi
 
 # run test env
 docker compose run --rm \
