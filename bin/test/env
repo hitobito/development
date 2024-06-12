@@ -4,6 +4,9 @@ source $(dirname $0)/../_basics
 source $(dirname $0)/test_db_setup
 source $(dirname $0)/select_test_env
 
+# make sure db is up and running
+docker compose up db -d
+
 # ask user for environment
 HIT_TEST_ENV=$(select_test_env)
 TEST_DB_NAME="hitobito_test_$HIT_TEST_ENV"
@@ -20,6 +23,15 @@ else
   PREPARE_RAILS_SPEC_CMD="rake app:db:schema:load app:wagon:migrate"
   WORKDIR="/usr/src/app/hitobito_$HIT_TEST_ENV"
 fi
+
+# prepare bundle & co
+docker compose run --rm \
+  --workdir=/usr/src/app/hitobito \
+  -e RAILS_ENV=test \
+  -e RAILS_TEST_DB_NAME=$TEST_DB_NAME \
+  -e SKIP_INIT=1 \
+  rails_test \
+  bash -c "bundle install && bundle exec ./bin/webpack-test-compile"
 
 # run test env
 docker compose run --rm \
