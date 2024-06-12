@@ -25,15 +25,7 @@ hit rails bash
 Either, to run tests for the core:
 
 ```bash
-bin/test_env_core
-```
-
-or, to run tests for a wagon:
-
-
-```bash
-export WAGON=MYWAGON # e.g. WAGON=pbs
-bin/test_env_wagon
+hit test
 ```
 
 #### Run desired tests
