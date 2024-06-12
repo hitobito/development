@@ -3,14 +3,16 @@
 function hit_rails {
     case "$1" in
         console)
-            echo "Connecting to database console..."
             SCRIPT_DIR="$(dirname "$(realpath "${BASH_SOURCE[0]}")")"
             bash "$SCRIPT_DIR/console"
             ;;
         bash)
-            echo "Connecting to database console..."
             SCRIPT_DIR="$(dirname "$(realpath "${BASH_SOURCE[0]}")")"
             bash "$SCRIPT_DIR/bash"
+            ;;
+        routes)
+            SCRIPT_DIR="$(dirname "$(realpath "${BASH_SOURCE[0]}")")"
+            bash "$SCRIPT_DIR/routes"
             ;;
         *)
             echo "Usage: hit rails {console, bash}"
