@@ -1,0 +1,28 @@
+#!/bin/bash
+SCRIPT_DIR="$(dirname "$(realpath "${BASH_SOURCE[0]}")")"
+
+function available_wagons {
+  local env_names=$(ls -d "$SCRIPT_DIR"/../../app/hitobito_* | sed 's|.*/hitobito_||')
+  local env_names="core $env_names"
+  echo $env_names
+}
+
+function select_test_env {
+  read -r -a env_array <<< $(available_wagons)
+
+  local prompt="Please select an environment:"
+  for ((i=0; i<${#env_array[@]}; i++)); do
+    prompt+=" $((i+1)). ${env_array[i]},"
+  done
+  prompt=${prompt%,}  # Remove the trailing comma
+
+  read -p "$prompt " choice 
+
+  if [[ ! "$choice" =~ ^[1-${#env_array[@]}]$ ]]; then
+    echo "Invalid choice. Please enter a number between 1 and ${#env_array[@]}."
+    return 1
+  fi
+
+  local selected_env="${env_array[choice-1]}"
+  echo "$selected_env"
+}
