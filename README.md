@@ -22,7 +22,12 @@ hit rails bash
 
 #### Open a test shell
 
-Either, to run tests for the core:
+When using this for the first time, once daily or after assets changed run the prep command
+```bash
+hit test prep
+```
+
+Get a shell to run core or wagon specs
 
 ```bash
 hit test
