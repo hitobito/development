@@ -62,7 +62,7 @@ RUN bash -vxc "gem install bundler -v ${BUNDLER_VERSION}"
 RUN bash -vxc 'gem install cmdparse pastel'
 
 COPY ./rails-entrypoint.sh /usr/local/bin
-COPY ./webpack-entrypoint.sh /usr/local/bin
+COPY ./dev-entrypoint.sh /usr/local/bin
 COPY ./waitfortcp /usr/local/bin
 
 RUN mkdir /opt/bundle && chmod 777 /opt/bundle
