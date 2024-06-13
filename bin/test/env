@@ -24,15 +24,6 @@ else
   WORKDIR="/usr/src/app/hitobito_$HIT_TEST_ENV"
 fi
 
-# prepare bundle & co
-docker compose run --rm \
-  --workdir=/usr/src/app/hitobito \
-  -e RAILS_ENV=test \
-  -e RAILS_TEST_DB_NAME=$TEST_DB_NAME \
-  -e SKIP_INIT=1 \
-  rails_test \
-  bash -c "bundle install && bundle exec ./bin/webpack-test-compile"
-
 # run test env
 docker compose run --rm \
   --workdir=$WORKDIR \
