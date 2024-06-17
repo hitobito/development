@@ -1,17 +1,15 @@
 #!/bin/bash
 
 function hit_rails {
+    SCRIPT_DIR="$(dirname "$(realpath "${BASH_SOURCE[0]:-${(%):-%x}}")")"
     case "$1" in
         console)
-            SCRIPT_DIR="$(dirname "$(realpath "${BASH_SOURCE[0]}")")"
             bash "$SCRIPT_DIR/console"
             ;;
         bash)
-            SCRIPT_DIR="$(dirname "$(realpath "${BASH_SOURCE[0]}")")"
             bash "$SCRIPT_DIR/bash"
             ;;
         routes)
-            SCRIPT_DIR="$(dirname "$(realpath "${BASH_SOURCE[0]}")")"
             bash "$SCRIPT_DIR/routes"
             ;;
         *)
