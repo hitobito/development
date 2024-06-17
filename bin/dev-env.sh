@@ -34,6 +34,3 @@ function hit {
       ;;
   esac
 }
-
-# Export the command so it can be used in the current session
-export -f hit

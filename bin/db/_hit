@@ -13,5 +13,3 @@ function hit_db {
             ;;
     esac
 }
-
-export -f hit_db
