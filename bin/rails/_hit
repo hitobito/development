@@ -20,5 +20,3 @@ function hit_rails {
             ;;
     esac
 }
-
-export -f hit_rails
