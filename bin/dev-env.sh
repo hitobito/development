@@ -29,7 +29,7 @@ function hit {
       hit_rails "$@"
       ;;
     *)
-      echo "Usage: hit {test|attach|db}"
+      echo "Usage: hit {test|attach|db|rails}"
       return 1
       ;;
   esac
