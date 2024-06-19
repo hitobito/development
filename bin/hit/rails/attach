@@ -1,21 +1,14 @@
 #!/usr/bin/env bash
 
-# Use this to attach your terminal to the running rails server.
-#
-# This way you can use irb to interactively debug.
-
-project=$(basename $(pwd))
-echo $project
-
 container() {
-    docker ps | grep "${project}-rails-1"
+  docker ps | grep "${HIT_PROJECT}-rails-1"
 }
 
 if ! container >/dev/null; then
-    echo "Rails is not running. Try 'docker compose up' to start or 'docker compose ps' to debug."
-    exit 1
+  echo "Rails is not running. Try 'docker compose up' to start or 'docker compose ps' to debug."
+  exit 1
 fi
 
 docker attach $(container | awk '{ print $1 }')\
-   \
+  \
   --detach-keys "ctrl-c"
