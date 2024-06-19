@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
-
-source $(dirname $0)/../_basics
-source $(dirname $0)/test_db_setup
-source $(dirname $0)/select_test_env
+source $HIT_SCRIPT_DIR/test/test_db_setup
+source $HIT_SCRIPT_DIR/test/select_test_env
 
 # make sure db is up and running
 docker compose up db -d

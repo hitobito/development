@@ -1,13 +1,11 @@
 #!/bin/bash
-SCRIPT_DIR="$(dirname "$(realpath "${BASH_SOURCE[0]}")")"
-
-function available_wagons {
-  local env_names=$(ls -d "$SCRIPT_DIR"/../../app/hitobito_* | sed 's|.*/hitobito_||')
+available_wagons() {
+  local env_names=$(ls -d "$HIT_SCRIPT_DIR"/../../app/hitobito_* | sed 's|.*/hitobito_||')
   local env_names="core $env_names"
   echo $env_names
 }
 
-function select_test_env {
+select_test_env() {
   read -r -a env_array <<< $(available_wagons)
 
   local prompt="Please select an environment:"

@@ -1,24 +1,16 @@
 #!/bin/bash
-
 SCRIPT_DIR="$(dirname "$(realpath "${BASH_SOURCE[0]:-$_}")")"
-source $SCRIPT_DIR/db/_hit
-source $SCRIPT_DIR/rails/_hit
+HIT_SCRIPT_DIR=$SCRIPT_DIR/hit
+export HIT_SCRIPT_DIR
+source $SCRIPT_DIR/hit/test/_hit
+source $SCRIPT_DIR/hit/db/_hit
+source $SCRIPT_DIR/hit/rails/_hit
 
-
-# Define the 'hit' command with subcommands
-function hit {
+hit() {
   case "$1" in
     test)
-      if [[ "$2" == "prep" ]]; then
-        $SCRIPT_DIR/test/prep
-      else
-        $SCRIPT_DIR/test/env
-      fi
-
-      ;;
-    attach)
-      echo "Attaching to process..."
-      # Add your attach logic here
+      shift
+      hit_test
       ;;
     db)
       shift
@@ -29,7 +21,7 @@ function hit {
       hit_rails "$@"
       ;;
     *)
-      echo "Usage: hit {test|attach|db|rails}"
+      echo "Usage: hit {test|db|rails|worker}"
       return 1
       ;;
   esac
