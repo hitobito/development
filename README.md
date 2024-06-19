@@ -27,8 +27,9 @@ hit rails console
 |-------|-----------|
 |bash   |Start bash in rails container|
 |console|Rails Console|
-|logs|Attach to rails container logs|
-|routes|Print rails routes|
+|logs   |Attach to rails container logs|
+|routes |Print rails routes|
+|attach |Attach to rails container for debugging|
 
 ### Running tests
 
