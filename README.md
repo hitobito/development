@@ -58,9 +58,6 @@ or, to run specific tests:
 
 ```bash
 rspec spec/models/person_spec.rb
-
-# To run a capybara feature spec, which runs inside a real browser, pass the following flag:
-rspec --tag type:feature spec/features/person/person_tags_spec.rb
 ```
 
 ### HTTP request debugging with pry
@@ -68,7 +65,7 @@ rspec --tag type:feature spec/features/person/person_tags_spec.rb
 For debugging with pry during a HTTP request, you can attach to the running docker container (detach with Ctrl+c):
 
 ```bash
-bin/attach_to_rails
+hit rails attach
 ```
 
 ### Access Development Database
