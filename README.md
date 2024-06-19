@@ -10,7 +10,7 @@ Start developing by editing files locally with your prefered editor in the app/h
 
 to initialize the `hit` command, run `source bin/dev-env.sh` in your console.
 
-### hit rails
+### hit rails $command
 
 Examples:
 
@@ -23,7 +23,7 @@ Or maybe better directly to the rails console ?
 hit rails console
 ```
 
-|Command|Description|
+|$command|description|
 |-------|-----------|
 |bash   |Start bash in rails container|
 |console|Rails Console|
