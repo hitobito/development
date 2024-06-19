@@ -10,9 +10,9 @@ Start developing by editing files locally with your prefered editor in the app/h
 
 to initialize the `hit` command, run `source bin/dev-env.sh` in your console.
 
-### Running rails tasks, console
+### hit rails
 
-For executing tasks like **rails routes** or starting the rails console in **development** environment, run the following command:
+Examples:
 
 ```bash
 hit rails bash
@@ -22,6 +22,13 @@ Or maybe better directly to the rails console ?
 ```bash
 hit rails console
 ```
+
+|Command|Description|
+|-------|-----------|
+|bash   |Start bash in rails container|
+|console|Rails Console|
+|logs|Attach to rails container logs|
+|routes|Print rails routes|
 
 ### Running tests
 
