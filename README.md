@@ -70,7 +70,7 @@ hit rails attach
 
 ### Access Development Database
 ```bash
-bin/database_console
+hit db console
 ```
 ### Shutdown
 
