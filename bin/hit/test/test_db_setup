@@ -1,13 +1,11 @@
 #!/usr/bin/env bash
 
-function mysql_sql_cmd {
+mysql_sql_cmd() {
   CMD="mysql -uroot -phitobito -e \"$1\""
   docker compose exec db bash -c "$CMD"
 }
 
-function setup_test_db {
+setup_test_db() {
   mysql_sql_cmd "DROP DATABASE IF EXISTS $1;"
   mysql_sql_cmd "CREATE DATABASE $1;"
 }
-
-export -f setup_test_db

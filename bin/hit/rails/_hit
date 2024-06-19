@@ -1,0 +1,19 @@
+#!/bin/bash
+
+hit_rails() {
+  case "$1" in
+    console)
+      bash "$HIT_SCRIPT_DIR/console"
+      ;;
+    bash)
+      bash "$HIT_SCRIPT_DIR/bash"
+      ;;
+    routes)
+      bash "$HIT_SCRIPT_DIR/routes"
+      ;;
+    *)
+      echo "Usage: hit rails {console, bash}"
+      return 1
+      ;;
+  esac
+}

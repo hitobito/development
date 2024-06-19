@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+test_prep() {
+  commands=(
+    "bundle install"
+    'for dir in ../hitobito_*; do [ -d "$dir" ] && cp Gemfile.lock "$dir"; done'
+  )
+
+  cmds=$(IFS=" && "; echo "${commands[*]}")
+
+  docker compose run --rm \
+    --workdir=/usr/src/app/hitobito \
+    -e RAILS_ENV=test \
+    -e SKIP_INIT=1 \
+    rails_test \
+    bash -c "$cmds"
+  }
