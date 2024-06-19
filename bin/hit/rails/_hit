@@ -2,6 +2,9 @@
 
 hit_rails() {
   case "$1" in
+    attach)
+      bash "$HIT_SCRIPT_DIR/rails/attach"
+      ;;
     console)
       bash "$HIT_SCRIPT_DIR/rails/console"
       ;;
@@ -12,7 +15,7 @@ hit_rails() {
       bash "$HIT_SCRIPT_DIR/rails/routes"
       ;;
     *)
-      echo "Usage: hit rails {console, bash, routes}"
+      echo "Usage: hit rails {attach, console, bash, routes}"
       return 1
       ;;
   esac
