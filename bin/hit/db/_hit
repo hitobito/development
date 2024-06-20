@@ -1,11 +1,10 @@
 #!/bin/bash
 
-function hit_db {
-    SCRIPT_DIR="$(dirname "$(realpath "${BASH_SOURCE[0]:-${(%):-%x}}")")"
+hit_db() {
     case "$1" in
         console)
             echo "Connecting to database console..."
-            bash "$SCRIPT_DIR/console"
+            bash "$HIT_SCRIPT_DIR/db/console"
             ;;
         *)
             echo "Usage: hit db {console}"
