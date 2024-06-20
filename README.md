@@ -10,6 +10,23 @@ Start developing by editing files locally with your prefered editor in the app/h
 
 to initialize the `hit` command, run `source bin/dev-env.sh` in your console.
 
+### hit dev $command
+
+Examples:
+to start the develpment environment
+
+```bash
+hit dev up
+```
+
+access hitobito by browser: http://localhost:3000
+
+|$command|description|
+|-------|-----------|
+|up   |start dev environment|
+|down|shutdown dev environment|
+|ps   |print dev env status info|
+
 ### hit rails $command
 
 Examples:
@@ -25,9 +42,9 @@ hit rails console
 
 |$command|description|
 |-------|-----------|
-|bash   |Start bash in rails container|
-|console|Rails Console|
-|logs   |Attach to rails container logs|
+|bash   |start bash in rails container|
+|console|rails console|
+|logs   |attach to rails container logs|
 |routes |Print rails routes|
 |attach |Attach to rails container for debugging|
 
