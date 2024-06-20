@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-source $(dirname $0)/_basics
-
 docker compose exec db bash -c '
-    mysql -uroot -p$MYSQL_ROOT_PASSWORD -D $MYSQL_DATABASE
+    mysql -uroot -phitobito -D hitobito_development
 '
