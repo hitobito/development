@@ -91,4 +91,4 @@ hit db console
 ```
 ### Shutdown
 
-🍺 finished work ? execute **docker compose down** to shut down all running containers
+🍺 finished work ? execute **hit dev down** to shut down all running containers
