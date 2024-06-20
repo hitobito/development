@@ -1,7 +1,6 @@
 #!/bin/bash
 available_wagons() {
-  local env_names=$(ls -d "$HIT_SCRIPT_DIR"/../../app/hitobito_* | sed 's|.*/hitobito_||')
-  local env_names="core $env_names"
+  local env_names="core $HIT_WAGON_NAMES"
   echo $env_names
 }
 
