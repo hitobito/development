@@ -1,0 +1,19 @@
+#!/bin/bash
+
+hit_dev() {
+  case "$1" in
+    up)
+      bash "$HIT_SCRIPT_DIR/dev/up"
+      ;;
+    down)
+      bash "$HIT_SCRIPT_DIR/dev/down"
+      ;;
+    ps)
+      bash "$HIT_SCRIPT_DIR/dev/ps"
+      ;;
+    *)
+      echo "Usage: hit dev {up, down, ps}"
+      return 1
+      ;;
+  esac
+}

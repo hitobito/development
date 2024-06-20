@@ -7,12 +7,20 @@ export HIT_PROJECT
 source $SCRIPT_DIR/hit/test/_hit
 source $SCRIPT_DIR/hit/db/_hit
 source $SCRIPT_DIR/hit/rails/_hit
+source $SCRIPT_DIR/hit/dev/_hit
+
+PS1="HIT-$HIT_PROJECT> "
 
 hit() {
+  cd $SCRIPT_DIR/../
   case "$1" in
     test)
       shift
       hit_test
+      ;;
+    dev)
+      shift
+      hit_dev "$@"
       ;;
     db)
       shift
@@ -23,7 +31,7 @@ hit() {
       hit_rails "$@"
       ;;
     *)
-      echo "Usage: hit {test|db|rails|worker}"
+      echo "Usage: hit {dev|test|db|rails|worker}"
       echo "Current HIT Project: $HIT_PROJECT"
       return 1
       ;;
