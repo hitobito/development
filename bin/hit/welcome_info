@@ -1,0 +1,20 @@
+#!/bin/bash
+
+hit_welcome_banner() {
+  echo '
+         ___  __   __    ___  __  
+  |__| |  |  /  \ |__) |  |  /  \ 
+  |  | |  |  \__/ |__) |  |  \__/
+
+      development environment
+               HIT
+
+  '
+}
+
+hit_welcome_info() {
+  hit_welcome_banner
+  echo "Active HIT-Env: $HIT_PROJECT"
+  echo -n "Present wagons: "
+  echo $HIT_WAGON_NAMES
+}

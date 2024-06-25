@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+# prepare bundle & co
+docker compose run --rm \
+  --workdir=/usr/src/app/hitobito \
+  -e RAILS_ENV=development \
+  -e SKIP_INIT=1 \
+  rails_test \
+  bash -c "bundle install && bundle exec ./bin/webpack-test-compile"

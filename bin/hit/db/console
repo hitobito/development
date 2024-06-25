@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+docker compose exec db bash -c '
+    mysql -uroot -phitobito -D hitobito_development
+'
