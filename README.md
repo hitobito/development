@@ -1,25 +1,25 @@
 # Hitobito Development 👩🏽‍💻
 
-new here? install our docker developmet [setup](doc/setup.md)!
+New here? Install our docker development [setup](doc/setup.md)!
 
 ## Development
 
-Start developing by editing files locally with your prefered editor in the app/hitobito* folders. Those directories are mounted inside the containers. So every saved file is instantly available inside the containers.
+Start developing by editing files locally with your preferred editor in the app/hitobito* folders. Those directories are mounted inside the containers. So every saved file is instantly available inside the containers.
 
 :bulb: If you don't know where to begin changing something, have a look at our hitobito cheatsheet in [English](./doc/hitobito-cheatsheet-en.pdf) and [German](./doc/hitobito-cheatsheet.pdf).
 
-to initialize the `hit` command, run `source bin/dev-env.sh` in your console.
+To initialize the `hit` command, run `source bin/dev-env.sh` in your console.
 
 ### hit dev $command
 
 Examples:
-to start the develpment environment
+to start the development environment
 
 ```bash
 hit dev up
 ```
 
-access hitobito by browser: http://localhost:3000
+Access hitobito by browser: http://localhost:3000
 
 |$command|description|
 |-------|-----------|
