@@ -20,7 +20,7 @@ hit() {
   case "$1" in
     test)
       shift
-      hit_test
+      hit_test "$@"
       ;;
     dev)
       shift
