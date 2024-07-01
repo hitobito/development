@@ -1,0 +1,15 @@
+#!/bin/bash
+
+hit_test() {
+  case "$1" in
+    prep)
+      bash "$HIT_SCRIPT_DIR/test/prep"
+      ;;
+    help)
+      echo "Usage: hit test [prep]"
+      ;;
+    *)
+      bash "$HIT_SCRIPT_DIR/test/env"
+      ;;
+  esac
+}
