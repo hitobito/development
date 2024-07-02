@@ -4,14 +4,19 @@ services:
       context: ./docker
       dockerfile: rails.dockerfile
     image: ghcr.io/hitobito/development/rails
+    restart: unless-stopped
     user: "${RAILS_UID:-1000}"
     tty: true
     stdin_open: true
     depends_on:
-    - db
-    - mailcatcher
-    - cache
-    - webpack
+      db:
+        condition: service_healthy
+      mailcatcher:
+        condition: service_healthy
+      cache:
+        condition: service_started
+      webpack:
+        condition: service_started
     env_file: docker/rails.env
     environment:
       WEBPACKER_DEV_SERVER_HOST: webpack
@@ -22,11 +27,19 @@ services:
     - ./app/:/usr/src/app
     - hitobito_bundle:/opt/bundle
     - seed:/seed
-    - ./docker/home/rails:/home/developer
-    - /tmp/.X11-unix:/tmp/.X11-unix
+    - ./docker/home/rails/.bashrc:/home/developer/.bashrc
+    - ./docker/home/rails/.pryrc:/home/developer/.pryrc
+    # Capybara can show the browser window on the host if the X11 socket is mounted… however this can brick on some systems (eg. Apple Silicon Macs)
+    #- /tmp/.X11-unix:/tmp/.X11-unix
     - ./docker/rails/work_around_docker_fs_bug.rb:/usr/src/app/hitobito/config/initializers/work_around_docker_fs_bug.rb:ro
     - /etc/timezone:/etc/timezone:ro
     - /etc/localtime:/etc/localtime:ro
+    - /var/run/docker.sock:/var/run/docker.sock
+    healthcheck:
+      test: [ "CMD", "curl", "--fail", "http://localhost:3000/healthz" ]
+      interval: 5s
+      timeout: 5s
+      start_period: 30m
 
   # `exec` into this to execute the tests of the core
   rails_test:
@@ -42,7 +55,8 @@ services:
       SKIP_SEEDS: 1
       SKIP_BUNDLE_INSTALL: 1
     depends_on:
-    - db
+      db:
+        condition: service_healthy
 
   worker:
     <<: *rails
@@ -53,29 +67,43 @@ services:
       SKIP_SEEDS: 1
       SKIP_BUNDLE_INSTALL: 1
     depends_on:
-    - rails
-    - db
-    - mailcatcher
-    - cache
+      rails:
+        condition: service_healthy
+      db:
+        condition: service_healthy
+      mailcatcher:
+        condition: service_healthy
+      cache:
+        condition: service_started
+
 
   # Dependencies
   mailcatcher:
+    restart: unless-stopped
     image: ghcr.io/hitobito/development/mailcatcher
     build:
       context: ./docker
       dockerfile: mailcatcher.dockerfile
     ports:
     - "1080:1080"
-
+    healthcheck:
+      test: [ "CMD", "curl", "--fail", "http://localhost:1080" ]
+      interval: 5s
+      timeout: 5s
   cache:
+    restart: unless-stopped
     image: memcached:1.6-alpine
     command: [ memcached, -l, '0.0.0.0', -p, '11211' ]
 
   sphinx:
+    restart: unless-stopped
     image: macbre/sphinxsearch:3.1.1
     command: sphinx-start
     depends_on:
-    - db
+      db:
+        condition: service_healthy
+      rails:
+        condition: service_healthy
     volumes:
     - ./docker/sphinx.conf:/opt/sphinx/conf/sphinx.conf:ro
     - ./docker/sphinx-start:/usr/local/bin/sphinx-start:ro
@@ -84,7 +112,8 @@ services:
     profiles: [sphinx]
 
   db:
-    image: mysql:5.7
+    restart: unless-stopped
+    image: mariadb:10.2
     command:
     - --sort_buffer_size=2M
     - --character-set-server=utf8mb4
@@ -103,8 +132,13 @@ services:
     - ./docker/mysql-setup.sql:/docker-entrypoint-initdb.d/mysql-setup.sql:ro
     - ./docker/test-setup.sql:/docker-entrypoint-initdb.d/test-setup.sql:ro
     - db:/var/lib/mysql
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "--silent" ]
+      interval: 5s
+      timeout: 5s
 
   webpack:
+    restart: unless-stopped
     build:
       context: ./docker
       dockerfile: rails.dockerfile
@@ -122,6 +156,9 @@ services:
     - ./app/:/usr/src/app
     - hitobito_bundle:/opt/bundle
     - hitobito_yarn_cache:/home/developer/.cache/yarn
+    depends_on:
+      db:
+        condition: service_healthy
 
 volumes:
   db:
