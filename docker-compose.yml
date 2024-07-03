@@ -85,6 +85,7 @@ services:
 
   db:
     image: mysql:5.7
+    platform: linux/amd64
     command:
     - --sort_buffer_size=2M
     - --character-set-server=utf8mb4
