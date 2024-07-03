@@ -35,11 +35,11 @@ services:
 #    - /etc/timezone:/etc/timezone:ro
     - /etc/localtime:/etc/localtime:ro
     - /var/run/docker.sock:/var/run/docker.sock
-    healthcheck:
-      test: [ "CMD", "curl", "--fail", "http://localhost:3000/healthz" ]
-      interval: 5s
-      timeout: 5s
-      start_period: 30m
+    #healthcheck:
+    #  test: [ "CMD", "curl", "--fail", "http://localhost:3000/healthz" ]
+    #  interval: 5s
+    #  timeout: 5s
+    #  start_period: 30m
 
   # `exec` into this to execute the tests of the core
   rails_test:
