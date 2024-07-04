@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
 
-echo 'Connecting to database console...'
-docker compose exec db bash -c 'mysql -uroot -phitobito -D hitobito_development'
+docker compose exec postgres bash -c '
+    psql -U root -d hitobito_development
+'
