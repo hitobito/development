@@ -3,7 +3,7 @@ source $HIT_SCRIPT_DIR/test/test_db_setup
 source $HIT_SCRIPT_DIR/test/select_test_env
 
 # make sure db is up and running
-docker compose up db -d
+docker compose up postgres -d
 
 # ask user for environment
 HIT_TEST_ENV=$(select_test_env)
@@ -15,10 +15,10 @@ echo "Starting test env for: $HIT_TEST_ENV"
 setup_test_db $TEST_DB_NAME
 
 if [[ "$HIT_TEST_ENV" == "core" ]]; then
-  PREPARE_RAILS_SPEC_CMD="rails db:schema:load"
+  PREPARE_RAILS_SPEC_CMD="rails db:migrate"
   WORKDIR=/usr/src/app/hitobito
 else
-  PREPARE_RAILS_SPEC_CMD="cp ../hitobito/Gemfile.lock . && rake app:db:schema:load app:wagon:migrate"
+  PREPARE_RAILS_SPEC_CMD="cp ../hitobito/Gemfile.lock . && rake app:db:migrate app:wagon:migrate"
   WORKDIR="/usr/src/app/hitobito_$HIT_TEST_ENV"
 fi
 
