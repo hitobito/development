@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 psql_sql_cmd() {
-  CMD="psql -U hitobito -d hitobito_test -c \"$1\""
+  CMD="psql -U hitobito -d postgres -c \"$1\""
   docker compose exec postgres bash -c "$CMD"
 }
 
