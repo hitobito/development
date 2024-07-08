@@ -51,16 +51,28 @@ TEST_DB_NAME="hitobito_test_$HIT_TEST_ENV"
 
 echo "Starting test env for: $HIT_TEST_ENV"
 
+apply_core_db_migrations() {
+  docker compose run --rm \
+    --workdir=/usr/src/app/hitobito \
+    -e RAILS_ENV=test \
+    -e RAILS_TEST_DB_NAME=$TEST_DB_NAME \
+    -e RAILS_DB_NAME=$TEST_DB_NAME \
+    -e SKIP_INIT=1 \
+    rails_test \
+    bundle exec "rake db:migrate"
+}
+
 # reset/create mysql db
 mysql_sql_cmd "DROP DATABASE IF EXISTS $TEST_DB_NAME;"
 mysql_sql_cmd "CREATE DATABASE $TEST_DB_NAME;"
 
 if [[ "$HIT_TEST_ENV" == "core" ]]; then
-  PREPARE_RAILS_SPEC_CMD="rails db:migrate"
+  PREPARE_RAILS_SPEC_CMD="rake db:migrate"
   WORKDIR=/usr/src/app/hitobito
 else
-  PREPARE_RAILS_SPEC_CMD="cp ../hitobito/Gemfile.lock . && rake app:db:migrate app:wagon:migrate"
+  PREPARE_RAILS_SPEC_CMD="cp ../hitobito/Gemfile.lock . && rake app:wagon:migrate"
   WORKDIR="/usr/src/app/hitobito_$HIT_TEST_ENV"
+  apply_core_db_migrations
 fi
 
 # run test env
@@ -68,6 +80,7 @@ docker compose run --rm \
   --workdir=$WORKDIR \
   -e RAILS_ENV=test \
   -e RAILS_TEST_DB_NAME=$TEST_DB_NAME \
+  -e RAILS_DB_NAME=$TEST_DB_NAME \
   -e SKIP_INIT=1 \
   rails_test \
   bundle exec "$PREPARE_RAILS_SPEC_CMD && bash"

@@ -81,16 +81,6 @@ services:
     - sphinx_indexes:/opt/sphinx/indexes
     profiles: [sphinx]
 
-  # db:
-  #   image: mysql:5.7
-  #   command:
-  #   - --sort_buffer_size=2M
-  #   - --character-set-server=utf8mb4
-  #   - --collation-server=utf8mb4_general_ci
-  #   - --innodb-lock-wait-timeout=2
-  #   - --max_allowed_packet=3250585600
-  #   env_file: ./docker/mysql.env
-
   postgres:
     image: postgres:16
     env_file: ./docker/postgres.env
@@ -122,7 +112,6 @@ services:
 
 volumes:
   postgres:
-  # db:
   seed:
   hitobito_bundle:
     external: true
