@@ -18,7 +18,7 @@ if [[ "$HIT_TEST_ENV" == "core" ]]; then
   PREPARE_RAILS_SPEC_CMD="rails db:schema:load"
   WORKDIR=/usr/src/app/hitobito
 else
-  PREPARE_RAILS_SPEC_CMD="rake app:db:schema:load app:wagon:migrate"
+  PREPARE_RAILS_SPEC_CMD="cp ../hitobito/Gemfile.lock . && rake app:db:schema:load app:wagon:migrate"
   WORKDIR="/usr/src/app/hitobito_$HIT_TEST_ENV"
 fi
 
