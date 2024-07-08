@@ -6,6 +6,6 @@ psql_sql_cmd() {
 }
 
 setup_test_db() {
-  psql_sql_cmd "DROP DATABASE IF EXISTS $1;"
+  psql_sql_cmd "DROP DATABASE IF EXISTS $1 WITH (FORCE);"
   psql_sql_cmd "CREATE DATABASE $1;"
 }
