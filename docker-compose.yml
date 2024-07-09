@@ -33,9 +33,7 @@ services:
     command: [ 'sleep', 'infinity' ]
     ports: []
     environment:
-      WAGONS: ''
       RAILS_ENV: test
-      RAILS_TEST_DB_NAME: "hitobito_test_core"
       WEBPACKER_DEV_SERVER_HOST: null
       RAILS_SPHINX_HOST: null
       SKIP_SEEDS: 1
