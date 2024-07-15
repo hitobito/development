@@ -27,12 +27,9 @@ services:
     - ./app/:/usr/src/app
     - hitobito_bundle:/opt/bundle
     - seed:/seed
-    - ./docker/home/rails/.bashrc:/home/developer/.bashrc
-    - ./docker/home/rails/.pryrc:/home/developer/.pryrc
-    # Capybara can show the browser window on the host if the X11 socket is mounted… however this can brick on some systems (eg. Apple Silicon Macs)
-    #- /tmp/.X11-unix:/tmp/.X11-unix
-    - ./docker/rails/work_around_docker_fs_bug.rb:/usr/src/app/hitobito/config/initializers/work_around_docker_fs_bug.rb:ro
-#    - /etc/timezone:/etc/timezone:ro
+    - ./docker/home/rails:/home/developer
+    - /tmp/.X11-unix:/tmp/.X11-unix
+    #- /etc/timezone:/etc/timezone:ro
     - /etc/localtime:/etc/localtime:ro
     - /var/run/docker.sock:/var/run/docker.sock
     #healthcheck:
@@ -47,9 +44,7 @@ services:
     command: [ 'sleep', 'infinity' ]
     ports: []
     environment:
-      WAGONS: ''
       RAILS_ENV: test
-      RAILS_TEST_DB_NAME: "hitobito_test_core"
       WEBPACKER_DEV_SERVER_HOST: null
       RAILS_SPHINX_HOST: null
       SKIP_SEEDS: 1

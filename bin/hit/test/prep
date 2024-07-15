@@ -6,4 +6,4 @@ docker compose run --rm \
   -e RAILS_ENV=development \
   -e SKIP_INIT=1 \
   rails_test \
-  bash -c "bundle install && bundle exec ./bin/webpack-test-compile"
+  bash -c "bundle install && bundle exec rake assets:clobber && bundle exec ./bin/webpack-test-compile"

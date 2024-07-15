@@ -3,10 +3,8 @@
 .local
 .yarnrc
 /dumps
-docker/home/rails/
-!docker/home/rails/.pryrc
-!docker/home/rails/.bashrc
-!docker/home/rails/.gitignore
+/docker/home/rails/*
+!/docker/home/rails/.*rc
 /shared/.env.generated
 app/*
 !app/.vscode
