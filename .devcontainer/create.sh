@@ -4,5 +4,6 @@
 
 sudo gem install debug
 sudo gem install ruby-lsp
+sudo gem install rubocop rubocop-rails rubocop-rspec
 
 /usr/local/bin/rails-entrypoint.sh echo "Finished initializing!"

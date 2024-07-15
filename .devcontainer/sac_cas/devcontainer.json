@@ -32,8 +32,7 @@
 		"vscode": {
 			"extensions": [
 				"KoichiSasada.vscode-rdbg",
-				"Shopify.ruby-lsp",
-				"sorbet.sorbet-vscode-extension"
+				"Shopify.ruby-lsp"
 			]
 		}
 	}
