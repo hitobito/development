@@ -89,6 +89,14 @@ hit rails attach
 ```bash
 hit db console
 ```
+
+### Rerunning seeds
+
+Useful when adding new seeds
+```bash
+hit db seed
+```
+
 ### Shutdown
 
 🍺 finished work ? execute **hit dev down** to shut down all running containers
