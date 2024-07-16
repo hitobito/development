@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+docker compose run \
+  -e SKIP_INIT=1 \
+  rails \
+  bundle exec rails db:seed wagon:seed

@@ -6,8 +6,12 @@ hit_db() {
             echo "Connecting to database console..."
             bash "$HIT_SCRIPT_DIR/db/console"
             ;;
+        seed)
+            echo "Seeding db..."
+            bash "$HIT_SCRIPT_DIR/db/seed"
+            ;;
         *)
-            echo "Usage: hit db {console}"
+            echo "Usage: hit db {console, seed}"
             return 1
             ;;
     esac
