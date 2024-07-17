@@ -1,18 +1,18 @@
 #!/bin/bash
 
 hit_db() {
-    case "$1" in
-        console)
-            echo "Connecting to database console..."
-            bash "$HIT_SCRIPT_DIR/db/console"
-            ;;
-        seed)
-            echo "Seeding db..."
-            bash "$HIT_SCRIPT_DIR/db/seed"
-            ;;
-        *)
-            echo "Usage: hit db {console, seed}"
-            return 1
-            ;;
-    esac
+  case "$1" in
+    c | console)
+      echo "Connecting to database console..."
+      bash "$HIT_SCRIPT_DIR/db/console"
+      ;;
+    s | seed)
+      echo "Seeding db..."
+      bash "$HIT_SCRIPT_DIR/db/seed"
+      ;;
+    *)
+      echo "Usage: hit db {console, seed}"
+      return 1
+      ;;
+  esac
 }

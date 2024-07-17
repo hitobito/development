@@ -2,19 +2,19 @@
 
 hit_rails() {
   case "$1" in
-    attach)
+    a | attach)
       bash "$HIT_SCRIPT_DIR/rails/attach"
       ;;
-    console)
+    c | console)
       bash "$HIT_SCRIPT_DIR/rails/console"
       ;;
-    bash)
+    b | bash)
       bash "$HIT_SCRIPT_DIR/rails/bash"
       ;;
-    routes)
+    r | routes)
       bash "$HIT_SCRIPT_DIR/rails/routes"
       ;;
-    logs)
+    l | logs)
       bash "$HIT_SCRIPT_DIR/rails/logs"
       ;;
     *)
