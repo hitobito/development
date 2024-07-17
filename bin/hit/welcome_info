@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 hit_welcome_banner() {
   cat <<EOF
@@ -12,28 +12,11 @@ hit_welcome_banner() {
 EOF
 }
 
-hit_welcome_usage() {
-  cat <<EOF
-hit db c|console     # connect to database console
-hit db s|seed        # seed database
-hit dev d|down       # shutdown dev environment
-hit dev p|ps         # print dev env status info
-hit dev u|up         # start dev environment
-hit rails a|attach   # attach to rails container for debugging
-hit rails b|bash     # start bash in rails container
-hit rails c|console  # rails console
-hit rails l|logs     # attach to rails container logs
-hit rails r|routes   # print rails routes
-hit test             # run core or wagon specs
-hit test p|prep      # build assets
-
-EOF
-}
-
 hit_welcome_info() {
   hit_welcome_banner
-  hit_welcome_usage
   echo "Active HIT-Env: $HIT_PROJECT"
   echo -n "Present wagons: "
   echo $HIT_WAGON_NAMES
+  echo
+  echo "Run 'hit help' for more info"
 }

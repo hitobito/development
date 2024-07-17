@@ -1,0 +1,67 @@
+#!/usr/bin/env bash
+
+available_wagons() {
+  local env_names="core $HIT_WAGON_NAMES"
+  echo $env_names
+}
+
+select_test_env() {
+  read -r -a env_array <<< $(available_wagons)
+
+  local prompt="Please select an environment:"
+  for ((i=0; i<${#env_array[@]}; i++)); do
+    prompt+=" $((i+1)). ${env_array[i]},"
+  done
+  prompt=${prompt%,}  # Remove the trailing comma
+
+  read -p "$prompt " choice 
+
+  if [[ ! "$choice" =~ ^[1-${#env_array[@]}]$ ]]; then
+    echo "Invalid choice. Please enter a number between 1 and ${#env_array[@]}."
+    return 1
+  fi
+
+  local selected_env="${env_array[choice-1]}"
+  echo "$selected_env"
+}
+
+mysql_sql_cmd() {
+  CMD="mysql -uroot -phitobito -e \"$1\""
+  docker compose exec db bash -c "$CMD"
+}
+
+# make sure db is up and running
+docker compose up db -d
+
+# ask user for environment
+HIT_TEST_ENV=$(select_test_env)
+
+if [[ "$HIT_TEST_ENV" =~ ^Invalid ]]; then
+  echo $HIT_TEST_ENV
+  exit 1
+fi
+
+TEST_DB_NAME="hitobito_test_$HIT_TEST_ENV"
+
+echo "Starting test env for: $HIT_TEST_ENV"
+
+# reset/create mysql db
+mysql_sql_cmd "DROP DATABASE IF EXISTS $TEST_DB_NAME;"
+mysql_sql_cmd "CREATE DATABASE $TEST_DB_NAME;"
+
+if [[ "$HIT_TEST_ENV" == "core" ]]; then
+  PREPARE_RAILS_SPEC_CMD="rails db:schema:load"
+  WORKDIR=/usr/src/app/hitobito
+else
+  PREPARE_RAILS_SPEC_CMD="cp ../hitobito/Gemfile.lock . && rake app:db:schema:load app:wagon:migrate"
+  WORKDIR="/usr/src/app/hitobito_$HIT_TEST_ENV"
+fi
+
+# run test env
+docker compose run --rm \
+  --workdir=$WORKDIR \
+  -e RAILS_ENV=test \
+  -e RAILS_TEST_DB_NAME=$TEST_DB_NAME \
+  -e SKIP_INIT=1 \
+  rails_test \
+  bundle exec "$PREPARE_RAILS_SPEC_CMD && bash"

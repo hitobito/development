@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+container() {
+  docker ps | grep "${HIT_PROJECT}-rails-1"
+}
+
+if ! container >/dev/null; then
+  echo "Rails is not running. Try 'hit up' to start or 'hit ps' to debug."
+  exit 1
+fi
+
+docker attach $(container | awk '{ print $1 }') --detach-keys 'ctrl-c'

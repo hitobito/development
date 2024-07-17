@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+echo 'Seeding db...'
+
 docker compose run \
   -e SKIP_INIT=1 \
   rails \
