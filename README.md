@@ -4,7 +4,8 @@ New here? Install our docker development [setup](doc/setup.md)!
 
 ## Development
 
-Start developing by editing files locally with your preferred editor in the app/hitobito* folders. Those directories are mounted inside the containers. So every saved file is instantly available inside the containers.
+Start developing by editing files locally with your preferred editor in the app/hitobito\* folders.
+Those directories are mounted inside the containers. So every saved file is instantly available inside the containers.
 
 :bulb: If you don't know where to begin changing something, have a look at our hitobito cheatsheet in [English](./doc/hitobito-cheatsheet-en.pdf) and [German](./doc/hitobito-cheatsheet.pdf).
 
@@ -21,11 +22,11 @@ hit dev up
 
 Access hitobito by browser: http://localhost:3000
 
-|$command|description|
-|-------|-----------|
-|up   |start dev environment|
-|down|shutdown dev environment|
-|ps   |print dev env status info|
+| $command | description               |
+| -------- | ------------------------- |
+| u\|up    | start dev environment     |
+| d\|down  | shutdown dev environment  |
+| p\|ps    | print dev env status info |
 
 ### hit rails $command
 
@@ -36,23 +37,25 @@ hit rails bash
 ```
 
 Or maybe better directly to the rails console ?
+
 ```bash
 hit rails console
 ```
 
-|$command|description|
-|-------|-----------|
-|bash   |start bash in rails container|
-|console|rails console|
-|logs   |attach to rails container logs|
-|routes |Print rails routes|
-|attach |Attach to rails container for debugging|
+| $command   | description                             |
+| ---------- | --------------------------------------- |
+| b\|bash    | start bash in rails container           |
+| c\|console | rails console                           |
+| l\|logs    | attach to rails container logs          |
+| r\|routes  | Print rails routes                      |
+| a\|attach  | Attach to rails container for debugging |
 
 ### Running tests
 
 #### Open a test shell
 
 When using this for the first time, once daily or after assets changed run the prep command
+
 ```bash
 hit test prep
 ```
@@ -86,6 +89,7 @@ hit rails attach
 ```
 
 ### Access Development Database
+
 ```bash
 hit db console
 ```
@@ -93,6 +97,7 @@ hit db console
 ### Rerunning seeds
 
 Useful when adding new seeds
+
 ```bash
 hit db seed
 ```

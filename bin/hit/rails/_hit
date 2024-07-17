@@ -18,7 +18,7 @@ hit_rails() {
       bash "$HIT_SCRIPT_DIR/rails/logs"
       ;;
     *)
-      echo "Usage: hit rails {attach, console, bash, routes, logs}"
+      echo "Usage: hit rails {a|attach, c|console, b|bash, r|routes, l|logs}"
       return 1
       ;;
   esac
