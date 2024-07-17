@@ -11,7 +11,7 @@ hit_db() {
       bash "$HIT_SCRIPT_DIR/db/seed"
       ;;
     *)
-      echo "Usage: hit db {console, seed}"
+      echo "Usage: hit db {c|console, s|seed}"
       return 1
       ;;
   esac

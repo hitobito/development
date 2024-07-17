@@ -12,7 +12,7 @@ hit_dev() {
       bash "$HIT_SCRIPT_DIR/dev/ps"
       ;;
     *)
-      echo "Usage: hit dev {up, down, ps}"
+      echo "Usage: hit dev {u|up, d|down, p|ps}"
       return 1
       ;;
   esac
