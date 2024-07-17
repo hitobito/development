@@ -25,7 +25,7 @@ hit rails c|console  # rails console
 hit rails l|logs     # attach to rails container logs
 hit rails r|routes   # print rails routes
 hit test             # run core or wagon specs
-hit test prep        # build assets
+hit test p|prep      # build assets
 
 EOF
 }

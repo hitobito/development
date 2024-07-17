@@ -2,7 +2,7 @@
 
 hit_test() {
   case "$1" in
-    prep)
+    p | prep)
       bash "$HIT_SCRIPT_DIR/test/prep"
       ;;
     help)
