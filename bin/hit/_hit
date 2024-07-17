@@ -1,0 +1,63 @@
+#!/usr/bin/env bash
+
+HIT_SCRIPT_DIR="$(dirname "$(realpath "${BASH_SOURCE[0]:-$_}")")"
+HIT_PROJECT="$(basename $(cd $HIT_SCRIPT_DIR/../../ && pwd))"
+HIT_WAGON_NAMES=$(ls -d "$HIT_SCRIPT_DIR"/../../app/hitobito_* | sed 's|.*/hitobito_||')
+export HIT_SCRIPT_DIR
+export HIT_PROJECT
+export HIT_WAGON_NAMES
+source $HIT_SCRIPT_DIR/welcome_info
+
+PS1="HIT-$HIT_PROJECT> "
+
+hit_welcome_info
+
+hit_exec() {
+  bash "$HIT_SCRIPT_DIR/$1"
+}
+
+hit_error() {
+  echo 'Command not found! Usage:'
+  hit_help
+  echo "Current HIT Project: $HIT_PROJECT"
+  return 1
+}
+
+hit_help() {
+  cat <<EOF
+
+hit a|attach   # attach to rails container for debugging
+hit b|bash     # start bash in rails container
+hit c|console  # rails console
+hit d|down     # shutdown dev environment
+hit db         # connect to database console
+hit l|logs     # attach to rails container logs
+hit p|prep     # build assets
+hit ps         # print dev env status info
+hit r|routes   # print rails routes
+hit s|seed     # seed database
+hit h|help     # show this help message
+hit t|test     # run core or wagon specs
+hit u|up       # start dev environment
+
+EOF
+}
+
+hit() {
+  case $1 in
+    a | attach) hit_exec attach;;
+    b | bash) hit_exec bash;;
+    c | console) hit_exec console;;
+    d | down) hit_exec down;;
+    db) hit_exec db;;
+    h | help) hit_help;;
+    l | logs) hit_exec logs;;
+    p | prep) hit_exec prep;;
+    ps) hit_exec ps;;
+    r | routes) hit_exec routes;;
+    s | seed) hit_exec seed;;
+    t | test) hit_exec test;;
+    u | up) hit_exec up;;
+    *) hit_error;;
+  esac
+}
