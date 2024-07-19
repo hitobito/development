@@ -62,6 +62,7 @@ services:
       context: ./docker
       dockerfile: mailcatcher.dockerfile
     ports:
+    - "1025:1025"
     - "1080:1080"
 
   cache:
