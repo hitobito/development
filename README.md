@@ -14,7 +14,7 @@ Those directories are mounted inside the containers. So every saved file is inst
 To initialize the `hit` command, run the following in your console:
 
 ```bash
-source bin/dev-env.sh
+bin/dev-env.sh
 ```
 
 To start the development environment, run:
@@ -38,7 +38,7 @@ hit help
 When using this for the first time, once daily or after assets changed run the prep command:
 
 ```bash
-hit prep
+hit test prep
 ```
 
 Get a shell to run core or wagon specs:
@@ -66,13 +66,13 @@ rspec spec/models/person_spec.rb
 For debugging with pry during a HTTP request, you can attach to the running docker container (detach with Ctrl+c):
 
 ```bash
-hit attach
+hit rails attach
 ```
 
 ### Access Development Database
 
 ```bash
-hit db
+hit db console
 ```
 
 ### Rerunning seeds
@@ -80,7 +80,7 @@ hit db
 Useful when adding new seeds
 
 ```bash
-hit seed
+hit rails seed
 ```
 
 ### Shutdown
