@@ -26,8 +26,8 @@ hit_error() {
 hit_help() {
   cat <<EOF
 
-hit d|down               # shutdown dev environment
-hit u|up                 # start dev environment
+hit down                 # shutdown dev environment
+hit up                   # start dev environment
 hit ps                   # print dev env status info
 
 hit r|rails a|attach     # attach to rails container for debugging
@@ -68,9 +68,9 @@ hit() {
         c | console) hit_exec db/console;;
         *) hit_error;;
       esac;;
-    d | down) hit_exec docker/down;;
+    down) hit_exec docker/down;;
     ps) hit_exec docker/ps;;
-    u | up) hit_exec docker/up;;
+    up) hit_exec docker/up;;
     help) hit_help;;
     *) hit_error;;
   esac
