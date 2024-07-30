@@ -13,7 +13,7 @@ PS1="HIT-$HIT_PROJECT> "
 hit_welcome_info
 
 hit_exec() {
-  bash "$HIT_SCRIPT_DIR/$1"
+  bash "$HIT_SCRIPT_DIR/$1" "$2"
 }
 
 hit_error() {
@@ -38,7 +38,7 @@ hit r|rails r|routes     # print rails routes
 hit r|rails s|seed       # seed database
 
 hit t|test p|prep        # build assets
-hit t|test               # run core or wagon specs
+hit t|test [env]         # run core or wagon specs
 hit db c|console         # connect to database console TODO
 
 hit help                 # show this help message
@@ -61,7 +61,7 @@ hit() {
     t | test)
       case $2 in
         p | prep) hit_exec test/prep;;
-        *) hit_exec test/env;;
+        *) hit_exec test/env "$2";;
       esac;;
     db)
       case $2 in
