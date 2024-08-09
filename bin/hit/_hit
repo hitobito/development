@@ -13,7 +13,9 @@ PS1="HIT-$HIT_PROJECT> "
 hit_welcome_info
 
 hit_exec() {
-  bash "$HIT_SCRIPT_DIR/$1" "$2"
+  local file="$HIT_SCRIPT_DIR/$1"
+  shift
+  bash "$file" "$@"
 }
 
 hit_error() {
@@ -61,14 +63,14 @@ hit() {
     t | test)
       case $2 in
         p | prep) hit_exec test/prep;;
-        *) hit_exec test/env "$2";;
+        *) hit_exec test/env $2;;
       esac;;
     db)
       case $2 in
         c | console) hit_exec db/console;;
         *) hit_error;;
       esac;;
-    down) hit_exec docker/down;;
+    down) shift; hit_exec docker/down $@;;
     ps) hit_exec docker/ps;;
     up) hit_exec docker/up;;
     help) hit_help;;
