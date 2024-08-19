@@ -31,10 +31,10 @@ select_test_env() {
   echo "$selected_env"
 }
 
-mysql_sql_cmd() {
-  CMD="mysql -uroot -phitobito -e \"$1\""
-  docker compose exec db bash -c "$CMD"
-}
+psql_sql_cmd() {
+   CMD="psql -U hitobito -d postgres -c \"$1\""
+   docker compose exec postgres bash -c "$CMD"
+ }
 
 # make sure db is up and running
 docker compose up postgres -d
@@ -62,9 +62,9 @@ apply_core_db_migrations() {
     bundle exec "rake db:migrate"
 }
 
-# reset/create mysql db
-mysql_sql_cmd "DROP DATABASE IF EXISTS $TEST_DB_NAME;"
-mysql_sql_cmd "CREATE DATABASE $TEST_DB_NAME;"
+# reset/create postgres db
+psql_sql_cmd "DROP DATABASE IF EXISTS $TEST_DB_NAME;"
+psql_sql_cmd "CREATE DATABASE $TEST_DB_NAME;"
 
 if [[ "$HIT_TEST_ENV" == "core" ]]; then
   PREPARE_RAILS_SPEC_CMD="rake db:migrate"
