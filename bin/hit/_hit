@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 
 HIT_SCRIPT_DIR="$(dirname "$(realpath "${BASH_SOURCE[0]:-$_}")")"
-HIT_PROJECT="$(basename $(cd $HIT_SCRIPT_DIR/../../ && pwd))"
+HIT_PROJECT="$(basename "$(cd "$HIT_SCRIPT_DIR/../../" && pwd)")"
 HIT_WAGON_NAMES=$(ls -d "$HIT_SCRIPT_DIR"/../../app/hitobito_* | sed 's|.*/hitobito_||')
 export HIT_SCRIPT_DIR
 export HIT_PROJECT
 export HIT_WAGON_NAMES
-source $HIT_SCRIPT_DIR/welcome_info
+source "$HIT_SCRIPT_DIR/welcome_info"
 
 PS1="HIT-$HIT_PROJECT> "
 
@@ -28,6 +28,7 @@ hit_error() {
 hit_help() {
   cat <<EOF
 
+hit a|attach [container] # attach to container for debugging (e.g. rails, worker)
 hit down                 # shutdown dev environment
 hit up                   # start dev environment
 hit ps                   # print dev env status info
@@ -52,7 +53,7 @@ hit() {
   case $1 in
     r | rails)
       case $2 in
-        a | attach) hit_exec rails/attach;;
+        a | attach) hit_exec docker/attach rails;;
         b | bash) hit_exec rails/bash;;
         c | console) hit_exec rails/console;;
         l | logs) hit_exec rails/logs;;
@@ -63,14 +64,15 @@ hit() {
     t | test)
       case $2 in
         p | prep) hit_exec test/prep;;
-        *) hit_exec test/env $2;;
+        *) hit_exec test/env "$2";;
       esac;;
     db)
       case $2 in
         c | console) hit_exec db/console;;
         *) hit_error;;
       esac;;
-    down) shift; hit_exec docker/down $@;;
+    a | attach) hit_exec docker/attach "$2";;
+    down) shift; hit_exec docker/down "$@";;
     ps) hit_exec docker/ps;;
     up) hit_exec docker/up;;
     help) hit_help;;
