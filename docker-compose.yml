@@ -8,7 +8,7 @@ services:
     tty: true
     stdin_open: true
     depends_on:
-    - db
+    - postgres
     - mailcatcher
     - cache
     - webpack
@@ -39,7 +39,7 @@ services:
       SKIP_SEEDS: 1
       SKIP_BUNDLE_INSTALL: 1
     depends_on:
-    - db
+    - postgres
 
   worker:
     <<: *rails
@@ -51,7 +51,7 @@ services:
       SKIP_BUNDLE_INSTALL: 1
     depends_on:
     - rails
-    - db
+    - postgres
     - mailcatcher
     - cache
 
@@ -73,7 +73,7 @@ services:
     image: macbre/sphinxsearch:3.1.1
     command: sphinx-start
     depends_on:
-    - db
+    - postgres
     volumes:
     - ./docker/sphinx.conf:/opt/sphinx/conf/sphinx.conf:ro
     - ./docker/sphinx-start:/usr/local/bin/sphinx-start:ro
@@ -81,28 +81,16 @@ services:
     - sphinx_indexes:/opt/sphinx/indexes
     profiles: [sphinx]
 
-  db:
-    image: mysql:5.7
-    platform: linux/amd64
-    command:
-    - --sort_buffer_size=2M
-    - --character-set-server=utf8mb4
-    - --collation-server=utf8mb4_general_ci
-    - --innodb-lock-wait-timeout=2
-    - --max_allowed_packet=3250585600
-    env_file: ./docker/mysql.env
+  postgres:
+    image: postgres:16
+    env_file: ./docker/postgres.env
     ports:
-    - "33066:3306"
-    ulimits:
-      nproc: 65535
-      nofile:
-        soft: 20000
-        hard: 40000
+      - "5432:5432"
     volumes:
-    - ./docker/mysql-setup.sql:/docker-entrypoint-initdb.d/mysql-setup.sql:ro
-    - ./docker/test-setup.sql:/docker-entrypoint-initdb.d/test-setup.sql:ro
-    - db:/var/lib/mysql
-
+      - ./docker/postgresql-setup.sql:/docker-entrypoint-initdb.d/postgresql-setup.sql:ro
+      - ./docker/test-setup-postgresql.sql:/docker-entrypoint-initdb.d/test-setup-postgresql.sql:ro
+      - postgres:/var/lib/postgresql/data
+      
   webpack:
     build:
       context: ./docker
@@ -123,7 +111,7 @@ services:
     - hitobito_yarn_cache:/home/developer/.cache/yarn
 
 volumes:
-  db:
+  postgres:
   seed:
   hitobito_bundle:
     external: true
