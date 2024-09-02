@@ -76,7 +76,6 @@ else
 fi
 
 # run test env
-
 docker compose run --rm \
   --workdir=$WORKDIR \
   -e RAILS_ENV=test \
