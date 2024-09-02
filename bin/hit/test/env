@@ -70,9 +70,9 @@ if [[ "$HIT_TEST_ENV" == "core" ]]; then
   PREPARE_RAILS_SPEC_CMD="rake db:migrate"
   WORKDIR=/usr/src/app/hitobito
 else
+  apply_core_db_migrations
   PREPARE_RAILS_SPEC_CMD="cp ../hitobito/Gemfile.lock . && rake app:wagon:migrate"
   WORKDIR="/usr/src/app/hitobito_$HIT_TEST_ENV"
-  apply_core_db_migrations
 fi
 
 # run test env
@@ -81,6 +81,7 @@ docker compose run --rm \
   -e RAILS_ENV=test \
   -e RAILS_TEST_DB_NAME=$TEST_DB_NAME \
   -e RAILS_DB_NAME=$TEST_DB_NAME \
+  -e DISABLE_TEST_SCHEMA_MAINTENANCE=1 \ # Do not maintain schema for testing purposes
   -e SKIP_INIT=1 \
   rails_test \
   bundle exec "$PREPARE_RAILS_SPEC_CMD && bash"
