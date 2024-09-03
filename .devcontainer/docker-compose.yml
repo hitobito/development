@@ -17,15 +17,11 @@ services:
     depends_on:
       rails:
         condition: service_started
-      db:
-        condition: service_healthy
       mailcatcher:
         condition: service_healthy
       cache:
         condition: service_started
   sphinx:
     depends_on:
-      db:
-        condition: service_healthy
       rails:
         condition: service_started

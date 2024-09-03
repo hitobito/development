@@ -123,9 +123,6 @@ services:
     - ./app/:/usr/src/app
     - hitobito_bundle:/opt/bundle
     - hitobito_yarn_cache:/home/developer/.cache/yarn
-    depends_on:
-      db:
-        condition: service_healthy
 
 volumes:
   postgres:
