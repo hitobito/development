@@ -1,32 +1,88 @@
 #!/usr/bin/env bash
-source $HIT_SCRIPT_DIR/test/test_db_setup
-source $HIT_SCRIPT_DIR/test/select_test_env
+
+available_wagons() {
+  local env_names="core $HIT_WAGON_NAMES"
+  echo $env_names
+}
+
+select_test_env() {
+  read -r -a env_array <<< $(available_wagons)
+
+  local prompt="Please select an environment:"
+  for ((i=0; i<${#env_array[@]}; i++)); do
+    prompt+=" $((i+1)). ${env_array[i]},"
+  done
+  prompt=${prompt%,}  # Remove the trailing comma
+
+  # Return early if the environement is specified as argument
+  if [[ " ${env_array[*]} " =~ [[:space:]]${1}[[:space:]] ]]; then
+    echo "${1}"
+    return 0
+  fi
+
+  read -p "$prompt " choice 
+
+  if [[ ! "$choice" =~ ^[1-${#env_array[@]}]$ ]]; then
+    echo "Invalid choice. Please enter a number between 1 and ${#env_array[@]}."
+    return 1
+  fi
+
+  local selected_env="${env_array[choice-1]}"
+  echo "$selected_env"
+}
+
+psql_sql_cmd() {
+   CMD="psql -U hitobito -d postgres -c \"$1\""
+   docker compose exec postgres bash -c "$CMD"
+ }
 
 # make sure db is up and running
-docker compose up db -d
+docker compose up postgres -d
 
 # ask user for environment
-HIT_TEST_ENV=$(select_test_env)
+HIT_TEST_ENV=$(select_test_env "$1")
+
+if [[ "$HIT_TEST_ENV" =~ ^Invalid ]]; then
+  echo $HIT_TEST_ENV
+  exit 1
+fi
+
 TEST_DB_NAME="hitobito_test_$HIT_TEST_ENV"
 
 echo "Starting test env for: $HIT_TEST_ENV"
 
-# reset/create mysql db
-setup_test_db $TEST_DB_NAME
+apply_core_db_migrations() {
+  docker compose run --rm \
+    --workdir=/usr/src/app/hitobito \
+    -e RAILS_ENV=test \
+    -e RAILS_TEST_DB_NAME=$TEST_DB_NAME \
+    -e RAILS_DB_NAME=$TEST_DB_NAME \
+    -e SKIP_INIT=1 \
+    rails_test \
+    bundle exec "rake db:migrate"
+}
+
+# reset/create postgres db
+psql_sql_cmd "DROP DATABASE IF EXISTS $TEST_DB_NAME;"
+psql_sql_cmd "CREATE DATABASE $TEST_DB_NAME;"
 
 if [[ "$HIT_TEST_ENV" == "core" ]]; then
-  PREPARE_RAILS_SPEC_CMD="rails db:schema:load"
+  PREPARE_RAILS_SPEC_CMD="rake db:migrate"
   WORKDIR=/usr/src/app/hitobito
 else
-  PREPARE_RAILS_SPEC_CMD="cp ../hitobito/Gemfile.lock . && rake app:db:schema:load app:wagon:migrate"
+  apply_core_db_migrations
+  PREPARE_RAILS_SPEC_CMD="cp ../hitobito/Gemfile.lock . && rake app:wagon:migrate"
   WORKDIR="/usr/src/app/hitobito_$HIT_TEST_ENV"
 fi
 
 # run test env
+# Do not maintain schema for testing purposes
 docker compose run --rm \
   --workdir=$WORKDIR \
   -e RAILS_ENV=test \
   -e RAILS_TEST_DB_NAME=$TEST_DB_NAME \
+  -e RAILS_DB_NAME=$TEST_DB_NAME \
+  -e DISABLE_TEST_SCHEMA_MAINTENANCE=1 \
   -e SKIP_INIT=1 \
   rails_test \
   bundle exec "$PREPARE_RAILS_SPEC_CMD && bash"

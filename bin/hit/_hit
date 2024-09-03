@@ -1,0 +1,81 @@
+#!/usr/bin/env bash
+
+HIT_SCRIPT_DIR="$(dirname "$(realpath "${BASH_SOURCE[0]:-$_}")")"
+HIT_PROJECT="$(basename "$(cd "$HIT_SCRIPT_DIR/../../" && pwd)")"
+HIT_WAGON_NAMES=$(ls -d "$HIT_SCRIPT_DIR"/../../app/hitobito_* | sed 's|.*/hitobito_||')
+export HIT_SCRIPT_DIR
+export HIT_PROJECT
+export HIT_WAGON_NAMES
+source "$HIT_SCRIPT_DIR/welcome_info"
+
+PS1="HIT-$HIT_PROJECT> "
+
+hit_welcome_info
+
+hit_exec() {
+  local file="$HIT_SCRIPT_DIR/$1"
+  shift
+  bash "$file" "$@"
+}
+
+hit_error() {
+  echo 'Command not found! Usage:'
+  hit_help
+  echo "Current HIT Project: $HIT_PROJECT"
+  return 1
+}
+
+hit_help() {
+  cat <<EOF
+
+hit a|attach [container] # attach to container for debugging (e.g. rails, worker)
+hit down                 # shutdown dev environment
+hit up                   # start dev environment
+hit ps                   # print dev env status info
+
+hit r|rails a|attach     # attach to rails container for debugging
+hit r|rails b|bash       # start bash in rails container
+hit r|rails c|console    # rails console
+hit r|rails l|logs       # attach to rails container logs
+hit r|rails r|routes     # print rails routes
+hit r|rails s|seed       # seed database
+
+hit t|test p|prep        # build assets
+hit t|test [env]         # run core or wagon specs
+hit db c|console         # connect to database console TODO
+
+hit help                 # show this help message
+
+EOF
+}
+
+hit() {
+  case $1 in
+    r | rails)
+      case $2 in
+        a | attach) hit_exec docker/attach rails;;
+        b | bash) hit_exec rails/bash;;
+        c | console) hit_exec rails/console;;
+        l | logs) hit_exec rails/logs;;
+        r | routes) hit_exec rails/routes;;
+        s | seed) hit_exec rails/seed;;
+        *) hit_error;;
+      esac;;
+    t | test)
+      case $2 in
+        p | prep) hit_exec test/prep;;
+        *) hit_exec test/env "$2";;
+      esac;;
+    db)
+      case $2 in
+        c | console) hit_exec db/console;;
+        *) hit_error;;
+      esac;;
+    a | attach) hit_exec docker/attach "$2";;
+    down) shift; hit_exec docker/down "$@";;
+    ps) hit_exec docker/ps;;
+    up) hit_exec docker/up;;
+    help) hit_help;;
+    *) hit_error;;
+  esac
+}

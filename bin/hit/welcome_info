@@ -1,15 +1,15 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 hit_welcome_banner() {
-  echo '
-         ___  __   __    ___  __  
-  |__| |  |  /  \ |__) |  |  /  \ 
-  |  | |  |  \__/ |__) |  |  \__/
+  cat <<EOF
+        ___  __   __    ___  __  
+|__| |  |  /  \ |__) |  |  /  \ 
+|  | |  |  \__/ |__) |  |  \__/
 
-      development environment
-               HIT
+    development environment
+              HIT
 
-  '
+EOF
 }
 
 hit_welcome_info() {
@@ -17,4 +17,6 @@ hit_welcome_info() {
   echo "Active HIT-Env: $HIT_PROJECT"
   echo -n "Present wagons: "
   echo $HIT_WAGON_NAMES
+  echo
+  echo "Run 'hit help' for more info"
 }
