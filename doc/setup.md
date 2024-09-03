@@ -93,7 +93,7 @@ This should look something like this:
 ```
 NAME                            IMAGE                                      COMMAND                  SERVICE           CREATED        STATUS              PORTS
 development-cache-1             memcached:1.6-alpine                       "docker-entrypoint.s…"   cache             3 hours ago    Up 3 hours          11211/tcp
-development-db-1                mysql:5.7                                  "docker-entrypoint.s…"   db                23 hours ago   Up 3 hours          33060/tcp, 0.0.0.0:33066->3306/tcp, :::33066->3306/tcp
+development-postgres-1          postgres:16                                "docker-entrypoint.s…"   postgres          23 hours ago   Up 3 hours          5432/tcp, 0.0.0.0:5432->5432/tcp, :::5432->5432/tcp
 development-mailcatcher-1       ghcr.io/hitobito/development/mailcatcher   "mailcatcher -f --ip…"   mailcatcher       3 hours ago    Up 3 hours          0.0.0.0:1080->1080/tcp, :::1080->1080/tcp
 development-rails-1             ghcr.io/hitobito/development/rails         "rails-entrypoint.sh…"   rails             3 hours ago    Up 3 hours          0.0.0.0:3000->3000/tcp, :::3000->3000/tcp
 development-rails_test_core-1   ghcr.io/hitobito/development/rails         "rails-entrypoint.sh…"   rails_test_core   21 hours ago   Up About a minute

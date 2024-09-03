@@ -69,18 +69,6 @@ services:
     image: memcached:1.6-alpine
     command: [ memcached, -l, '0.0.0.0', -p, '11211' ]
 
-  sphinx:
-    image: macbre/sphinxsearch:3.1.1
-    command: sphinx-start
-    depends_on:
-    - postgres
-    volumes:
-    - ./docker/sphinx.conf:/opt/sphinx/conf/sphinx.conf:ro
-    - ./docker/sphinx-start:/usr/local/bin/sphinx-start:ro
-    - ./docker/sphinx-indexer:/usr/local/bin/sphinx-indexer:ro
-    - sphinx_indexes:/opt/sphinx/indexes
-    profiles: [sphinx]
-
   postgres:
     image: postgres:16
     env_file: ./docker/postgres.env
