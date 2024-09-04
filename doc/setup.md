@@ -78,10 +78,6 @@ To start the Hitobito application, run the following command in your shell:
 docker compose up -d
 ```
 
-&ast;Note: If you want to test with sphinx running you need to pass `--profile sphinx` to `docker compose`.
-
-⚡ This will also install all required gems and seed the database, which takes some time to complete if it's executed the first time. You can follow the progress using `docker compose logs --follow rails` (exit with Ctrl+C).
-
 After the startup has completed (once you see `Listening on tcp://0.0.0.0:3000` in the logs), make sure all services are up and running:
 
 ```bash
@@ -97,12 +93,9 @@ development-postgres-1          postgres:16                                "dock
 development-mailcatcher-1       ghcr.io/hitobito/development/mailcatcher   "mailcatcher -f --ip…"   mailcatcher       3 hours ago    Up 3 hours          0.0.0.0:1080->1080/tcp, :::1080->1080/tcp
 development-rails-1             ghcr.io/hitobito/development/rails         "rails-entrypoint.sh…"   rails             3 hours ago    Up 3 hours          0.0.0.0:3000->3000/tcp, :::3000->3000/tcp
 development-rails_test_core-1   ghcr.io/hitobito/development/rails         "rails-entrypoint.sh…"   rails_test_core   21 hours ago   Up About a minute
-development-sphinx-1            macbre/sphinxsearch:3.1.1                  "sphinx-start"           sphinx            23 hours ago   Up 3 hours          36307/tcp
 development-webpack-1           ghcr.io/hitobito/development/rails         "webpack-entrypoint.…"   webpack           3 hours ago    Up About a minute   0.0.0.0:3035->3035/tcp, :::3035->3035/tcp
 development-worker-1            ghcr.io/hitobito/development/rails         "rails-entrypoint.sh…"   worker            3 hours ago    Up About a minute
 ```
-
-*The `-sphinx-1` container seems to be flaky. You can safely ignore a state `Exit 2`.*
 
 Access the web application by browser: http://localhost:3000 and log in using *hitobito@puzzle.ch* and password *hito42bito*. For some wagons, the e-mail address is different. Go to the file ```/config/settings.yml``` inside your wagon repository and look out for the field "root_email". Use this e-mail address to login.
 
