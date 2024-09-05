@@ -1,14 +1,12 @@
 #!/usr/bin/env bash
 
 HIT_SCRIPT_DIR="$(dirname "$(realpath "${BASH_SOURCE[0]:-$_}")")"
-HIT_PROJECT="$(basename "$(cd "$HIT_SCRIPT_DIR/../../" && pwd)")"
 HIT_WAGON_NAMES=$(ls -d "$HIT_SCRIPT_DIR"/../../app/hitobito_* | sed 's|.*/hitobito_||')
 export HIT_SCRIPT_DIR
-export HIT_PROJECT
 export HIT_WAGON_NAMES
 source "$HIT_SCRIPT_DIR/welcome_info"
 
-PS1="HIT-$HIT_PROJECT> "
+PS1="HIT> "
 
 hit_welcome_info
 
@@ -21,7 +19,6 @@ hit_exec() {
 hit_error() {
   echo 'Command not found! Usage:'
   hit_help
-  echo "Current HIT Project: $HIT_PROJECT"
   return 1
 }
 

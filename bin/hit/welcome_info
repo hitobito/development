@@ -14,7 +14,6 @@ EOF
 
 hit_welcome_info() {
   hit_welcome_banner
-  echo "Active HIT-Env: $HIT_PROJECT"
   echo -n "Present wagons: "
   echo $HIT_WAGON_NAMES
   echo

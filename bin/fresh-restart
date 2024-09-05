@@ -1,6 +1,6 @@
-#/usr/bin/env bash
-nameb=$(basename $(pwd))
+#!/usr/bin/env bash
+
 docker compose kill
 docker compose rm -vf
-docker volume rm ${nameb}_postgres ${nameb}_seed ${nameb}_sphinx_indexes
+docker volume rm hitobito_postgres hitobito_seed hitobito_sphinx_indexes
 docker compose up -d
