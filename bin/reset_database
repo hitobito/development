@@ -2,13 +2,10 @@
 
 source $(dirname $0)/_basics
 
-project=$(basename $(pwd))
+docker compose down
 
-bin/stop
-
-volume=${project}_postgres
-echo "Removing docker volume $volume"
-docker volume rm $volume
+echo "Removing docker volume hitobito_postgres"
+docker volume rm hitobito_postgres
 
 echo "Making sure DB is seeded on next start"
 docker compose run -e SKIP_INIT=1 rails rm /seed/done
