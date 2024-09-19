@@ -21,7 +21,3 @@ services:
         condition: service_healthy
       cache:
         condition: service_started
-  sphinx:
-    depends_on:
-      rails:
-        condition: service_started
