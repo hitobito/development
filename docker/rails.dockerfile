@@ -47,7 +47,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
  && apt-get update \
  && apt-get upgrade -y \
  && apt-get install -y --no-install-recommends ${BUILD_PACKAGES} \
- && apt install -y --no-install-recommends ${DEV_PACKAGES}
+ && apt-get install -y --no-install-recommends ${DEV_PACKAGES}
 
 ARG YARN_VERSION
 RUN node -v && npm -v && npm install -g yarn && yarn set version "${YARN_VERSION}"
@@ -65,6 +65,7 @@ COPY ./rails-entrypoint.sh /usr/local/bin
 COPY ./webpack-entrypoint.sh /usr/local/bin
 COPY ./waitfortcp /usr/local/bin
 
+RUN chmod -R 777 /usr/local/bundle
 RUN mkdir /opt/bundle && chmod 777 /opt/bundle
 RUN mkdir /seed && chmod 777 /seed
 RUN mkdir /home/developer && chmod 777 /home/developer

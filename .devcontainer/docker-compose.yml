@@ -1,4 +1,3 @@
-version: '3.4'
 services:
   rails:
     volumes:
@@ -8,14 +7,5 @@ services:
     entrypoint: []
     # Overrides default command so things don't shut down after the process ends.
     command: sleep infinity
-    # disable healthcheck, we override the command which would not respond!
-    healthcheck: {}
     # Allow accessing docker
     privileged: true
-  # redefine dependencies, not waiting for the rails container to be healthy. it will never be, since it's missing the healthcheck…
-  worker:
-    depends_on:
-      rails:
-        condition: service_started
-      cache:
-        condition: service_started

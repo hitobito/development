@@ -6,7 +6,8 @@
 
 	"dockerComposeFile": [
 		"../../docker-compose.yml",
-		"../docker-compose.yml"
+		"../docker-compose.yml",
+		"docker-compose.yml"
 	],
 
 	// The 'service' property is the name of the service for the container that VS Code should
@@ -22,7 +23,7 @@
 		3306
 	],
 
-	"initializeCommand": ".devcontainer/initialize.sh https://github.com/hitobito/hitobito.git https://github.com/hitobito/hitobito_youth.git https://github.com/hitobito/hitobito_sac_cas.git",
+	// "initializeCommand": ".devcontainer/initialize.sh https://github.com/hitobito/hitobito.git https://github.com/hitobito/hitobito_youth.git https://github.com/hitobito/hitobito_sac_cas.git",
 
 	"onCreateCommand": "/workspace/.devcontainer/create.sh",
 

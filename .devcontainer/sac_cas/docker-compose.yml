@@ -1,0 +1,5 @@
+services:
+  rails:
+    volumes:
+      - .devcontainer/sac_cas/workspace/.rubocop.yml:/usr/src/app/.rubocop.yml
+      - .devcontainer/sac_cas/workspace/Gemfile:/usr/src/app/Gemfile
