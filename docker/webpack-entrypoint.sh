@@ -17,6 +17,10 @@ done
 echo "Running yarn install"
 bundle exec rails webpacker:yarn_install
 
+echo "⚙️  Testing DB connection"
+timeout 300s waitfortcp "${RAILS_DB_HOST-db}" "${RAILS_DB_PORT-3306}"
+echo "✅ DB server is ready"
+
 echo "➡️ Handing control over to '$*''"
 
 echo "⚙️  Executing: $@"

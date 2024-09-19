@@ -4,7 +4,6 @@ services:
       context: ./docker
       dockerfile: rails.dockerfile
     image: ghcr.io/hitobito/development/rails
-    restart: unless-stopped
     user: "${RAILS_UID:-1000}"
     tty: true
     stdin_open: true
@@ -25,14 +24,8 @@ services:
     - seed:/seed
     - ./docker/home/rails:/home/developer
     - /tmp/.X11-unix:/tmp/.X11-unix
-    #- /etc/timezone:/etc/timezone:ro
+    - /etc/timezone:/etc/timezone:ro
     - /etc/localtime:/etc/localtime:ro
-    - /var/run/docker.sock:/var/run/docker.sock
-    #healthcheck:
-    #  test: [ "CMD", "curl", "--fail", "http://localhost:3000/healthz" ]
-    #  interval: 5s
-    #  timeout: 5s
-    #  start_period: 30m
 
   # `exec` into this to execute the tests of the core
   rails_test:
@@ -63,7 +56,6 @@ services:
 
   # Dependencies
   mailcatcher:
-    restart: unless-stopped
     image: ghcr.io/hitobito/development/mailcatcher
     build:
       context: ./docker
@@ -71,12 +63,8 @@ services:
     ports:
     - "1025:1025"
     - "1080:1080"
-    healthcheck:
-      test: [ "CMD", "curl", "--fail", "http://localhost:1080" ]
-      interval: 5s
-      timeout: 5s
+
   cache:
-    restart: unless-stopped
     image: memcached:1.6-alpine
     command: [ memcached, -l, '0.0.0.0', -p, '11211' ]
 
@@ -89,9 +77,8 @@ services:
       - ./docker/postgresql-setup.sql:/docker-entrypoint-initdb.d/postgresql-setup.sql:ro
       - ./docker/test-setup-postgresql.sql:/docker-entrypoint-initdb.d/test-setup-postgresql.sql:ro
       - postgres:/var/lib/postgresql/data
-
+      
   webpack:
-    restart: unless-stopped
     build:
       context: ./docker
       dockerfile: rails.dockerfile

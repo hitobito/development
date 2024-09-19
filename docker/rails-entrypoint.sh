@@ -39,6 +39,10 @@ initialize() {
         done
     fi
 
+    echo "⚙️  Testing DB connection"
+    timeout 300s waitfortcp "${RAILS_DB_HOST-db}" "${RAILS_DB_PORT-3306}"
+    echo "✅ DB server is ready"
+
     if [ -z "$SKIP_RAILS_MIGRATIONS" ]; then
         echo "⚙️  Performing migrations"
         bundle exec rails db:migrate wagon:migrate

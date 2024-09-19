@@ -6,5 +6,3 @@
 /docker/home/rails/*
 !/docker/home/rails/.*rc
 /shared/.env.generated
-app/*
-!app/.vscode
