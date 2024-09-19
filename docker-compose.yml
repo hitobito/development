@@ -24,7 +24,6 @@ services:
     - seed:/seed
     - ./docker/home/rails:/home/developer
     - /tmp/.X11-unix:/tmp/.X11-unix
-    - /etc/timezone:/etc/timezone:ro
     - /etc/localtime:/etc/localtime:ro
 
   # `exec` into this to execute the tests of the core
@@ -77,7 +76,7 @@ services:
       - ./docker/postgresql-setup.sql:/docker-entrypoint-initdb.d/postgresql-setup.sql:ro
       - ./docker/test-setup-postgresql.sql:/docker-entrypoint-initdb.d/test-setup-postgresql.sql:ro
       - postgres:/var/lib/postgresql/data
-      
+
   webpack:
     build:
       context: ./docker

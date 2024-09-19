@@ -17,7 +17,5 @@ services:
     depends_on:
       rails:
         condition: service_started
-      mailcatcher:
-        condition: service_healthy
       cache:
         condition: service_started
