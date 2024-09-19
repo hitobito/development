@@ -13,8 +13,8 @@ ARG YARN_VERSION="1.22.19"
 ARG TRANSIFEX_VERSION="1.6.4"
 
 # Packages
-ARG BUILD_PACKAGES="nodejs git sqlite3 libsqlite3-dev imagemagick build-essential default-libmysqlclient-dev"
-ARG DEV_PACKAGES="direnv xvfb chromium chromium-driver default-mysql-client pv vim curl less"
+ARG BUILD_PACKAGES="nodejs git sqlite3 libsqlite3-dev imagemagick build-essential"
+ARG DEV_PACKAGES="direnv xvfb chromium chromium-driver pv vim curl less"
 
 #################################
 #          Build Stage          #
@@ -47,7 +47,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
  && apt-get update \
  && apt-get upgrade -y \
  && apt-get install -y --no-install-recommends ${BUILD_PACKAGES} \
- && apt-get install -y --no-install-recommends ${DEV_PACKAGES}
+ && apt install -y --no-install-recommends ${DEV_PACKAGES}
 
 ARG YARN_VERSION
 RUN node -v && npm -v && npm install -g yarn && yarn set version "${YARN_VERSION}"
