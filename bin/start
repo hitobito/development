@@ -1,5 +1,0 @@
-#!/usr/bin/env bash
-
-source $(dirname $0)/_basics
-
-docker compose up -d
