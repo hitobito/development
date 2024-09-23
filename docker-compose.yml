@@ -8,24 +8,24 @@ services:
     tty: true
     stdin_open: true
     depends_on:
-    - postgres
-    - mailcatcher
-    - cache
-    - webpack
+      - postgres
+      - mailcatcher
+      - cache
+      - webpack
     env_file: docker/rails.env
     environment:
       WEBPACKER_DEV_SERVER_HOST: webpack
       DISABLE_SPRING: 'true'
     ports:
-    - "3000:3000"
+      - "127.0.0.1:3000:3000"
     volumes:
-    - ./app/:/usr/src/app
-    - hitobito_bundle:/opt/bundle
-    - seed:/seed
-    - ./docker/home/rails:/home/developer
-    - /tmp/.X11-unix:/tmp/.X11-unix
-    - /etc/timezone:/etc/timezone:ro
-    - /etc/localtime:/etc/localtime:ro
+      - ./app/:/usr/src/app
+      - hitobito_bundle:/opt/bundle
+      - seed:/seed
+      - ./docker/home/rails:/home/developer
+      - /tmp/.X11-unix:/tmp/.X11-unix
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
 
   # `exec` into this to execute the tests of the core
   rails_test:
@@ -38,7 +38,7 @@ services:
       SKIP_SEEDS: 1
       SKIP_BUNDLE_INSTALL: 1
     depends_on:
-    - postgres
+      - postgres
 
   worker:
     <<: *rails
@@ -49,10 +49,10 @@ services:
       SKIP_SEEDS: 1
       SKIP_BUNDLE_INSTALL: 1
     depends_on:
-    - rails
-    - postgres
-    - mailcatcher
-    - cache
+      - rails
+      - postgres
+      - mailcatcher
+      - cache
 
   # Dependencies
   mailcatcher:
@@ -61,8 +61,8 @@ services:
       context: ./docker
       dockerfile: mailcatcher.dockerfile
     ports:
-    - "1025:1025"
-    - "1080:1080"
+      - "127.0.0.1:1025:1025"
+      - "127.0.0.1:1080:1080"
 
   cache:
     image: memcached:1.6-alpine
@@ -72,7 +72,7 @@ services:
     image: postgres:16
     env_file: ./docker/postgres.env
     ports:
-      - "5432:5432"
+      - "127.0.0.1:5432:5432"
     volumes:
       - ./docker/postgresql-setup.sql:/docker-entrypoint-initdb.d/postgresql-setup.sql:ro
       - ./docker/test-setup-postgresql.sql:/docker-entrypoint-initdb.d/test-setup-postgresql.sql:ro
@@ -91,11 +91,11 @@ services:
     user: "${RAILS_UID:-1000}"
     command: /usr/src/app/hitobito/bin/webpack-dev-server
     ports:
-    - "3035:3035"
+      - "127.0.0.1:3035:3035"
     volumes:
-    - ./app/:/usr/src/app
-    - hitobito_bundle:/opt/bundle
-    - hitobito_yarn_cache:/home/developer/.cache/yarn
+      - ./app/:/usr/src/app
+      - hitobito_bundle:/opt/bundle
+      - hitobito_yarn_cache:/home/developer/.cache/yarn
 
 volumes:
   postgres:
