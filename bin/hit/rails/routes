@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 docker compose exec \
+  --rm \
   -e SKIP_INIT=1 \
   rails \
-  bundle exec rails routes
+  bash -l -c "/usr/local/bin/bundle exec rails routes"

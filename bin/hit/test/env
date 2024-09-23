@@ -77,7 +77,8 @@ fi
 
 # run test env
 # Do not maintain schema for testing purposes
-docker compose run --rm \
+docker compose run \
+  --rm \
   --workdir=$WORKDIR \
   -e RAILS_ENV=test \
   -e RAILS_TEST_DB_NAME=$TEST_DB_NAME \
@@ -85,4 +86,4 @@ docker compose run --rm \
   -e DISABLE_TEST_SCHEMA_MAINTENANCE=1 \
   -e SKIP_INIT=1 \
   rails_test \
-  bundle exec "$PREPARE_RAILS_SPEC_CMD && bash"
+  bash -l -c "/usr/local/bin/bundle exec '$PREPARE_RAILS_SPEC_CMD'; exec bash"

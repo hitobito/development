@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 
 # prepare bundle & co
-docker compose run --rm \
+docker compose run \
+  --rm \
   --workdir=/usr/src/app/hitobito \
   -e RAILS_ENV=development \
   -e SKIP_INIT=1 \
