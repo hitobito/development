@@ -30,6 +30,8 @@ services:
   # `exec` into this to execute the tests of the core
   rails_test:
     <<: *rails
+    profiles:
+      - manual
     command: [ 'sleep', 'infinity' ]
     ports: []
     environment:
