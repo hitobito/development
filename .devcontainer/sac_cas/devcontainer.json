@@ -31,7 +31,8 @@
 		"vscode": {
 			"extensions": [
 				"KoichiSasada.vscode-rdbg",
-				"Shopify.ruby-lsp"
+				"Shopify.ruby-lsp",
+				"rubocop.vscode-rubocop"
 			]
 		}
 	}
