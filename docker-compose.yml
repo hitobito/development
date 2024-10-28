@@ -1,8 +1,7 @@
 services:
   rails: &rails
     build:
-      context: ./docker
-      dockerfile: rails.dockerfile
+      context: ./docker/rails
     image: ghcr.io/hitobito/development/rails
     user: "${RAILS_UID:-1000}"
     tty: true
@@ -12,7 +11,7 @@ services:
       - mailcatcher
       - cache
       - webpack
-    env_file: docker/rails.env
+    env_file: docker/rails/env
     environment:
       WEBPACKER_DEV_SERVER_HOST: webpack
       DISABLE_SPRING: 'true'
@@ -22,12 +21,12 @@ services:
       - ./app/:/usr/src/app
       - hitobito_bundle:/opt/bundle
       - seed:/seed
-      - ./docker/home/rails:/home/developer
+      - ./docker/rails/home:/home/developer
       - /tmp/.X11-unix:/tmp/.X11-unix
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
+      - ./docker/rails/Gemfile.lock:/usr/src/app/hitobito/Gemfile.lock
 
-  # `exec` into this to execute the tests of the core
   rails_test:
     <<: *rails
     profiles:
@@ -82,11 +81,10 @@ services:
       
   webpack:
     build:
-      context: ./docker
-      dockerfile: rails.dockerfile
+      context: ./docker/rails
     image: ghcr.io/hitobito/development/rails
     entrypoint: [ "webpack-entrypoint.sh" ]
-    env_file: docker/rails.env
+    env_file: docker/rails/env
     environment:
       WEBPACKER_DEV_SERVER_HOST: webpack
       SKIP_BUNDLE_INSTALL: 1
@@ -98,6 +96,7 @@ services:
       - ./app/:/usr/src/app
       - hitobito_bundle:/opt/bundle
       - hitobito_yarn_cache:/home/developer/.cache/yarn
+      - ./docker/rails/Gemfile.lock:/usr/src/app/hitobito/Gemfile.lock
 
 volumes:
   postgres:

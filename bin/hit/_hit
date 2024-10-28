@@ -3,9 +3,11 @@
 HIT_SCRIPT_DIR="$(dirname "$(realpath "${BASH_SOURCE[0]:-$_}")")"
 HIT_PROJECT="$(basename "$(cd "$HIT_SCRIPT_DIR/../../" && pwd)")"
 HIT_WAGON_NAMES=$(ls -d "$HIT_SCRIPT_DIR"/../../app/hitobito_* | sed 's|.*/hitobito_||')
+HIT_CORE_DIR="$HIT_SCRIPT_DIR/../../app/hitobito"
 export HIT_SCRIPT_DIR
 export HIT_PROJECT
 export HIT_WAGON_NAMES
+export HIT_CORE_DIR
 source "$HIT_SCRIPT_DIR/welcome_info"
 
 PS1="HIT-$HIT_PROJECT> "
@@ -50,6 +52,7 @@ EOF
 }
 
 hit() {
+  source "$HIT_SCRIPT_DIR/pre_hit"
   case $1 in
     r | rails)
       case $2 in

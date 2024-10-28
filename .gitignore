@@ -3,6 +3,7 @@
 .local
 .yarnrc
 /dumps
-/docker/home/rails/*
-!/docker/home/rails/.*rc
+/docker/rails/home/*
+!/docker/rails/home/.*rc
 /shared/.env.generated
+docker/rails/Gemfile.lock
