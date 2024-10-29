@@ -28,7 +28,7 @@ jobs:
 
       - name: Build images
         run: |
-          docker build ./docker --file docker/${{ matrix.image }}/Dockerfile --tag ${{ matrix.image }}
+          docker build ./docker/${{ matrix.image }} --tag ${{ matrix.image }}
 
       - name: Log into registry
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
