@@ -59,8 +59,7 @@ services:
   mailcatcher:
     image: ghcr.io/hitobito/development/mailcatcher
     build:
-      context: ./docker
-      dockerfile: mailcatcher.dockerfile
+      context: ./docker/mailcatcher
     ports:
       - "127.0.0.1:1025:1025"
       - "127.0.0.1:1080:1080"
