@@ -106,16 +106,13 @@ Access the web application by browser: http://localhost:3000 and log in using *h
 
 ### Updating Images
 
-:calendar: If you have installed a previous development setup before 03.2021, please run the following command inside one project, and then update your images:
-```bash
-docker compose down && docker volume rm hitobito_bundle && docker volume create hitobito_bundle
-```
-
-When the images of this project change, execute the following command to update them locally:
+When you have made changes to the images of this project, execute the following command to update them locally:
 
 ```bash
 docker compose build --no-cache
 ```
+
+Images are built and published with github actions
 
 ### Cloning wagons quickly  
 
