@@ -70,6 +70,14 @@ docker volume create hitobito_yarn_cache
 
 ⚡ If your user id is not 1000 (run id -u to check), you need to export this as env variable: **export RAILS_UID=$UID** before running any of the further commands. Maybe you want to add this to your bashrc.
 
+## Gemfile.lock
+
+See more in the main [README.md](../README.md) but to prevent issues with the Gemfile.lock, you should run the following command:
+
+```bash
+touch docker/rails/Gemfile.lock
+```
+
 ## Start Development Containers
 
 To start the Hitobito application, run the following command in your shell:
