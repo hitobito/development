@@ -2,6 +2,7 @@ services:
   rails:
     volumes:
       - .:/workspace:cached
+      - ./docker/rails/.vscode:/usr/src/app/hitobito/.vscode:cached
 
     # Skip entrypoint which would try to migrate on entry
     entrypoint: []
