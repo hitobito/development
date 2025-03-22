@@ -83,6 +83,7 @@ touch docker/rails/Gemfile.lock
 To start the Hitobito application, run the following command in your shell:
 
 ```bash
+# This command might take a very long time on the first run, as the database needs to be seeded…
 docker compose up -d
 ```
 

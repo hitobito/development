@@ -3,14 +3,19 @@ services:
     build:
       context: ./docker/rails
     image: ghcr.io/hitobito/development/rails
+    restart: unless-stopped
     user: "${RAILS_UID:-1000}"
     tty: true
     stdin_open: true
     depends_on:
-      - postgres
-      - mailcatcher
-      - cache
-      - webpack
+      postgres:
+        condition: service_healthy
+      mailcatcher:
+        condition: service_healthy
+      cache:
+        condition: service_started
+      webpack:
+        condition: service_started
     env_file: docker/rails/env
     environment:
       WEBPACKER_DEV_SERVER_HOST: webpack
@@ -26,6 +31,11 @@ services:
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
       - ./docker/rails/Gemfile.lock:/usr/src/app/hitobito/Gemfile.lock
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "http://localhost:3000/healthz"]
+      interval: 5s
+      timeout: 5s
+      start_period: 30m
 
   rails_test:
     <<: *rails
@@ -39,7 +49,8 @@ services:
       SKIP_SEEDS: 1
       SKIP_BUNDLE_INSTALL: 1
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
 
   worker:
     <<: *rails
@@ -50,26 +61,39 @@ services:
       SKIP_SEEDS: 1
       SKIP_BUNDLE_INSTALL: 1
     depends_on:
-      - rails
-      - postgres
-      - mailcatcher
-      - cache
+      rails:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+      mailcatcher:
+        condition: service_healthy
+      cache:
+        condition: service_started
+    healthcheck:
+      disable: true
 
   # Dependencies
   mailcatcher:
     image: ghcr.io/hitobito/development/mailcatcher
+    restart: unless-stopped
     build:
       context: ./docker/mailcatcher
     ports:
       - "127.0.0.1:1025:1025"
       - "127.0.0.1:1080:1080"
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "http://localhost:1080"]
+      interval: 5s
+      timeout: 5s
 
   cache:
     image: memcached:1.6-alpine
     command: [ memcached, -l, '0.0.0.0', -p, '11211' ]
+    restart: unless-stopped
 
   postgres:
     image: postgres:16
+    restart: unless-stopped
     env_file: ./docker/postgres.env
     ports:
       - "127.0.0.1:5432:5432"
@@ -77,12 +101,18 @@ services:
       - ./docker/postgresql-setup.sql:/docker-entrypoint-initdb.d/postgresql-setup.sql:ro
       - ./docker/test-setup-postgresql.sql:/docker-entrypoint-initdb.d/test-setup-postgresql.sql:ro
       - postgres:/var/lib/postgresql/data
-      
+    healthcheck:
+      # Password is autodetected from env vars…
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 5s
+      timeout: 5s
+
   webpack:
     build:
       context: ./docker/rails
     image: ghcr.io/hitobito/development/rails
     entrypoint: [ "webpack-entrypoint.sh" ]
+    restart: unless-stopped
     env_file: docker/rails/env
     environment:
       WEBPACKER_DEV_SERVER_HOST: webpack
@@ -96,6 +126,9 @@ services:
       - hitobito_bundle:/opt/bundle
       - hitobito_yarn_cache:/home/developer/.cache/yarn
       - ./docker/rails/Gemfile.lock:/usr/src/app/hitobito/Gemfile.lock
+    depends_on:
+      postgres:
+        condition: service_healthy
 
 volumes:
   postgres:
