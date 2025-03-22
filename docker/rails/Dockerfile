@@ -14,7 +14,7 @@ ARG TRANSIFEX_VERSION="1.6.4"
 
 # Packages
 ARG BUILD_PACKAGES="nodejs git sqlite3 libsqlite3-dev imagemagick build-essential"
-ARG DEV_PACKAGES="direnv xvfb chromium chromium-driver pv vim curl less"
+ARG DEV_PACKAGES="direnv xvfb chromium chromium-driver pv vim curl less sudo"
 
 #################################
 #          Build Stage          #
@@ -27,6 +27,9 @@ USER root
 ENV RAILS_ENV=development
 ENV RAILS_DB_ADAPTER=postgresql
 ENV BUNDLE_PATH=/opt/bundle
+ARG USERNAME=hitobito
+ARG USER_UID=1000
+ARG USER_GID=$USER_UID
 
 WORKDIR /usr/src/app/hitobito
 
@@ -58,6 +61,12 @@ RUN curl -L "https://github.com/transifex/cli/releases/download/v${TRANSIFEX_VER
 ARG BUNDLER_VERSION
 RUN bash -vxc "gem install bundler -v ${BUNDLER_VERSION}"
 
+# Create the user
+RUN groupadd --gid $USER_GID $USERNAME \
+&& useradd --uid $USER_UID --gid $USER_GID -m $USERNAME -s /bin/bash -d /home/developer \
+&& echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME \
+&& chmod 0440 /etc/sudoers.d/$USERNAME
+
 # for release and version-scripts
 RUN bash -vxc 'gem install cmdparse pastel'
 
@@ -66,7 +75,9 @@ COPY ./webpack-entrypoint.sh /usr/local/bin
 
 RUN mkdir /opt/bundle && chmod 777 /opt/bundle
 RUN mkdir /seed && chmod 777 /seed
-RUN mkdir /home/developer && chmod 777 /home/developer
+
+USER $USERNAME
+
 ENV HOME=/home/developer
 ENV NODE_PATH=/usr/lib/nodejs
 
