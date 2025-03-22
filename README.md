@@ -20,6 +20,7 @@ bin/dev-env.sh
 To start the development environment, run:
 
 ```bash
+# This command might take a very long time on the first run, as the database needs to be seeded…
 hit up
 ```
 
