@@ -2,6 +2,11 @@
 
 New here? Install our docker development [setup](doc/setup.md)!
 
+> [!IMPORTANT]
+> For an easy to use quick start solution you can use [devcontainers and codespaces][devcontainers].
+
+[devcontainers]: doc/Devcontainer.md
+
 ## Development
 
 Start developing by editing files locally with your preferred editor in the `app/hitobito/*` folders.
@@ -20,6 +25,7 @@ bin/dev-env.sh
 To start the development environment, run:
 
 ```bash
+# This command might take a very long time on the first run, as the database needs to be seeded…
 hit up
 ```
 
