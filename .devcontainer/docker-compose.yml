@@ -1,0 +1,22 @@
+services:
+  rails:
+    volumes:
+      - .:/workspace:cached
+
+    # Skip entrypoint which would try to migrate on entry
+    entrypoint: []
+    # Overrides default command so things don't shut down after the process ends.
+    command: sleep infinity
+    # disable healthcheck, we override the command which would not respond!
+    healthcheck: {}
+  # redefine dependencies, not waiting for the rails container to be healthy. it will never be, since it's missing the healthcheck…
+  worker:
+    depends_on:
+      rails:
+        condition: service_started
+      postgres:
+        condition: service_healthy
+      mailcatcher:
+        condition: service_healthy
+      cache:
+        condition: service_started
