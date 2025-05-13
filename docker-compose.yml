@@ -26,10 +26,11 @@ services:
       - ./app/:/usr/src/app
       - hitobito_bundle:/opt/bundle
       - seed:/seed
-      - ./docker/rails/home:/home/developer
       - /tmp/.X11-unix:/tmp/.X11-unix
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
+      - ./docker/rails/home/.bashrc:/home/developer/.bashrc
+      - ./docker/rails/home/.pryrc:/home/developer/.pryrc
       - ./docker/rails/Gemfile.lock:/usr/src/app/hitobito/Gemfile.lock
     healthcheck:
       test: ["CMD", "curl", "--fail", "http://localhost:3000/healthz"]
