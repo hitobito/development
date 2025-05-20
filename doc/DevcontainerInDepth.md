@@ -4,9 +4,9 @@
 
 Essentially, there is a `devcontainer.json` in the `.devcontainer` folder which defines the devcontainer setup.
 
-This consist on a high level of the following:
-- Define the docker compose file to use. In this repo, we also have a second `.devcontainer/docker-compose.yml`, which overrides some stuff form the main image.
-- Define which service to user to run the IDE in
+On a high level, this consists of the following:
+- Define the docker compose file to use. In this repo, we also have a second `.devcontainer/docker-compose.yml`, which overrides some stuff from the main image.
+- Define which service to run the IDE in
 - Specify the workspace folder that gets opened by default inside the container
 - Predefine some port mappings. They are supplemental to the docker compose ports…
 - Some devcontainer setup commands
@@ -15,7 +15,7 @@ This consist on a high level of the following:
     3. updateContentCommand: Runs inside the container after the onCreateCommant, but before the IDE is available. This is also rerun by github to update the prebuilt images.
 - Some vscode extensions, that will get preinstalled.
 
-## What to the Scripts do?
+## What do the Scripts do?
 
 ### initialize.sh
 
@@ -41,4 +41,4 @@ To access docker inside from the devcontainer:
 
 This is a security risk for production, but not really a problem for development.
 
-The docker group is not available inside the container, so you always have to call docker as root, eg using sudo. If we would create it in the container, it's id would be different from the host, which would cause problems with the mounted socket.
+The docker group is not available inside the container, so you always have to call docker as root, eg using sudo. If we would create it in the container, its id would be different from the host, which would cause problems with the mounted socket.
