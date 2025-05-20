@@ -1,0 +1,39 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the README at:
+// https://github.com/microsoft/vscode-dev-containers/tree/v0.245.2/containers/docker-existing-docker-compose
+// If you want to run as a non-root user in the container, see .devcontainer/docker-compose.yml.
+{
+	"name": "Hitobito Insieme",
+
+	"dockerComposeFile": [
+		"../../docker-compose.yml",
+		"../docker-compose.yml"
+	],
+
+	// The 'service' property is the name of the service for the container that VS Code should
+	// use. Update this value and .devcontainer/docker-compose.yml to the real service name.
+	"service": "rails",
+
+	"workspaceFolder": "/usr/src/app",
+
+	// Use 'forwardPorts' to make a list of ports inside the container available locally.
+	"forwardPorts": [
+		3000,
+		1080,
+		3306
+	],
+
+	"initializeCommand": ".devcontainer/initialize.sh https://github.com/hitobito/hitobito.git https://github.com/hitobito/hitobito_insieme.git",
+
+	"onCreateCommand": "/workspace/.devcontainer/create.sh",
+
+	"updateContentCommand": "/workspace/.devcontainer/update.sh",
+
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"shopify.ruby-extensions-pack",
+				"rubocop.vscode-rubocop"
+			]
+		}
+	}
+}
