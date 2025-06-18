@@ -24,6 +24,7 @@ _You'll find more detailed requirements [here](https://code.visualstudio.com/doc
 2. In the menu that pops up, select "Reopen in Container"
 3. Select the variant (wagon) you want to run.
 4. Grab a coffee! The dev container will start which takes quite some time (depending on your computer this might take over 15min). It will clone the wagons, install all the ruby gems and migrate as well as seed the database.
+5. Open the `app.code-workspace` file in the root of the file navigator and click on "Open Workspace" in the bottom right. This will load all ruby features of vs code and allow you to use the debugger :tada:
 
 ## GitHub Codespaces Setup
 
@@ -43,6 +44,7 @@ If you want to get familiar with codespaces, check the quickstart guide here: ht
 
 To actually run hitobito you can use regular ruby/rails commands in the Terminal:
 ```sh
+cd hitobito
 rails server -b 0.0.0.0
 ```
 
@@ -52,7 +54,7 @@ The shell is already in the context of the ruby bundler.
 
 For VS Code or Github Codespaces Users, you can even use the IDE features like setting breakpoints etc.
 
-To do so, there is a `.vscode/launch.json` file mounted. This allows you to go to the "Run and Debug" tab in the main navigation, select a Task from the dropdown and click the play button. It will launch hitobito or the specs in a separate panel and attach the debugger.
+To do so, there is a `hitobito/.vscode/launch.json` file mounted. To use it you need to have opened the `app.code-workspace` file and click on "Open workspace" in the bottom right. This allows you to go to the "Run and Debug" tab in the main navigation, select a Task from the dropdown and click the play button. It will launch hitobito or the specs in a separate panel and attach the debugger.
 
 ## Rebuilding
 

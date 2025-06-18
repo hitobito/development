@@ -7,3 +7,5 @@
 !/docker/rails/home/.*rc
 /shared/.env.generated
 docker/rails/Gemfile.lock
+app/*
+!app/app.code-workspace
