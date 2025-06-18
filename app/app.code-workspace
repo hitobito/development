@@ -1,0 +1,17 @@
+{
+	"folders": [
+		{
+			"name": "hitobito",
+			"path": "./hitobito"
+		},
+		{
+			"name": "app",
+			"path": "."
+		}
+	],
+	"settings": {
+		"files.exclude": {
+			"hitobito": true
+		}
+	}
+}
