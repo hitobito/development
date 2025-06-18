@@ -2,6 +2,7 @@ services:
   rails:
     volumes:
       - .:/workspace:cached
+      - /var/run/docker.sock:/var/run/docker.sock
       - ./docker/rails/.vscode:/usr/src/app/hitobito/.vscode:cached
 
     # Skip entrypoint which would try to migrate on entry
@@ -10,6 +11,8 @@ services:
     command: sleep infinity
     # disable healthcheck, we override the command which would not respond!
     healthcheck: {}
+    # Allow accessing docker
+    privileged: true
   # redefine dependencies, not waiting for the rails container to be healthy. it will never be, since it's missing the healthcheck…
   worker:
     depends_on:
