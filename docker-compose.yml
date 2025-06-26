@@ -29,6 +29,7 @@ services:
       - /tmp/.X11-unix:/tmp/.X11-unix
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
+      - ~/.gitconfig:/etc/gitconfig
       - ./docker/rails/home/.bashrc:/home/developer/.bashrc
       - ./docker/rails/home/.pryrc:/home/developer/.pryrc
       - ./docker/rails/Gemfile.lock:/usr/src/app/hitobito/Gemfile.lock
