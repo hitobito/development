@@ -75,7 +75,7 @@ docker volume create hitobito_yarn_cache
 See more in the main [README.md](../README.md) but to prevent issues with the Gemfile.lock, you should run the following command:
 
 ```bash
-touch docker/rails/Gemfile.lock
+cp app/hitobito/Gemfile.lock docker/rails/
 ```
 
 ## Start Development Containers
