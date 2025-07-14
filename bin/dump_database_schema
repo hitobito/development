@@ -9,7 +9,7 @@ docker-compose exec postgres bash -e -c "
 
 mkdir -p "dumps"
 
-container_name=$(docker-compose ps -q postgres)
+container_name=$(docker compose ps -q postgres)
 
 docker cp $container_name:$dump dumps/
 

@@ -4,12 +4,12 @@ source $(dirname $0)/_basics
 
 dump="tmp/$(date +%F-%H-%M-%S).sql.gz"
 
-docker-compose exec postgres bash -e -c "
+docker compose exec postgres bash -e -c "
     pg_dump -U \$POSTGRES_USER -d \$POSTGRES_DB | gzip > \"$dump\""
 
 mkdir -p "dumps"
 
-container_name=$(docker-compose ps -q postgres)
+container_name=$(docker compose ps -q postgres)
 
 docker cp $container_name:$dump dumps/
 

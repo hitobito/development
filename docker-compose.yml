@@ -93,7 +93,7 @@ services:
     restart: unless-stopped
 
   postgres:
-    image: postgres:16
+    image: postgres:17
     restart: unless-stopped
     env_file: ./docker/postgres.env
     ports:

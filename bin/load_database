@@ -14,7 +14,7 @@ if [ ! -f $dump ]; then
     exit 2
 fi
 
-zcat "$dump" | docker-compose exec -T postgres bash -c '
+cat "$dump" | docker compose exec -T postgres bash -c '
     psql -U $POSTGRES_USER -d $POSTGRES_DB
 '
 
