@@ -13,8 +13,8 @@ ARG YARN_VERSION="1.22.19"
 ARG TRANSIFEX_VERSION="1.6.4"
 
 # Packages
-ARG BUILD_PACKAGES="nodejs git sqlite3 libsqlite3-dev imagemagick build-essential"
-ARG DEV_PACKAGES="direnv xvfb chromium chromium-driver pv vim curl less sudo docker-ce-cli"
+ARG BUILD_PACKAGES="nodejs git sqlite3 libsqlite3-dev imagemagick build-essential libvips42"
+ARG DEV_PACKAGES="direnv xvfb chromium chromium-driver pv vim curl less sudo docker-ce-cli libvips42"
 
 #################################
 #          Build Stage          #
