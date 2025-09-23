@@ -21,7 +21,7 @@ services:
       WEBPACKER_DEV_SERVER_HOST: webpack
       DISABLE_SPRING: 'true'
     ports:
-      - "127.0.0.1:3000:3000"
+      - "127.0.0.1:${RAILS_PORT:-3000}:3000"
     volumes:
       - ./app/:/usr/src/app
       - hitobito_bundle:/opt/bundle
@@ -43,7 +43,6 @@ services:
     profiles:
       - manual
     command: [ 'sleep', 'infinity' ]
-    ports: []
     environment:
       RAILS_ENV: test
       WEBPACKER_DEV_SERVER_HOST: null
@@ -56,7 +55,6 @@ services:
   worker:
     <<: *rails
     command: [ 'rails', 'jobs:work' ]
-    ports: []
     environment:
       SKIP_RAILS_MIGRATIONS: 1
       SKIP_SEEDS: 1
@@ -79,9 +77,6 @@ services:
     restart: unless-stopped
     build:
       context: ./docker/mailcatcher
-    ports:
-      - "127.0.0.1:1025:1025"
-      - "127.0.0.1:1080:1080"
     healthcheck:
       test: ["CMD", "curl", "--fail", "http://localhost:1080"]
       interval: 5s
@@ -96,8 +91,6 @@ services:
     image: postgres:16
     restart: unless-stopped
     env_file: ./docker/postgres.env
-    ports:
-      - "127.0.0.1:5432:5432"
     volumes:
       - ./docker/postgresql-setup.sql:/docker-entrypoint-initdb.d/postgresql-setup.sql:ro
       - ./docker/test-setup-postgresql.sql:/docker-entrypoint-initdb.d/test-setup-postgresql.sql:ro
@@ -120,8 +113,6 @@ services:
       SKIP_BUNDLE_INSTALL: 1
     user: "${RAILS_UID:-1000}"
     command: /usr/src/app/hitobito/bin/webpack-dev-server
-    ports:
-      - "127.0.0.1:3035:3035"
     volumes:
       - ./app/:/usr/src/app
       - hitobito_bundle:/opt/bundle
