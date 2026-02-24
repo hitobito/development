@@ -14,6 +14,8 @@ if [ ! -f $dump ]; then
     exit 2
 fi
 
+docker compose exec -T rails bash -c 'bin/rails db:empty_db'
+
 cat "$dump" | docker compose exec -T postgres bash -c '
     psql -U $POSTGRES_USER -d $POSTGRES_DB
 '
