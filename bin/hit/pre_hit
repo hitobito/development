@@ -4,10 +4,12 @@ copy_gemfile_lock() {
   (
     cd $HIT_CORE_DIR
     git checkout Gemfile.lock
-    cp Gemfile.lock $HIT_SCRIPT_DIR/../../docker/rails/Gemfile.lock
+    cp Gemfile.lock ${BUNDLE_GEMFILE}.lock
   ) > /dev/null 2>&1
-  echo "Changes to Gemfile.lock are ignored, check README.md#Gemfile.lock for more details."
+  echo "Changes to Gemfile.lock are ignored, check hitobito/doc/developer/local_setup.md for more details."
   echo
 }
 
-copy_gemfile_lock
+if [ -n $BUNDLE_GEMFILE ]; do
+  copy_gemfile_lock
+fi

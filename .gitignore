@@ -6,6 +6,5 @@
 /docker/rails/home/*
 !/docker/rails/home/.*rc
 /shared/.env.generated
-docker/rails/Gemfile.lock
 /hitobito
 /hitobito_*
