@@ -101,10 +101,6 @@ Useful when adding new seeds
 hit rails seed
 ```
 
-## Gemfile.lock
-
-Since the wagon gem is always causing changes in Gemfile.lock we do not want to check in to core repo, changes to this file are ignored. If you updated gems you need to manually copy the Gemfile.lock from `docker/rails/Gemfile.lock` to the core repo.
-
 ## Updating Images
 
 When you have made changes to the images of this project, execute the following command to update them locally:

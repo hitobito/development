@@ -20,6 +20,7 @@ services:
     environment:
       WEBPACKER_DEV_SERVER_HOST: webpack
       DISABLE_SPRING: 'true'
+      BUNDLE_GEMFILE: Gemfile.local
       #SKIP_SEEDS: 1
     ports:
       - "127.0.0.1:3000:3000"
@@ -32,7 +33,6 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - ./docker/rails/home/.bashrc:/home/developer/.bashrc
       - ./docker/rails/home/.pryrc:/home/developer/.pryrc
-      - ./docker/rails/Gemfile.lock:/usr/src/app/hitobito/Gemfile.lock
     healthcheck:
       test: ["CMD", "curl", "--fail", "http://localhost:3000/healthz"]
       interval: 500s
@@ -127,7 +127,6 @@ services:
       - .:/usr/src/app
       - hitobito_bundle:/opt/bundle
       - hitobito_yarn_cache:/home/developer/.cache/yarn
-      - ./docker/rails/Gemfile.lock:/usr/src/app/hitobito/Gemfile.lock
     depends_on:
       postgres:
         condition: service_healthy

@@ -4,7 +4,6 @@
 
 docker volume create hitobito_bundle
 docker volume create hitobito_yarn_cache
-touch docker/rails/Gemfile.lock
 
 # Check if an argument was provided
 if [ $# -eq 0 ]

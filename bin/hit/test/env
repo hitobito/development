@@ -71,7 +71,7 @@ if [[ "$HIT_TEST_ENV" == "core" ]]; then
   WORKDIR=/usr/src/app/hitobito
 else
   apply_core_db_migrations
-  PREPARE_RAILS_SPEC_CMD="cp ../hitobito/Gemfile.lock . && rake app:wagon:migrate"
+  PREPARE_RAILS_SPEC_CMD="cp ../hitobito/Gemfile.lock ../hitobito/${BUNDLE_GEMFILE:-Gemfile}.lock . && rake app:wagon:migrate"
   WORKDIR="/usr/src/app/hitobito_$HIT_TEST_ENV"
 fi
 

@@ -14,7 +14,6 @@ do
     # Change into the repository directory, discard all local changes, and pull the latest changes
     cd "$repository_dir"
     echo "Updating repository: $(basename $repository_dir)"
-    git checkout Gemfile.lock
     git pull --ff-only
   fi
 done
