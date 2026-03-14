@@ -28,6 +28,12 @@ initialize() {
         cp /usr/src/app/hitobito/Wagonfile{.development,}
     fi
 
+    if [ -n "$BUNDLE_GEMFILE" ]; then
+        echo "⚙ Creating local copies of Gemfile.lock"
+        cp /usr/src/app/hitobito/Gemfile /usr/src/app/hitobito/${BUNDLE_GEMFILE}
+        cp /usr/src/app/hitobito/Gemfile.lock /usr/src/app/hitobito/${BUNDLE_GEMFILE}.lock
+    fi
+
     if [ -z "$SKIP_BUNDLE_INSTALL" ]; then
         echo "Installing gems if necessary"
         bundle check >/dev/null 2>&1 || bundle install
