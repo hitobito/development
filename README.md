@@ -1,98 +1,242 @@
 # Hitobito Development 👩🏽‍💻
 
-New here? Install our docker development [setup](doc/setup.md)!
+We're glad you want to setup your machine for hitobito development 💃
 
-> [!IMPORTANT]
-> For an easy to use quick start solution you can use [devcontainers and codespaces][devcontainers].
+Described below is the default, best supported Docker-based way to install hitobito locally, with minimal pre-requisites.
+
+> If instead you already have VSCode installed and want an easy to use quick start solution, you can use [devcontainers and codespaces][devcontainers].
 
 [devcontainers]: doc/Devcontainer.md
 
+## System Requirements
+
+You need to have [Docker][docker] and _[docker compose][doco]_ installed on your computer.
+The free _Docker Community Edition (CE)_ works perfectly fine. Make sure your user is part of the docker group:
+```bash
+usermod -a -G docker $USER
+```
+You probably have to log out and log in back again or run `newgrp docker`.
+
+[docker]: https://docs.docker.com/install/
+[doco]: https://docs.docker.com/compose/install/
+
+Additionally you need **git** to be installed and configured.
+
+🐧 This manual focuses on Linux/Ubuntu. Hitobito development also runs on other platforms with some adjustments.
+Follow the prerequisites in section _[Windows preparation][windows_preparation]_ to set up a Windows platform for Hitobito development, before continuing below.
+
+[windows_preparation]: #windows-preparation
+
+## Preparation
+
+First declare a instance name: (e.g. generic, pbs)
+
+```bash
+read -p "Enter hitobito instance name: " INSTANCE_NAME
+```
+
+Then you need to clone this repository:
+
+```bash
+git clone https://github.com/hitobito/development.git $INSTANCE_NAME && cd $INSTANCE_NAME
+git clone https://github.com/hitobito/hitobito.git
+```
+
+Now you need to add at least one wagon project.
+
+If you want to run a generic demo instance of hitobito:
+```bash
+git clone https://github.com/hitobito/hitobito_generic.git
+```
+
+If instead you want to run a PBS instance:
+```bash
+git clone https://github.com/hitobito/hitobito_pbs.git
+git clone https://github.com/hitobito/hitobito_youth.git # pbs also requires the youth wagon
+```
+
+You can adapt the above commands as needed for the wagon(s) you want.
+
+The final structure should look something like this:
+
+```bash
+$ ls -la
+-rw-rw-r--  1 ps ps   181 Mar 1 20:54 app.code-workspace
+drwxrwxr-x  3 ps ps  4096 Mar 1 13:50 bin
+drwxrwxr-x  2 ps ps  4096 Mar 1 14:07 doc
+drwxrwxr-x  4 ps ps  4096 Mar 1 20:54 docker
+-rw-rw-r--  1 ps ps  3721 Mar 1 13:44 docker-compose.yml
+drwxrwxr-x  2 ps ps  4096 Mar 1 20:54 dumps
+drwxrwxr-x 18 ps ps  4096 Mar 1 20:59 hitobito
+drwxrwxr-x 11 ps ps  4096 Mar 1 20:55 hitobito_generic
+-rw-rw-r--  1 ps ps 34523 Mar 1 20:54 LICENSE
+drwxrwxr-x  3 ps ps  4096 Mar 1 20:54 nextcloud
+-rw-rw-r--  1 ps ps   584 Mar 1 20:54 nextcloud.yml
+-rw-rw-r--  1 ps ps  2116 Mar 1 13:44 README.md
+drwxrwxr-x  2 ps ps  4096 Mar 1 20:54 shared
+```
+
+### Prepare storage space for dependencies
+
+If you did not so before, create new docker volumes for storing bundled gems and yarn packages:
+
+```bash
+docker volume create hitobito_bundle
+docker volume create hitobito_yarn_cache
+```
+
+⚡ If your user id is not 1000 (run id -u to check), you need to export this as env variable: **export RAILS_UID=$UID** before running any of the further commands. Maybe you want to add this to your bashrc.
+
+### Gemfile.lock
+
+To prevent issues with the Gemfile.lock, you need to run the following command:
+
+```bash
+cp hitobito/Gemfile.lock docker/rails/
+```
+
+## Start the application
+
+To start the Hitobito application, run the following command in your shell:
+
+```bash
+docker compose up
+```
+This command might take a very long time on the first run, as the database needs to be seeded.
+You will see the logs of all containers in your terminal.
+If you press Ctrl+C, the application will be stopped.
+If you don't want that, use `docker compose up -d` instead.
+
+After the startup has completed (once you see `Listening on http://0.0.0.0:3000` in the logs), you should be up and running.
+
+You can check the status in a different terminal.
+```bash
+docker compose ps -a
+```
+
+The output should look something like this:
+```
+NAME                            IMAGE                                      COMMAND                  SERVICE           CREATED        STATUS              PORTS
+development-cache-1             memcached:1.6-alpine                       "docker-entrypoint.s…"   cache             3 hours ago    Up 3 hours          11211/tcp
+development-postgres-1          postgres:16                                "docker-entrypoint.s…"   postgres          23 hours ago   Up 3 hours          5432/tcp, 0.0.0.0:5432->5432/tcp, :::5432->5432/tcp
+development-mailcatcher-1       ghcr.io/hitobito/development/mailcatcher   "mailcatcher -f --ip…"   mailcatcher       3 hours ago    Up 3 hours          0.0.0.0:1080->1080/tcp, :::1080->1080/tcp
+development-rails-1             ghcr.io/hitobito/development/rails         "rails-entrypoint.sh…"   rails             3 hours ago    Up 3 hours          0.0.0.0:3000->3000/tcp, :::3000->3000/tcp
+development-rails_test_core-1   ghcr.io/hitobito/development/rails         "rails-entrypoint.sh…"   rails_test_core   21 hours ago   Up About a minute
+development-webpack-1           ghcr.io/hitobito/development/rails         "webpack-entrypoint.…"   webpack           3 hours ago    Up About a minute   0.0.0.0:3035->3035/tcp, :::3035->3035/tcp
+development-worker-1            ghcr.io/hitobito/development/rails         "rails-entrypoint.sh…"   worker            3 hours ago    Up About a minute
+```
+
+Access the web application by browser: http://localhost:3000 and log in using *hitobito@puzzle.ch* (or in some wagons *hitobito-pbs@puzzle.ch* or similar) and password *hito42bito*. The correct email address to log in can be found in the file ```/config/settings.yml``` inside your wagon repository, in the field "root_email".
+
+### E-Mails
+
+:email: All mails sent by your local development environment end up in **mailcatcher**. You can access these e-mails by visiting http://localhost:1080.
+
 ## Development
 
-Start developing by editing files locally with your preferred editor in the `hitobito/*` folders.
+Congratulations! You are now ready to start changing hitobito.
+You can simply edit the files in the `hitobito/*` folders with your preferred editor.
 Those directories are mounted inside the containers. So every saved file is instantly available inside the containers.
 
 :bulb: If you don't know where to begin changing something, have a look at our hitobito cheatsheet in [English](./doc/hitobito-cheatsheet-en.pdf) and [German](./doc/hitobito-cheatsheet.pdf).
 
-### Usage
+For advanced development, see the [development documentation](./doc/development.md).
 
-To initialize the `hit` command, run the following in your console:
+## Windows preparation
+The suggested approach for Hitobito development on Windows uses VSCode. VSCode provides extensions for integration of Docker and WSL 2. The next steps will prepare Windows for WSL 2, Docker and VSCode.
 
+### WSL 2
+
+Install WSL 2 with Ubuntu using PowerShell **running as administrator**.
 ```bash
-bin/dev-env.sh
+wsl --install
+```
+Consider a look at _[Install Linux on Windows with WSL][wsl_install]_ for troubleshooting.
+
+Next, you will have to reboot your computer, before you are able to use WSL 2.
+
+Open another PowerShell as administrator, and install Ubuntu:
+```bash
+wsl --install -d Ubuntu
 ```
 
-To start the development environment, run:
+An Ubuntu terminal opens. If not, open _Ubuntu_ using the Start menu.
 
-```bash
-# This command might take a very long time on the first run, as the database needs to be seeded…
-hit up
+You will be prompted to specify user name and password. Then, update and upgrade packages.
+```terminal
+sudo apt update && sudo apt upgrade
+```
+⚡ Don't close the Ubuntu terminal yet.
+
+[wsl_install]: https://learn.microsoft.com/en-us/windows/wsl/install
+
+### Docker
+
+Download and install [Docker Desktop][docker_desktop].
+The installation will promt you to enable WSL 2.
+
+Open _Docker Desktop_ using the Start menu.
+Select Settings > Generals and make sure the _Use the WSL 2 based engine_ option is activated. If necessary, click _Apply & restart_.
+
+Return to the Ubuntu terminal and confirm the installation.
+```terminal
+docker --version
+```
+Version and build information should appear. That's it, terminate Ubuntu.
+```terminal
+exit
 ```
 
-Access hitobito via http://localhost:3000
+See _[Get started with Docker remote containers on WSL 2][docker_install]_ for a more detailed description.
 
-Get a list of available commands with:
+[docker_desktop]: https://docs.docker.com/desktop/windows/wsl/#download
+[docker_install]: https://learn.microsoft.com/en-us/windows/wsl/tutorials/wsl-containers
 
+### VSCode
+
+Download and install [VSCode][vs_code].
+
+Open _VSCode_ using the Start menu.
+
+Search for and install the following extensions:
+- Remote Development (Microsoft)
+- Dev Containers (Microsoft)
+- Docker (Microsoft)
+
+:bulb: You will find the _Extensions_ menu on the left.
+
+Start a remote Ubuntu session by clicking on the buttom left corner which should be highlighted in green, and select _New WSL window_.
+
+A new VSCode instance opens with remote Ubuntu enabled.
+Confirm the button in the bottom left corner highlighted in green and indicating the Ubuntu session.
+
+Start the terminal within VSCode, by clicking the _Toggle panel_ button in the top right.
+
+:sparkles: Well done! You are set to follow the instructions of section _[Preparation][preparation]_, using the Ubuntu session within the VSCode terminal.
+
+[vs_code]: https://code.visualstudio.com/download
+[preparation]: #preparation
+
+## Nextcloud
+
+Hitobito has official support for nextcloud. You can start a nextcloud instance ready and set up for OIDC authentication via hitobito as follows:
 ```bash
-hit help
+docker compose -f docker-compose.yml -f nextcloud.yml up
 ```
 
-### Running tests
+You can then access your local nextcloud instance at http://localhost.
+To test the hitobito Login part, you can then click on "Login with hitobito".
+Alternatively, to manage the local nextcloud, you can use the credentials `admin` / `hito42bito`.
 
-#### Open a test shell
+In case you get the following error:
+> Client-Autorisierung MKIM ist fehlgeschlagen: Unbekannter Client, keine Autorisierung mitgeliefert oder Autorisierungsmethode nicht unterstützt.
 
-When using this for the first time, once daily or after assets changed run the prep command:
-
+The reason is that the connection between hitobito and nextcloud is set up during hitobito's seeding process, and you probably already had a seeded database before, so no re-seed was done.
+To fix it, you first have to clear your database and then start again:
 ```bash
-hit test prep
+# Clear the database
+docker compose -f docker-compose.yml -f nextcloud.yml down --volumes
+# Start again
+docker compose -f docker-compose.yml -f nextcloud.yml up
+# Now it should work
 ```
-
-Get a shell to run core or wagon specs:
-
-```bash
-hit test
-```
-
-#### Run desired tests
-
-Either, to run all tests:
-
-```bash
-rspec
-```
-
-or, to run specific tests:
-
-```bash
-rspec spec/models/person_spec.rb
-```
-
-### HTTP request debugging with pry
-
-For debugging with pry during a HTTP request, you can attach to the running docker container (detach with Ctrl+c):
-
-```bash
-hit rails attach
-```
-
-### Access Development Database
-
-```bash
-hit db console
-```
-
-### Rerunning seeds
-
-Useful when adding new seeds
-
-```bash
-hit rails seed
-```
-
-### Gemfile.lock
-
-Since the wagon gem is always causing changes in Gemfile.lock we do not want to check in to core repo, changes to this file are ignored. If you updated gems you need to manually copy the Gemfile.lock from `docker/rails/Gemfile.lock` to the core repo.
-
-### Shutdown
-
-🍺 finished work ? execute `hit down` to shut down all running containers
