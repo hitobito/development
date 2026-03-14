@@ -24,7 +24,7 @@ services:
     ports:
       - "127.0.0.1:3000:3000"
     volumes:
-      - ./app/:/usr/src/app
+      - .:/usr/src/app
       - hitobito_bundle:/opt/bundle
       - seed:/seed
       - /tmp/.X11-unix:/tmp/.X11-unix
@@ -124,7 +124,7 @@ services:
     ports:
       - "127.0.0.1:3035:3035"
     volumes:
-      - ./app/:/usr/src/app
+      - .:/usr/src/app
       - hitobito_bundle:/opt/bundle
       - hitobito_yarn_cache:/home/developer/.cache/yarn
       - ./docker/rails/Gemfile.lock:/usr/src/app/hitobito/Gemfile.lock

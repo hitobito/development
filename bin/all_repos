@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Changes into every repo directory in app/
+# Changes into every repo directory
 # and executes the given command.
 #
 # If given no arguments, lists paths to all repositories.

@@ -19,7 +19,7 @@ On a high level, this consists of the following:
 
 ### initialize.sh
 
-The initialize.sh script is run outside the container, before it is launched. It clones the app repositories given to it as parameters. This is used to allow for all the variant/wagon setups to use almost the same setup.
+The initialize.sh script is run outside the container, before it is launched. It clones the hitobito repositories given to it as parameters. This is used to allow for all the variant/wagon setups to use almost the same setup.
 
 ### create.sh
 

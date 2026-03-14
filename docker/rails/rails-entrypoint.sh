@@ -63,6 +63,25 @@ initialize() {
     cd - >/dev/null
 }
 
+if [ -d /usr/src/app/app ]; then
+    echo "*****************************************************************"
+    echo "CAUTION: You seem to be using the old directory structure with"
+    echo "hitobito and wagons inside an app directory."
+    echo ""
+    echo "************ THIS HAS BEEN CHANGED SINCE APRIL 2026. ************"
+    echo ""
+    echo "Please move all contents of app/ up one level, directly into the"
+    echo "hitobito/development directory, and delete the app/ directory."
+    echo "Then, run:"
+    echo "docker compose down"
+    echo "docker compose build"
+    echo "docker compose up"
+    echo "*****************************************************************"
+    echo ""
+    echo "Exiting."
+    exit 1
+fi
+
 if [ -z "$SKIP_INIT" ]; then
     initialize
     echo "⚙️  Executing: $@"

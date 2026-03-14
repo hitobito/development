@@ -34,29 +34,36 @@ Then you need to clone this repository:
 ```bash
 mkdir -p ~/git/hitobito && cd ~/git/hitobito
 git clone https://github.com/hitobito/development.git $INSTANCE_NAME && cd $INSTANCE_NAME
-(cd app && git clone https://github.com/hitobito/hitobito.git)
+git clone https://github.com/hitobito/hitobito.git
 ```
 
 Now you need to add at least one wagon project:
 
 ```bash
 # wagon project(s)
-(cd app && git clone https://github.com/hitobito/hitobito_generic.git)
+git clone https://github.com/hitobito/hitobito_generic.git
 ```
 
-⚡ If you want to contribute to an existing wagon/organisation please adapt this e.g. `(cd app && git clone https://github.com/hitobito/hitobito_youth.git && git clone https://github.com/hitobito/hitobito_pbs.git)`
+⚡ If you want to contribute to an existing wagon/organisation please adapt this e.g. `git clone https://github.com/hitobito/hitobito_youth.git && git clone https://github.com/hitobito/hitobito_pbs.git`
 
 
-The final structure in app/ should look something like this:
+The final structure should look something like this:
 
 ```bash
-$ ls -lah app/
-total 16K
-drwxrwxr-x  4 ps ps 4.0K Jun 25 11:20 .
-drwxrwxr-x 17 ps ps 4.0K Jun 25 10:00 ..
--rw-r--r-x  1 ps ps    2 Jun 25 10:00 .gitignore
-drwxrwxr-x 18 ps ps 4.0K Jun 25 07:29 hitobito
-drwxrwxr-x 11 ps ps 4.0K Jun 24 10:53 hitobito_generic
+$ ls -la
+-rw-rw-r--  1 ps ps   181 Mar 1 20:54 app.code-workspace
+drwxrwxr-x  3 ps ps  4096 Mar 1 13:50 bin
+drwxrwxr-x  2 ps ps  4096 Mar 1 14:07 doc
+drwxrwxr-x  4 ps ps  4096 Mar 1 20:54 docker
+-rw-rw-r--  1 ps ps  3721 Mar 1 13:44 docker-compose.yml
+drwxrwxr-x  2 ps ps  4096 Mar 1 20:54 dumps
+drwxrwxr-x 18 ps ps  4096 Mar 1 20:59 hitobito
+drwxrwxr-x 11 ps ps  4096 Mar 1 20:55 hitobito_generic
+-rw-rw-r--  1 ps ps 34523 Mar 1 20:54 LICENSE
+drwxrwxr-x  3 ps ps  4096 Mar 1 20:54 nextcloud
+-rw-rw-r--  1 ps ps   584 Mar 1 20:54 nextcloud.yml
+-rw-rw-r--  1 ps ps  2116 Mar 1 13:44 README.md
+drwxrwxr-x  2 ps ps  4096 Mar 1 20:54 shared
 ```
 
 ## Prepare storage space for dependencies
@@ -75,7 +82,7 @@ docker volume create hitobito_yarn_cache
 See more in the main [README.md](../README.md) but to prevent issues with the Gemfile.lock, you should run the following command:
 
 ```bash
-cp app/hitobito/Gemfile.lock docker/rails/
+cp hitobito/Gemfile.lock docker/rails/
 ```
 
 ## Start Development Containers
