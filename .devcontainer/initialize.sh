@@ -13,17 +13,14 @@ then
   exit 1
 fi
 
-if [ -d "app/hitobito" ]; then
+if [ -d "hitobito" ]; then
     echo "Already cloned, skipping…"
     exit 0
 fi
 
-# Create the app directory if it doesn't exist
-mkdir -p app
-
-# Loop over the URLs and clone each repository into the app directory
+# Loop over the URLs and clone each repository
 for url in "$@"
 do
-  echo "Cloning $url into app/$(basename $url .git)"
-  git clone "$url" "app/$(basename $url .git)"
+  echo "Cloning $url into $(basename $url .git)"
+  git clone "$url" "$(basename $url .git)"
 done

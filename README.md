@@ -9,7 +9,7 @@ New here? Install our docker development [setup](doc/setup.md)!
 
 ## Development
 
-Start developing by editing files locally with your preferred editor in the `app/hitobito/*` folders.
+Start developing by editing files locally with your preferred editor in the `hitobito/*` folders.
 Those directories are mounted inside the containers. So every saved file is instantly available inside the containers.
 
 :bulb: If you don't know where to begin changing something, have a look at our hitobito cheatsheet in [English](./doc/hitobito-cheatsheet-en.pdf) and [German](./doc/hitobito-cheatsheet.pdf).

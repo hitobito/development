@@ -10,7 +10,9 @@ WAGON_DEPENDENCIES = {
   hitobito_jubla: 'hitobito_youth',
   hitobito_cevi: 'hitobito_youth',
   hitobito_pro_natura: 'hitobito_youth',
-  hitobito_sjas: 'hitobito_youth'
+  hitobito_sjas: 'hitobito_youth',
+  hitobito_bdp: 'hitobito_pfadi_de',
+  hitobito_dpsg: 'hitobito_pfadi_de',
 }
 
 # ssh cloning as default
@@ -31,13 +33,13 @@ core_repo = {}
 
 def clone_repo(repo, development_repo, core_repo)
   # clone development repo
-  system "cd hitobito && git clone #{development_repo[:url]} #{shortened_repo_name(repo)}" unless repo_path_exists?(shortened_repo_name(repo))
+  system "git clone #{development_repo[:url]} #{shortened_repo_name(repo)}" unless repo_path_exists?(shortened_repo_name(repo))
 
   # clone core repo
-  system "cd hitobito/#{shortened_repo_name(repo)}/app && git clone #{core_repo[:url]}" unless repo_path_exists?(shortened_repo_name(repo), core_repo[:name])
+  system "cd #{shortened_repo_name(repo)} && git clone #{core_repo[:url]}" unless repo_path_exists?(shortened_repo_name(repo), core_repo[:name])
 
   # clone wagon
-  system "cd hitobito/#{shortened_repo_name(repo)}/app && git clone #{repo[:url]}" unless repo_path_exists?(shortened_repo_name(repo), repo[:name])
+  system "cd #{shortened_repo_name(repo)} && git clone #{repo[:url]}" unless repo_path_exists?(shortened_repo_name(repo), repo[:name])
 end
 
 def clone_repo_with_dependency(repo_with_dependency, development_repo, core_repo)
@@ -47,7 +49,7 @@ def clone_repo_with_dependency(repo_with_dependency, development_repo, core_repo
   clone_repo repo, development_repo, core_repo
 
   # clone dependant
-  system "cd hitobito/#{shortened_repo_name(repo)}/app && git clone #{dependant_repo[:url]}" unless repo_path_exists?(shortened_repo_name(repo), dependant_repo[:name])
+  system "cd #{shortened_repo_name(repo)} && git clone #{dependant_repo[:url]}" unless repo_path_exists?(shortened_repo_name(repo), dependant_repo[:name])
 end
 
 def shortened_repo_name(repo)
@@ -55,8 +57,8 @@ def shortened_repo_name(repo)
 end
 
 def repo_path_exists?(name, wagon_name = nil)
-  dir = "./hitobito/#{name}"
-  dir = dir + "/app/#{wagon_name}" unless wagon_name.nil?
+  dir = "./#{name}"
+  dir = dir + "#{wagon_name}" unless wagon_name.nil?
   puts dir
   Dir.exist?(dir)
 end
@@ -147,9 +149,6 @@ end
 
 # give the user some nice information about what's going to happen
 puts options[:repo].nil? ? 'Now cloning every hitobito dev repository 🚀' : "Now cloning #{options[:repo]} 🚀"
-
-# create the hitobito directory if it does not exist
-system "mkdir hitobito" unless Dir.exist?("./hitobito")
 
 # cloning process
 repos.each do |repo|

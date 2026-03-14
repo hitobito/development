@@ -2,8 +2,8 @@
 
 HIT_SCRIPT_DIR="$(dirname "$(realpath "${BASH_SOURCE[0]:-$_}")")"
 HIT_PROJECT="$(basename "$(cd "$HIT_SCRIPT_DIR/../../" && pwd)")"
-HIT_WAGON_NAMES=$(ls -d "$HIT_SCRIPT_DIR"/../../app/hitobito_* | sed 's|.*/hitobito_||')
-HIT_CORE_DIR="$HIT_SCRIPT_DIR/../../app/hitobito"
+HIT_WAGON_NAMES=$(ls -d "$HIT_SCRIPT_DIR"/../../hitobito_* | sed 's|.*/hitobito_||')
+HIT_CORE_DIR="$HIT_SCRIPT_DIR/../../hitobito"
 export HIT_SCRIPT_DIR
 export HIT_PROJECT
 export HIT_WAGON_NAMES
