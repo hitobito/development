@@ -3,7 +3,7 @@ set -euo pipefail
 cd $(dirname $0)/..
 
 repos() {
-  echo "app/hitobito*"
+  echo "hitobito*"
 }
 
 bold_seq=$(tput bold)
