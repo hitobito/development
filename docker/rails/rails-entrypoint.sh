@@ -74,18 +74,15 @@ if [ -d /usr/src/app/app ]; then
     echo "CAUTION: You seem to be using the old directory structure with"
     echo "hitobito and wagons inside an app directory."
     echo ""
-    echo "************ THIS HAS BEEN CHANGED SINCE APRIL 2026. ************"
-    echo ""
-    echo "Please move all contents of app/ up one level, directly into the"
-    echo "hitobito/development directory, and delete the app/ directory."
-    echo "Then, run:"
-    echo "docker compose down"
-    echo "docker compose build"
-    echo "docker compose up"
+    echo "************* AUTO-MIGRATING TO THE NEW STRUCTURE. **************"
     echo "*****************************************************************"
-    echo ""
-    echo "Exiting."
-    exit 1
+
+    # Move everything in the extra app directory one level up
+    find /usr/src/app/app -maxdepth 1 -not -name 'app' -print0 | xargs -0r mv -t /usr/src/app
+    # Remove the obsolete extra app directory
+    rmdir /usr/src/app/app
+    # Remove the obsolete Gemfile.lock copy
+    rm -f /usr/src/app/docker/rails/Gemfile.lock
 fi
 
 if [ -z "$SKIP_INIT" ]; then
