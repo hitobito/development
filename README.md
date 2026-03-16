@@ -8,6 +8,11 @@ Described below is the default, best supported Docker-based way to install hitob
 
 [devcontainers]: doc/Devcontainer.md
 
+> [!WARNING]
+> If you had hitobito/development set up before mid 2026 and are now coming back to it, you need to build new containers:
+> `docker compose down && docker compose build`
+> This ensures your project can be automatically migrated to the current structure.
+
 ## System Requirements
 
 You need to have [Docker][docker] and _[docker compose][doco]_ installed on your computer.
