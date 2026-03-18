@@ -50,6 +50,7 @@ services:
       WEBPACKER_DEV_SERVER_HOST: null
       SKIP_SEEDS: 1
       SKIP_BUNDLE_INSTALL: 1
+      BUNDLE_GEMFILE: Gemfile.local
     depends_on:
       postgres:
         condition: service_healthy
@@ -62,6 +63,7 @@ services:
       SKIP_RAILS_MIGRATIONS: 1
       SKIP_SEEDS: 1
       SKIP_BUNDLE_INSTALL: 1
+      BUNDLE_GEMFILE: Gemfile.local
     depends_on:
       rails:
         condition: service_healthy
@@ -119,6 +121,7 @@ services:
     environment:
       WEBPACKER_DEV_SERVER_HOST: webpack
       SKIP_BUNDLE_INSTALL: 1
+      BUNDLE_GEMFILE: Gemfile.local
     user: "${RAILS_UID:-1000}"
     command: /usr/src/app/hitobito/bin/webpack-dev-server
     ports:
