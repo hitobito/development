@@ -73,6 +73,7 @@ else
   apply_core_db_migrations
   PREPARE_RAILS_SPEC_CMD="cp ../hitobito/${BUNDLE_GEMFILE:-Gemfile}.lock . && (cd ../hitobito && rake wagon:migrate)"
   WORKDIR="/usr/src/app/hitobito_$HIT_TEST_ENV"
+  BUNDLE_GEMFILE=Gemfile
 fi
 
 # run test env
@@ -84,6 +85,7 @@ docker compose run \
   -e RAILS_TEST_DB_NAME=$TEST_DB_NAME \
   -e RAILS_DB_NAME=$TEST_DB_NAME \
   -e DISABLE_TEST_SCHEMA_MAINTENANCE=1 \
+  -e BUNDLE_GEMFILE=$BUNDLE_GEMFILE \
   -e SKIP_INIT=1 \
   rails_test \
   bash -l -c "/usr/local/bin/bundle exec '$PREPARE_RAILS_SPEC_CMD'; exec bash"
