@@ -10,6 +10,6 @@ copy_gemfile_lock() {
   echo
 }
 
-if [ -n $BUNDLE_GEMFILE ]; do
+if [ -n $BUNDLE_GEMFILE ]; then
   copy_gemfile_lock
 fi
