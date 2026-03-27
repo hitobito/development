@@ -132,6 +132,13 @@ services:
       postgres:
         condition: service_healthy
 
+  redis:
+    image: redis:8-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+
 volumes:
   postgres:
   seed:
@@ -139,3 +146,4 @@ volumes:
     external: true
   hitobito_yarn_cache:
     external: true
+  redis_data:
