@@ -4,6 +4,7 @@ RAILS_DB_PORT=5432
 RAILS_DB_USERNAME=hitobito
 RAILS_DB_PASSWORD=hitobito
 RAILS_DB_NAME=hitobito_development
+RAILS_ACTIONCABLE_REDIS_URL=redis://hitobito_redis@redis:6379/1
 MEMCACHE_SERVERS=cache
 RAILS_HOST_NAME=localhost:3000
 RAILS_MAIL_DOMAIN=localhost

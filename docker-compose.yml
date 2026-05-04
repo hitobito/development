@@ -138,6 +138,8 @@ services:
       - "6379:6379"
     volumes:
       - redis_data:/data
+    env_file: ./docker/redis.env
+    command: /bin/sh -c "redis-server --requirepass $$HITOBITO_REDIS_PASSWORD"
 
 volumes:
   postgres:
