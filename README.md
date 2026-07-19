@@ -2,6 +2,8 @@
 
 New here? Install our docker development [setup](doc/setup.md)!
 
+Need to move or redeploy your environment to macOS with existing data? Follow the [macOS redeploy guide](doc/mac-redeploy.md).
+
 > [!IMPORTANT]
 > For an easy to use quick start solution you can use [devcontainers and codespaces][devcontainers].
 

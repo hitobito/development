@@ -98,7 +98,7 @@ services:
     restart: unless-stopped
     env_file: ./docker/postgres.env
     ports:
-      - "127.0.0.1:5432:5432"
+      - "127.0.0.1:5433:5432"
     volumes:
       - ./docker/postgresql-setup.sql:/docker-entrypoint-initdb.d/postgresql-setup.sql:ro
       - ./docker/test-setup-postgresql.sql:/docker-entrypoint-initdb.d/test-setup-postgresql.sql:ro

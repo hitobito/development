@@ -1,0 +1,16 @@
+# Override local : isole le wagon hitobito_eeds en désactivant les autres
+# wagons (pbs, youth) présents dans app/. Ainsi le démarrage et les seeds
+# n'exécutent que les migrations / locales / settings EEDS, sans interférer
+# avec les wagons de référence.
+#
+# Pour réactiver tous les wagons : supprimer ou renommer ce fichier.
+services:
+  rails:
+    environment:
+      WAGONS: eeds
+  rails_test:
+    environment:
+      WAGONS: eeds
+  worker:
+    environment:
+      WAGONS: eeds
