@@ -4,7 +4,7 @@ set -e
 
 rm -f tmp/pids/server.pid
 
-while [ ! -f "/usr/src/app/hitobito/Wagonfile" ]; do
+while [ ! -f ./Wagonfile ]; do
     echo "Waiting for Wagonfile"
     sleep 1
 done

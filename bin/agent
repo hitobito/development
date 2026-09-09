@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+#
+# Start an AI coding agent inside the dev environment's sandbox container.
+#
+#   bin/agent [claude|opencode] [args...]
+#
+# Works from the development directory, from hitobito/, from any wagon and from any worktree:
+# the container's working directory mirrors the one you call this from.
+
+set -euo pipefail
+
+root="$(cd "$(dirname "$(realpath "${BASH_SOURCE[0]}")")/.." && pwd)"
+here="$(pwd -P)"
+
+case "$here" in
+  "$root") workdir="/usr/src/app/hitobito" ;;      # no repo selected, default to the core
+  "$root"/*) workdir="/usr/src/app${here#"$root"}" ;;
+  *) echo "bin/agent must be called from inside $root" >&2; exit 1 ;;
+esac
+
+agent="${1:-claude}"
+shift || true
+
+exec docker compose --project-directory "$root" \
+  run --rm --interactive --tty --workdir "$workdir" agent "$agent" "$@"

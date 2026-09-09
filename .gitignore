@@ -5,6 +5,14 @@
 /dumps
 /docker/rails/home/*
 !/docker/rails/home/.*rc
+!/docker/rails/home/.claude/
+!/docker/rails/home/.config/
+!/docker/rails/home/.local/
+/docker/rails/home/.claude/*
+/docker/rails/home/.config/*
+/docker/rails/home/.local/*
+!**/.gitkeep
 /shared/.env.generated
 /hitobito
 /hitobito_*
+/worktrees

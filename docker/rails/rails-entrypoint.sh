@@ -1,11 +1,22 @@
 #!/bin/bash -i
-#
-# -i is required so .bashrc is read
 
 set -e
 
+checkout_root() {
+    case "$PWD" in
+        /usr/src/app/worktrees/*/*)
+            local rest="${PWD#/usr/src/app/worktrees/}"
+            echo "/usr/src/app/worktrees/${rest%%/*}"
+            ;;
+        *) echo "/usr/src/app" ;;
+    esac
+}
+
 initialize() {
-    cd /usr/src/app/hitobito
+    local root
+    root="$(checkout_root)"
+    echo "⚙ Initializing $root"
+    cd "$root/hitobito"
 
     rm -f tmp/pids/server.pid
 
@@ -23,16 +34,7 @@ initialize() {
         openssl genpkey -algorithm RSA -out jwt_signing_key.pem -pkeyopt rsa_keygen_bits:2048
     fi
 
-    if [ -z "$SKIP_WAGONFILE" ]; then
-        echo "⚙ Activating Wagonfile.development"
-        cp /usr/src/app/hitobito/Wagonfile{.development,}
-    fi
-
-    if [ -n "$BUNDLE_GEMFILE" ]; then
-        echo "⚙ Creating local copies of Gemfile.lock"
-        cp /usr/src/app/hitobito/Gemfile /usr/src/app/hitobito/${BUNDLE_GEMFILE}
-        cp /usr/src/app/hitobito/Gemfile.lock /usr/src/app/hitobito/${BUNDLE_GEMFILE}.lock
-    fi
+    /usr/src/app/docker/rails/init-local-files.sh "$root"
 
     if [ -z "$SKIP_BUNDLE_INSTALL" ]; then
         echo "Installing gems if necessary"
@@ -51,18 +53,19 @@ initialize() {
         echo "✅ Migrations done"
     fi
 
+    local seed_marker="/seed/done${RAILS_DB_NAME:+-$RAILS_DB_NAME}"
     if [ -z "$SKIP_SEEDS" ]; then
-        if [ ! -f /seed/done ]; then
-            echo "⚙️  Seeding DB"
+        if [ ! -f "$seed_marker" ]; then
+            echo "⚙️  Seeding $RAILS_DB_NAME"
             if [ -f /shared/.env.generated ]; then
                 set -o allexport
                 source /shared/.env.generated
                 set +o allexport
             fi
-            bundle exec rails db:seed wagon:seed && date > /seed/done
+            bundle exec rails db:seed wagon:seed && date > "$seed_marker"
             echo "✅ Seeding done"
         else
-            echo "↪️  Skipping seeding because already done on $(cat /seed/done)"
+            echo "↪️  Skipping seeding because already done on $(cat "$seed_marker")"
         fi
     fi
 
@@ -83,6 +86,8 @@ if [ -d /usr/src/app/app ]; then
     rmdir /usr/src/app/app
     # Remove the obsolete Gemfile.lock copy
     rm -f /usr/src/app/docker/rails/Gemfile.lock
+    # The seed marker is per database now, because worktrees have their own development database
+    [ -f /seed/done ] && mv /seed/done /seed/done-hitobito_development
 fi
 
 if [ -z "$SKIP_INIT" ]; then

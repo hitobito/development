@@ -11,10 +11,12 @@ ARG BUNDLER_VERSION="4.0.13"
 ARG NODEJS_VERSION="16"
 ARG YARN_VERSION="1.22.19"
 ARG TRANSIFEX_VERSION="1.6.4"
+ARG CLAUDE_CODE_VERSION="stable"
+ARG OPENCODE_VERSION=""
 
 # Packages
 ARG BUILD_PACKAGES="nodejs git sqlite3 libsqlite3-dev imagemagick build-essential libvips42"
-ARG DEV_PACKAGES="direnv xvfb chromium chromium-driver pv vim curl less sudo docker-ce-cli libvips42"
+ARG DEV_PACKAGES="direnv xvfb chromium chromium-driver pv vim curl less sudo docker-ce-cli libvips42 postgresql-client"
 
 #################################
 #          Build Stage          #
@@ -67,6 +69,17 @@ RUN curl -L "https://github.com/transifex/cli/releases/download/v${TRANSIFEX_VER
 
 ARG BUNDLER_VERSION
 RUN bash -vxc "gem install bundler -v ${BUNDLER_VERSION}"
+
+ARG CLAUDE_CODE_VERSION
+ARG OPENCODE_VERSION
+RUN export HOME=/opt/agent-install \
+ && mkdir -p $HOME \
+ && curl -fsSL https://claude.ai/install.sh | bash -s -- "${CLAUDE_CODE_VERSION}" \
+ && curl -fsSL https://opencode.ai/install | VERSION="${OPENCODE_VERSION}" bash \
+ && cp "$(readlink -f $HOME/.local/bin/claude)" /usr/local/bin/claude \
+ && cp $HOME/.opencode/bin/opencode /usr/local/bin/opencode \
+ && chmod 755 /usr/local/bin/claude /usr/local/bin/opencode \
+ && rm -rf $HOME
 
 # Create the user
 RUN groupadd --gid $USER_GID $USERNAME \

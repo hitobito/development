@@ -8,14 +8,14 @@ shortened_git_branch() {
 
 PS1="🚃 \$RAILS_ENV 🕎 \$(shortened_git_branch) 📁 \w \$ "
 
-if [ -f "/usr/src/app/hitobito/.envrc" ]; then
-  direnv allow /usr/src/app/hitobito/.envrc
+if [ -f ./.envrc ]; then
+  direnv allow ./.envrc
   eval "$(direnv hook bash)"
 fi
 
-PATH=$PATH:/usr/src/app/hitobito/bin
+PATH=$PATH:./bin
 
 # make sure APP_ROOT is NOT set
 unset APP_ROOT
 
-alias rake="/usr/src/app/hitobito/bin/rake"
+alias rake="../hitobito/bin/rake"

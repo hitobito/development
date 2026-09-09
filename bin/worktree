@@ -1,0 +1,173 @@
+#!/usr/bin/env bash
+#
+# Create or remove a git worktree of the core and of every wagon, all on the same branch.
+#
+#   bin/worktree <name> [branch]     # create
+#   bin/worktree run <name> [port]   # serve this worktree's application on another port
+#   bin/worktree remove <name>       # remove, including the branch
+#
+# The worktrees end up in worktrees/<name>/hitobito*, which keeps them inside the directory that
+# is mounted into the containers, and out of the ../hitobito_* glob that Wagonfile uses to find
+# wagons. Works from the host and from inside a container -- see the note on paths below.
+
+set -euo pipefail
+
+root="$(cd "$(dirname "$(realpath "${BASH_SOURCE[0]}")")/.." && pwd)"
+
+repos() {
+  for repo in "$root"/hitobito "$root"/hitobito_*; do
+    [ -d "$repo/.git" ] && echo "$repo"
+  done
+}
+
+# The admin directory git keeps for a worktree, resolved through the worktree's own .git file.
+admin_dir() {
+  (cd "$1" && cd "$(sed 's/^gitdir: //' .git)" && pwd)
+}
+
+# The development database for running this worktree, so it cannot break the main one.
+dev_db() { echo "hitobito_dev_${1//[^a-zA-Z0-9_]/_}"; }
+
+compose() { docker compose --project-directory "$root" "$@"; }
+
+create() {
+  local name="${1:?usage: bin/worktree <name> [branch]}"
+  local branch="${2:-$name}"
+  local dest="$root/worktrees/$name"
+
+  mkdir -p "$dest"
+
+  for repo in $(repos); do
+    local repo_name="$(basename "$repo")"
+    local target="$dest/$repo_name"
+    [ -e "$target" ] && { echo "$repo_name: $target exists, skipping"; continue; }
+
+    git -C "$repo" worktree add -B "$branch" "$target" >/dev/null
+    echo "$repo_name: $target on $branch"
+
+    # Manually patch in relative paths after creation, to support git < 2.48.
+    # Relative paths are necessary so both the host and the container see a valid path.
+    local admin="$(sed 's/^gitdir: //' "$target/.git")"
+    echo "gitdir: ../../../$repo_name/.git/worktrees/$(basename "$admin")" > "$target/.git"
+    echo "../worktrees/$name/$repo_name/.git" > "$admin/gitdir"
+    # git resolves that path from its own working directory, so a `git gc --auto`
+    # started from a subdirectory could fail to find it and prune the worktree.
+    git -C "$repo" config gc.worktreePruneExpire never
+  done
+
+  SKIP_WAGONFILE= BUNDLE_GEMFILE=Gemfile.local "$root/docker/rails/init-local-files.sh" "$dest"
+  if [ -d "$root/hitobito/node_modules" ]; then
+    echo "copying node_modules"
+    cp -a "$root/hitobito/node_modules" "$dest/hitobito/node_modules"
+  fi
+  if [ -f "$root/hitobito/jwt_signing_key.pem" ]; then
+    cp "$root/hitobito/jwt_signing_key.pem" "$dest/hitobito/jwt_signing_key.pem"
+  fi
+
+  cat <<INFO
+
+Done. Next:
+  cd worktrees/$name/hitobito
+  bin/rails db:test:prepare    # once per worktree directory
+
+Serve it on its own port, alongside the main instance:
+  bin/worktree run $name
+
+Remove it again with:
+  bin/worktree remove $name
+INFO
+}
+
+run() {
+  local name="${1:?usage: bin/worktree run <name> [port]}"
+  local port="${2:-3001}"
+  local dest="$root/worktrees/$name"
+  [ -d "$dest/hitobito" ] || { echo "no worktree at $dest" >&2; exit 1; }
+
+  local db
+  db="$(dev_db "$name")"
+  compose up -d postgres >/dev/null
+  if ! compose exec -T postgres \
+       psql -U hitobito -d postgres -tAc "select 1 from pg_database where datname='$db'" | grep -q 1; then
+    echo "forking $db from hitobito_development"
+    compose exec -T postgres bash -c \
+      "createdb -U hitobito '$db' && pg_dump -U hitobito hitobito_development | psql -q -U hitobito '$db'"
+    compose run --rm --no-deps -T --entrypoint bash rails \
+      -c "date > '/seed/done-$db'" >/dev/null 2>&1
+  fi
+
+  echo "serving worktrees/$name on http://localhost:$port  (Ctrl+C to stop)"
+  echo "database: $db   reachable from other containers as http://hitobito-$name:3000"
+
+  local wt="/usr/src/app/worktrees/$name/hitobito"
+
+  # Webpacker dev server
+  local wport=$((port + 35))
+  local webpack webpack_host
+  webpack="$(compose run -d --workdir "$wt" --publish "127.0.0.1:$wport:3035" \
+    --env WEBPACKER_DEV_SERVER_HOST=0.0.0.0 webpack "$wt/bin/webpack-dev-server")"
+  webpack_host="$(docker inspect -f '{{.Name}}' "$webpack" | sed 's|^/||')"
+
+  # Worker
+  local worker
+  worker="$(compose run -d --workdir "$wt" --env "RAILS_DB_NAME=$db" --env SKIP_INIT=1 worker)"
+
+  trap 'docker rm -f "$worker" "$webpack" >/dev/null 2>&1' EXIT INT TERM
+  echo "worker:   ${worker:0:12}   webpack: ${webpack:0:12} on $wport"
+
+  # Not exec, so the trap above can stop the worker and webpack again.
+  compose run --rm --name "hitobito-$name" \
+    --publish "127.0.0.1:$port:3000" \
+    --workdir "$wt" \
+    --env "RAILS_DB_NAME=$db" \
+    --env "RAILS_ACTIONCABLE_CHANNEL_PREFIX=$db" \
+    --env "WEBPACKER_DEV_SERVER_HOST=$webpack_host" \
+    --env "WEBPACKER_DEV_SERVER_PUBLIC=localhost:$wport" \
+    rails
+}
+
+remove() {
+  local name="${1:?usage: bin/worktree remove <name>}"
+  local dest="$root/worktrees/$name"
+  [ -d "$dest" ] || { echo "no worktree at $dest" >&2; exit 1; }
+
+  local branches=()
+  for repo in $(repos); do
+    local target="$dest/$(basename "$repo")"
+    [ -e "$target" ] || continue
+    branches+=("$(git -C "$target" rev-parse --abbrev-ref HEAD)")
+    # `git worktree remove` on git < 2.48 insists on an absolute gitdir, so put back the one for
+    # this side just long enough for it to run.
+    echo "$target/.git" > "$(admin_dir "$target")/gitdir"
+    git -C "$repo" worktree remove --force "$target"
+  done
+
+  rmdir "$dest" 2>/dev/null || true
+  rmdir "$root/worktrees" 2>/dev/null || true
+
+  local db
+  db="$(dev_db "$name")"
+  if compose exec -T postgres dropdb -U hitobito --if-exists "$db" >/dev/null 2>&1; then
+    echo "dropped database $db"
+    compose run --rm --no-deps -T --entrypoint bash rails -c "rm -f '/seed/done-$db'" >/dev/null 2>&1 || true
+  fi
+
+  local i=0
+  for repo in $(repos); do
+    if ! git -C "$repo" branch -d "${branches[$i]}" >/dev/null 2>&1; then
+      echo "kept branch ${branches[$i]} in $(basename "$repo"): it has unmerged commits"
+      echo "  delete it with: git -C $(basename "$repo") branch -D ${branches[$i]}"
+    fi
+    i=$((i + 1))
+  done
+  echo "removed worktrees/$name"
+}
+
+case "${1:-}" in
+  run) shift; run "$@";;
+  remove) shift; remove "$@";;
+  "" | -h | --help)
+    echo "usage: bin/worktree <name> [branch] | bin/worktree run <name> [port] | bin/worktree remove <name>"
+    exit 1;;
+  *) create "$@";;
+esac

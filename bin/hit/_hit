@@ -42,7 +42,6 @@ hit r|rails l|logs       # attach to rails container logs
 hit r|rails r|routes     # print rails routes
 hit r|rails s|seed       # seed database
 
-hit t|test p|prep        # build assets
 hit t|test [env]         # run core or wagon specs
 hit db c|console         # connect to database console TODO
 
@@ -64,11 +63,7 @@ hit() {
         s | seed) hit_exec rails/seed;;
         *) hit_error;;
       esac;;
-    t | test)
-      case $2 in
-        p | prep) hit_exec test/prep;;
-        *) hit_exec test/env "$2";;
-      esac;;
+    t | test) hit_exec test/env "$2";;
     db)
       case $2 in
         c | console) hit_exec db/console;;

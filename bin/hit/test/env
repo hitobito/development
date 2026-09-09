@@ -36,6 +36,20 @@ psql_sql_cmd() {
    docker compose exec postgres bash -c "$CMD"
  }
 
+hit_checkout() {
+  local root here rest
+  root="$(cd "$HIT_SCRIPT_DIR/../.." && pwd)"
+  here="$(pwd -P)"
+  case "$here" in
+    "$root"/worktrees/*)
+      rest="${here#"$root"/worktrees/}"
+      echo "/usr/src/app/worktrees/${rest%%/*}"
+      ;;
+    *) echo "/usr/src/app" ;;
+  esac
+}
+CHECKOUT="$(hit_checkout)"
+
 # make sure db is up and running
 docker compose up postgres -d
 
@@ -47,13 +61,17 @@ if [[ "$HIT_TEST_ENV" =~ ^Invalid ]]; then
   exit 1
 fi
 
-TEST_DB_NAME="hitobito_test_$HIT_TEST_ENV"
+if [ "$CHECKOUT" = /usr/src/app ]; then
+  TEST_DB_NAME="hitobito_test_$HIT_TEST_ENV"
+else
+  TEST_DB_NAME="hitobito_test_$(basename "$CHECKOUT")_$HIT_TEST_ENV"
+fi
 
-echo "Starting test env for: $HIT_TEST_ENV"
+echo "Starting test env for: $HIT_TEST_ENV in $CHECKOUT ($TEST_DB_NAME)"
 
 apply_core_db_migrations() {
   docker compose run --rm \
-    --workdir=/usr/src/app/hitobito \
+    --workdir="$CHECKOUT/hitobito" \
     -e RAILS_ENV=test \
     -e RAILS_TEST_DB_NAME=$TEST_DB_NAME \
     -e RAILS_DB_NAME=$TEST_DB_NAME \
@@ -68,11 +86,11 @@ psql_sql_cmd "CREATE DATABASE $TEST_DB_NAME;"
 
 if [[ "$HIT_TEST_ENV" == "core" ]]; then
   PREPARE_RAILS_SPEC_CMD="rake db:migrate"
-  WORKDIR=/usr/src/app/hitobito
+  WORKDIR="$CHECKOUT/hitobito"
 else
   apply_core_db_migrations
   PREPARE_RAILS_SPEC_CMD="cp ../hitobito/${BUNDLE_GEMFILE:-Gemfile}.lock . && (cd ../hitobito && rake wagon:migrate)"
-  WORKDIR="/usr/src/app/hitobito_$HIT_TEST_ENV"
+  WORKDIR="$CHECKOUT/hitobito_$HIT_TEST_ENV"
   BUNDLE_GEMFILE=Gemfile
 fi
 

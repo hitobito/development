@@ -137,6 +137,10 @@ Those directories are mounted inside the containers. So every saved file is inst
 
 :bulb: If you don't know where to begin changing something, have a look at our hitobito cheatsheet in [English](./doc/hitobito-cheatsheet-en.pdf) and [German](./doc/hitobito-cheatsheet.pdf).
 
+:robot: To use an AI coding agent, run `bin/agent claude` or `bin/agent opencode` — it starts the
+agent inside the containers, where it has the whole application available and a sandbox to work in.
+See [AI coding agents](./doc/ai-agents.md).
+
 For advanced development, see the [development documentation](./doc/development.md).
 
 ## Windows preparation

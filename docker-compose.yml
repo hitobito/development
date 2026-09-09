@@ -19,7 +19,6 @@ services:
     env_file: docker/rails/env
     environment:
       WEBPACKER_DEV_SERVER_HOST: webpack
-      DISABLE_SPRING: 'true'
       BUNDLE_GEMFILE: Gemfile.local
       #SKIP_SEEDS: 1
     ports:
@@ -33,6 +32,9 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - ./docker/rails/home/.bashrc:/home/developer/.bashrc
       - ./docker/rails/home/.pryrc:/home/developer/.pryrc
+      - ./docker/rails/home/.claude:/home/developer/.claude
+      - ./docker/rails/home/.local:/home/developer/.local
+      - ./docker/rails/home/.config:/home/developer/.config
     healthcheck:
       test: ["CMD", "curl", "--fail", "http://localhost:3000/healthz"]
       interval: 500s
@@ -54,6 +56,38 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
+
+  agent:
+    <<: *rails
+    profiles:
+      - manual
+    command: [ 'sleep', 'infinity' ]
+    ports: []
+    environment:
+      SKIP_INIT: 1
+      BUNDLE_GEMFILE: Gemfile.local
+      OPENCODE_CONFIG_CONTENT: '{"permission":"allow","autoupdate":false}'
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    volumes:
+      - .:/usr/src/app
+      - hitobito_bundle:/opt/bundle
+      - seed:/seed
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+      - ./docker/rails/home/.bashrc:/home/developer/.bashrc
+      - ./docker/rails/home/.pryrc:/home/developer/.pryrc
+      - ./docker/rails/home/.claude:/home/developer/.claude
+      - ./docker/rails/home/.local:/home/developer/.local
+      - ./docker/rails/home/.config:/home/developer/.config
+      - ./docker/rails/claude-settings.json:/home/developer/.claude/settings.json:ro
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      disable: true
 
   worker:
     <<: *rails
