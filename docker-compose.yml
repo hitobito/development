@@ -23,6 +23,7 @@ services:
       - "127.0.0.1:3000:3000"
     volumes:
       - .:/usr/src/app
+      - ./docker/empty:/usr/src/app/dumps:ro
       - hitobito_bundle:/opt/bundle
       - seed:/seed
       - /tmp/.X11-unix:/tmp/.X11-unix
@@ -71,6 +72,7 @@ services:
       - ALL
     volumes:
       - .:/usr/src/app
+      - ./docker/empty:/usr/src/app/dumps:ro
       - hitobito_bundle:/opt/bundle
       - seed:/seed
       - /etc/timezone:/etc/timezone:ro
@@ -153,6 +155,7 @@ services:
       - "127.0.0.1:3035:3035"
     volumes:
       - .:/usr/src/app
+      - ./docker/empty:/usr/src/app/dumps:ro
       - hitobito_bundle:/opt/bundle
       - hitobito_yarn_cache:/home/developer/.cache/yarn
     depends_on:

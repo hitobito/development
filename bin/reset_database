@@ -11,4 +11,5 @@ echo "Removing docker volume $volume"
 docker volume rm $volume
 
 echo "Making sure DB is seeded on next start"
-docker compose run -e SKIP_INIT=1 rails rm /seed/done
+docker compose run --rm --no-deps -e SKIP_INIT=1 --entrypoint bash rails \
+    -c 'rm -f /seed/done-* /seed/dump-in-*'

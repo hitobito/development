@@ -4,6 +4,16 @@ You are reading this because your working directory is under `/usr/src/app`, whi
 inside the container of a `hitobito/development` checkout. `IS_DOCKER_DEV_ENV` is set here too, if
 you ever need to detect this from a script.
 
+## IMPORTANT: Stop if a database dump is loaded
+
+**Before anything else, list `/seed/`. If it contains a `dump-in-*` file, stop.** A database dump
+has been loaded, and it may hold production data about real people. Do not query the database, do
+not run specs against it, do not read or summarise its contents, and do not work around this by
+loading a dump yourself. Tell the user which marker you found and stop there.
+
+This is not the same as the `done-*` files next to it — those only record that seeding has run, and
+are normal.
+
 ## Layout
 
 The whole `hitobito/development` checkout is mounted at `/usr/src/app`:

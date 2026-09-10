@@ -87,6 +87,17 @@ hit rails attach
 hit db console
 ```
 
+## Loading a database dump
+
+Put the dump in the `dumps/` directory, then load it by name:
+
+```bash
+bin/load_database 2026-09-10-14-22-01.sql.gz
+```
+
+`bin/load_database` reads only from `dumps/`, so that is where dumps belong. Plain `.sql` and
+gzipped `.sql.gz` files both work. `bin/dump_database` writes its dumps there too.
+
 ## Rerunning seeds
 
 Useful when adding new seeds

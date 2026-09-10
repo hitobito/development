@@ -2,6 +2,7 @@ services:
   rails:
     volumes:
       - .:/workspace:cached
+      - ./docker/empty:/workspace/dumps:ro
       - /var/run/docker.sock:/var/run/docker.sock
       - ./docker/rails/.vscode:/usr/src/app/hitobito/.vscode:cached
 

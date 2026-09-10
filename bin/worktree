@@ -93,7 +93,9 @@ run() {
     compose exec -T postgres bash -c \
       "createdb -U hitobito '$db' && pg_dump -U hitobito hitobito_development | psql -q -U hitobito '$db'"
     compose run --rm --no-deps -T --entrypoint bash rails \
-      -c "date > '/seed/done-$db'" >/dev/null 2>&1
+      -c "date > '/seed/done-$db'
+          [ -f /seed/dump-in-hitobito_development ] &&
+            cp /seed/dump-in-hitobito_development '/seed/dump-in-$db'" >/dev/null 2>&1
   fi
 
   echo "serving worktrees/$name on http://localhost:$port  (Ctrl+C to stop)"
@@ -149,7 +151,8 @@ remove() {
   db="$(dev_db "$name")"
   if compose exec -T postgres dropdb -U hitobito --if-exists "$db" >/dev/null 2>&1; then
     echo "dropped database $db"
-    compose run --rm --no-deps -T --entrypoint bash rails -c "rm -f '/seed/done-$db'" >/dev/null 2>&1 || true
+    compose run --rm --no-deps -T --entrypoint bash rails \
+      -c "rm -f '/seed/done-$db' '/seed/dump-in-$db'" >/dev/null 2>&1 || true
   fi
 
   local i=0

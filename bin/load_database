@@ -1,22 +1,56 @@
 #!/usr/bin/env bash
 
 source $(dirname $0)/_basics
+source docker/postgres.env
 
 if (( $# != 1 )); then
-    echo "Usage: load_database DUMP.sql.gz"
+    echo "Usage: load_database DUMP.sql[.gz]"
+    echo
+    echo "DUMP is read from the dumps/ directory, as 'name.sql' or as 'dumps/name.sql'."
     exit 1
 fi
 
-dump=$1
+# Dumps may contain production data, so keep them in one known place instead of spread over the
+# checkout. Only that place is kept out of the containers.
+arg="${1#./}"
+dump="dumps/$(basename "$arg")"
 
-if [ ! -f $dump ]; then
+if [ "$arg" != "$dump" ] && [ "$arg" != "$(basename "$arg")" ]; then
+    echo "'$1' is outside dumps/"
+    echo "Move it to $(pwd)/dumps and load it as '$(basename "$arg")'."
+    exit 2
+fi
+
+if [ ! -f "$dump" ]; then
     echo "'$dump' is not a file"
     exit 2
 fi
 
+# An agent must never gain access to a dump it was not started with.
+agent=$(docker ps \
+    --filter label=com.docker.compose.project.working_dir="$(pwd)" \
+    --filter label=com.docker.compose.service=agent \
+    --format '{{.Names}}')
+
+if [ -n "$agent" ]; then
+    echo "An agent container is running:"
+    echo "$agent" | sed 's/^/  /'
+    echo
+    echo "Agents must not run against a database dump. Stop it, then load the dump."
+    exit 3
+fi
+
+docker compose run --rm --no-deps -T --entrypoint bash rails \
+    -c "date > /seed/dump-in-$POSTGRES_DB" >/dev/null
+
 docker compose exec -T rails bash -c 'bin/rails db:empty_db'
 
-cat "$dump" | docker compose exec -T postgres bash -c '
+case "$dump" in
+    *.gz) decompress=zcat ;;
+    *)    decompress=cat ;;
+esac
+
+$decompress "$dump" | docker compose exec -T postgres bash -c '
     psql -U $POSTGRES_USER -d $POSTGRES_DB
 '
 
