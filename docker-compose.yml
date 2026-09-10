@@ -12,8 +12,6 @@ services:
         condition: service_healthy
       mailcatcher:
         condition: service_healthy
-      cache:
-        condition: service_started
       webpack:
         condition: service_started
     env_file: docker/rails/env
@@ -105,8 +103,6 @@ services:
         condition: service_healthy
       mailcatcher:
         condition: service_healthy
-      cache:
-        condition: service_started
     healthcheck:
       disable: true
 
@@ -123,11 +119,6 @@ services:
       test: ["CMD", "curl", "--fail", "http://localhost:1080"]
       interval: 5s
       timeout: 5s
-
-  cache:
-    image: memcached:1.6-alpine
-    command: [ memcached, -l, '0.0.0.0', -p, '11211' ]
-    restart: unless-stopped
 
   postgres:
     image: postgres:16

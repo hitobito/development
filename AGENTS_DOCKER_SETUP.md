@@ -41,7 +41,6 @@ The following services are reachable over the docker network:
 |---|---|---|
 | PostgreSQL | `postgres` | user/password/db `hitobito` / `hitobito` / `hitobito_development` |
 | Redis | `redis` | |
-| Memcached | `cache` | (deprecated) |
 | Mailcatcher | `mailcatcher` | SMTP on 1025, web UI on 1080 |
 
 ## What you cannot do here
