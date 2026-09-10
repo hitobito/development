@@ -15,4 +15,5 @@
 /shared/.env.generated
 /hitobito
 /hitobito_*
+/ose_composition_*
 /worktrees
