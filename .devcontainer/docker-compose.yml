@@ -23,5 +23,3 @@ services:
         condition: service_healthy
       mailcatcher:
         condition: service_healthy
-      cache:
-        condition: service_started
