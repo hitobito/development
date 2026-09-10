@@ -13,12 +13,14 @@ application.
 
 ## Where you are running
 
-**If `IS_DOCKER_DEV_ENV` is set**, you are inside the container. Read `AGENTS_DOCKER_SETUP.md`.
+Your working directory already tells you which it is, so decide now, before running anything.
 
-**If it is not set**, you are on the host, outside the containers. There is no Ruby, no PostgreSQL
-and no Redis available to you here, and installing them is not the answer — this setup exists so
-that nothing but git and Docker is needed on the host. Stop and tell the user to restart you inside
-the container:
+**If it is under `/usr/src/app`**, you are inside the container. Read `AGENTS_DOCKER_SETUP.md`.
+
+**If it is anywhere else**, you are on the host, outside the containers. There is no Ruby, no
+PostgreSQL and no Redis available to you here, and installing them is not the answer — this setup
+exists so that nothing but git and Docker is needed on the host. Stop and tell the user to restart
+you inside the container:
 
     # choose one of:
     bin/agent claude

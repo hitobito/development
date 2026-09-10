@@ -1,7 +1,8 @@
 # Docker dev setup
 
-You are reading this because `IS_DOCKER_DEV_ENV` is set, which means you are inside the container
-of a `hitobito/development` checkout.
+You are reading this because your working directory is under `/usr/src/app`, which means you are
+inside the container of a `hitobito/development` checkout. `IS_DOCKER_DEV_ENV` is set here too, if
+you ever need to detect this from a script.
 
 ## Layout
 
