@@ -1,0 +1,5 @@
+#!/usr/bin/bash
+
+docker compose --project-directory "$HIT_ROOT_DIR" exec postgres bash -c '
+    psql -U hitobito -d hitobito_development
+'

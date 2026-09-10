@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-docker compose run \
+docker compose --project-directory "$HIT_ROOT_DIR" run \
   --rm \
   -e SKIP_INIT=1 \
   rails \

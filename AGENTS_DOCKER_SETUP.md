@@ -79,7 +79,7 @@ that wagon's own migrations. The database name is derived from the working direc
 is never the development database, and separate checkouts and worktrees each get their own. Running
 specs while the application is up, or in parallel with another worktree, is therefore safe.
 
-`hit test <wagon>` on the host does the same in a throwaway container with a freshly created
+`bin/hit test <wagon>` on the host does the same in a throwaway container with a freshly created
 database. Ask the user for it when you want a guaranteed-clean schema; the two commands above are
 faster when you are already in here.
 

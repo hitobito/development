@@ -2,7 +2,7 @@
 
 echo 'Seeding db...'
 
-docker compose run \
+docker compose --project-directory "$HIT_ROOT_DIR" run \
   -e SKIP_INIT=1 \
   rails \
   bundle exec rails db:seed wagon:seed

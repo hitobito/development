@@ -1,18 +1,15 @@
 #!/usr/bin/env bash
 
 HIT_SCRIPT_DIR="$(dirname "$(realpath "${BASH_SOURCE[0]:-$_}")")"
-HIT_PROJECT="$(basename "$(cd "$HIT_SCRIPT_DIR/../../" && pwd)")"
+HIT_ROOT_DIR="$(cd "$HIT_SCRIPT_DIR/../../" && pwd)"
+HIT_PROJECT="$(basename "$HIT_ROOT_DIR")"
 HIT_WAGON_NAMES=$(ls -d "$HIT_SCRIPT_DIR"/../../hitobito_* | sed 's|.*/hitobito_||')
 HIT_CORE_DIR="$HIT_SCRIPT_DIR/../../hitobito"
 export HIT_SCRIPT_DIR
+export HIT_ROOT_DIR
 export HIT_PROJECT
 export HIT_WAGON_NAMES
 export HIT_CORE_DIR
-source "$HIT_SCRIPT_DIR/welcome_info"
-
-PS1="HIT-$HIT_PROJECT> "
-
-hit_welcome_info
 
 hit_exec() {
   local file="$HIT_SCRIPT_DIR/$1"

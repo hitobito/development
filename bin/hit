@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+#
+# Run a `hit` subcommand against the dev setup (see `hit help`).
+#
+# Works from the development directory, from hitobito/, from any wagon and from any worktree:
+# every command targets this script's own directory as the docker compose project, regardless
+# of the caller's current working directory.
+
+SCRIPT_DIR="$(dirname "$(realpath "${BASH_SOURCE[0]}")")"
+
+source "$SCRIPT_DIR/_hit/_hit"
+
+hit "$@"

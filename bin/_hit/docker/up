@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+docker compose --project-directory "$HIT_ROOT_DIR" pull
+docker compose --project-directory "$HIT_ROOT_DIR" up -d

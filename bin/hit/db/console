@@ -1,5 +1,0 @@
-#!/usr/bin/bash
-
-docker compose exec postgres bash -c '
-    psql -U hitobito -d hitobito_development
-'

@@ -33,12 +33,12 @@ select_test_env() {
 
 psql_sql_cmd() {
    CMD="psql -U hitobito -d postgres -c \"$1\""
-   docker compose exec postgres bash -c "$CMD"
+   docker compose --project-directory "$HIT_ROOT_DIR" exec postgres bash -c "$CMD"
  }
 
 hit_checkout() {
   local root here rest
-  root="$(cd "$HIT_SCRIPT_DIR/../.." && pwd)"
+  root="$HIT_ROOT_DIR"
   here="$(pwd -P)"
   case "$here" in
     "$root"/worktrees/*)
@@ -51,7 +51,7 @@ hit_checkout() {
 CHECKOUT="$(hit_checkout)"
 
 # make sure db is up and running
-docker compose up postgres -d
+docker compose --project-directory "$HIT_ROOT_DIR" up postgres -d
 
 # ask user for environment
 HIT_TEST_ENV=$(select_test_env "$1")
@@ -70,7 +70,7 @@ fi
 echo "Starting test env for: $HIT_TEST_ENV in $CHECKOUT ($TEST_DB_NAME)"
 
 apply_core_db_migrations() {
-  docker compose run --rm \
+  docker compose --project-directory "$HIT_ROOT_DIR" run --rm \
     --workdir="$CHECKOUT/hitobito" \
     -e RAILS_ENV=test \
     -e RAILS_TEST_DB_NAME=$TEST_DB_NAME \
@@ -96,7 +96,7 @@ fi
 
 # run test env
 # Do not maintain schema for testing purposes
-docker compose run \
+docker compose --project-directory "$HIT_ROOT_DIR" run \
   --rm \
   --workdir=$WORKDIR \
   -e RAILS_ENV=test \

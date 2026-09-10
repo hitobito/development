@@ -28,17 +28,14 @@ wget -O - https://raw.githubusercontent.com/hitobito/development/master/bin/hito
 
 ## Usage
 
-To initialize the `hit` command, run the following in your console:
-
-```bash
-bin/dev-env.sh
-```
+`bin/hit` is a regular executable, so it works right away from a shell in this directory — no
+setup step needed. It also works from `hitobito/`, from any wagon and from any worktree.
 
 To start the development environment, run:
 
 ```bash
 # This command might take a very long time on the first run, as the database needs to be seeded…
-hit up
+bin/hit up
 ```
 
 Access hitobito via http://localhost:3000
@@ -46,8 +43,11 @@ Access hitobito via http://localhost:3000
 Get a list of available commands with:
 
 ```bash
-hit help
+bin/hit help
 ```
+
+To call it as plain `hit` instead of `bin/hit`, add this directory's `bin` folder to your `PATH`,
+e.g. by adding `export PATH="$PWD/bin:$PATH"` to your shell profile while in this directory.
 
 ## Running tests
 
@@ -56,7 +56,7 @@ hit help
 Get a shell to run core or wagon specs:
 
 ```bash
-hit test
+bin/hit test
 ```
 
 ### Run desired tests
@@ -78,13 +78,13 @@ rspec spec/models/person_spec.rb
 For debugging with pry during a HTTP request, you can attach to the running docker container (detach with Ctrl+c):
 
 ```bash
-hit rails attach
+bin/hit rails attach
 ```
 
 ## Access Development Database
 
 ```bash
-hit db console
+bin/hit db console
 ```
 
 ## Loading a database dump
@@ -103,7 +103,7 @@ gzipped `.sql.gz` files both work. `bin/dump_database` writes its dumps there to
 Useful when adding new seeds
 
 ```bash
-hit rails seed
+bin/hit rails seed
 ```
 
 ## Updating Images
@@ -118,4 +118,4 @@ Images are built and published with github actions.
 
 ## Shutdown
 
-🍺 finished work ? execute `hit down` to shut down all running containers
+🍺 finished work ? execute `bin/hit down` to shut down all running containers
