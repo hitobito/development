@@ -103,28 +103,23 @@ run() {
 
   local wt="/usr/src/app/worktrees/$name/hitobito"
 
-  # Webpacker dev server
-  local wport=$((port + 35))
-  local webpack webpack_host
-  webpack="$(compose run -d --workdir "$wt" --publish "127.0.0.1:$wport:3035" \
-    --env WEBPACKER_DEV_SERVER_HOST=0.0.0.0 webpack "$wt/bin/webpack-dev-server")"
-  webpack_host="$(docker inspect -f '{{.Name}}' "$webpack" | sed 's|^/||')"
+  # Asset build watcher
+  local assets
+  assets="$(compose run -d --workdir "$wt" assets)"
 
   # Worker
   local worker
   worker="$(compose run -d --workdir "$wt" --env "RAILS_DB_NAME=$db" --env SKIP_INIT=1 worker)"
 
-  trap 'docker rm -f "$worker" "$webpack" >/dev/null 2>&1' EXIT INT TERM
-  echo "worker:   ${worker:0:12}   webpack: ${webpack:0:12} on $wport"
+  trap 'docker rm -f "$worker" "$assets" >/dev/null 2>&1' EXIT INT TERM
+  echo "worker:   ${worker:0:12}   assets: ${assets:0:12}"
 
-  # Not exec, so the trap above can stop the worker and webpack again.
+  # Not exec, so the trap above can stop the worker and assets watcher again.
   compose run --rm --name "hitobito-$name" \
     --publish "127.0.0.1:$port:3000" \
     --workdir "$wt" \
     --env "RAILS_DB_NAME=$db" \
     --env "RAILS_ACTIONCABLE_CHANNEL_PREFIX=$db" \
-    --env "WEBPACKER_DEV_SERVER_HOST=$webpack_host" \
-    --env "WEBPACKER_DEV_SERVER_PUBLIC=localhost:$wport" \
     rails
 }
 

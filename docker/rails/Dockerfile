@@ -102,7 +102,7 @@ RUN mkdir -p /home/developer/.ssh \
 RUN bash -vxc 'gem install cmdparse pastel'
 
 COPY ./rails-entrypoint.sh /usr/local/bin
-COPY ./webpack-entrypoint.sh /usr/local/bin
+COPY ./assets-entrypoint.sh /usr/local/bin
 
 RUN mkdir /opt/bundle && chmod 777 /opt/bundle
 RUN mkdir /seed && chmod 777 /seed

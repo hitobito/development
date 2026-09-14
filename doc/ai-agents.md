@@ -46,7 +46,7 @@ bin/worktree run my-feature        # http://localhost:3001, or pass your own por
 
 A worktree is treated as a fork of your main instance. Creating one copies `node_modules` and the
 JWT key; the first `run` forks the development database into `hitobito_dev_<name>` with `pg_dump`
-and compiles the worktree's own webpack packs. That is seconds rather than the minutes an install
+and builds the worktree's own JS/CSS assets. That is seconds rather than the minutes an install
 and a seed would take, and you start from the data you already had. From then on the two diverge:
 its own database, assets, JWT key, delayed-job worker and ActionCable channel, so this branch's
 migrations and dependency changes cannot reach your main instance. `bin/worktree remove` drops the
