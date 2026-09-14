@@ -55,7 +55,7 @@ The following services are reachable over the docker network:
 
 ## What you cannot do here
 
-- **Restart the application.** The long-running `rails`, `worker` and `webpack` containers are
+- **Restart the application.** The long-running `rails`, `worker` and `assets` containers are
   separate and you have no docker socket. Rails reloads changed application code by itself, but
   after a change to the `Gemfile`, to `config/initializers/*` or to any other boot-time file, ask
   the user to run e.g. `docker compose restart rails worker`.
@@ -83,12 +83,12 @@ specs while the application is up, or in parallel with another worktree, is ther
 database. Ask the user for it when you want a guaranteed-clean schema; the two commands above are
 faster when you are already in here.
 
-Feature specs (`js: true`) need no preparation: `config/webpacker.yml` sets `compile: true` for the
-test environment, so webpacker builds `public/packs-test` by itself the first time a spec needs it.
-That first spec run is half a minute slower; afterwards the build is reused. To force a rebuild
-after changing assets, run `bundle exec ./bin/webpack-test-compile` from the core yourself; it does
-not disturb the running application, which is served by the webpack dev server rather than from
-`public/packs`.
+Feature specs (`js: true`) need no separate preparation: jsbundling-rails/cssbundling-rails hook
+`javascript:build`/`css:build` into `db:test:prepare` itself, so assets are already built by the
+time you run specs. To rebuild after changing assets without re-running `db:test:prepare`, run
+`bundle exec rake assets:build` from the core; it does not disturb the running application, which
+is served from its own `app/assets/builds` directory by the `assets` container rather than from
+this one's.
 
 ## Checking a change in the running application
 
@@ -146,7 +146,7 @@ script rewrites them to relative ones, which keeps `git status`, `diff`, `log`, 
 `git worktree remove` is the one command that rejects a relative path, which is why removal goes
 through the script too.
 
-The long-running `rails`, `webpack` and `worker` containers keep serving the main checkout, so a
+The long-running `rails`, `assets` and `worker` containers keep serving the main checkout, so a
 worktree is for editing, specs and rake tasks. `bin/worktree run <name> [port]` serves a worktree's
 own application — forked database, assets and worker, so it cannot disturb the main instance — but
 it needs Docker access and occupies a terminal until stopped. So ask the user to run that command

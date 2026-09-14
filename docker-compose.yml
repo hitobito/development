@@ -12,11 +12,10 @@ services:
         condition: service_healthy
       mailcatcher:
         condition: service_healthy
-      webpack:
+      assets:
         condition: service_started
     env_file: docker/rails/env
     environment:
-      WEBPACKER_DEV_SERVER_HOST: webpack
       BUNDLE_GEMFILE: Gemfile.local
       #SKIP_SEEDS: 1
     ports:
@@ -48,7 +47,6 @@ services:
     ports: []
     environment:
       RAILS_ENV: test
-      WEBPACKER_DEV_SERVER_HOST: null
       SKIP_SEEDS: 1
       SKIP_BUNDLE_INSTALL: 1
       BUNDLE_GEMFILE: Gemfile.local
@@ -138,21 +136,17 @@ services:
       interval: 5s
       timeout: 5s
 
-  webpack:
+  assets:
     build:
       context: ./docker/rails
     image: ghcr.io/hitobito/development/rails
-    entrypoint: [ "webpack-entrypoint.sh" ]
+    entrypoint: [ "assets-entrypoint.sh" ]
     restart: unless-stopped
     env_file: docker/rails/env
     environment:
-      WEBPACKER_DEV_SERVER_HOST: webpack
       SKIP_BUNDLE_INSTALL: 1
       BUNDLE_GEMFILE: Gemfile.local
     user: "${RAILS_UID:-1000}"
-    command: /usr/src/app/hitobito/bin/webpack-dev-server
-    ports:
-      - "127.0.0.1:3035:3035"
     volumes:
       - .:/usr/src/app
       - ./docker/empty:/usr/src/app/dumps:ro
