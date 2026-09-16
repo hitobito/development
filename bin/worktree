@@ -103,18 +103,19 @@ run() {
 
   local wt="/usr/src/app/worktrees/$name/hitobito"
 
-  # Asset build watcher
-  local assets
-  assets="$(compose run -d --workdir "$wt" assets)"
+  # Asset build watchers
+  local assets_js assets_css
+  assets_js="$(compose run -d --workdir "$wt" assets_js)"
+  assets_css="$(compose run -d --workdir "$wt" assets_css)"
 
   # Worker
   local worker
   worker="$(compose run -d --workdir "$wt" --env "RAILS_DB_NAME=$db" --env SKIP_INIT=1 worker)"
 
-  trap 'docker rm -f "$worker" "$assets" >/dev/null 2>&1' EXIT INT TERM
-  echo "worker:   ${worker:0:12}   assets: ${assets:0:12}"
+  trap 'docker rm -f "$worker" "$assets_js" "$assets_css" >/dev/null 2>&1' EXIT INT TERM
+  echo "worker:   ${worker:0:12}   assets: ${assets_js:0:12} (js) ${assets_css:0:12} (css)"
 
-  # Not exec, so the trap above can stop the worker and assets watcher again.
+  # Not exec, so the trap above can stop the worker and the asset watchers again.
   compose run --rm --name "hitobito-$name" \
     --publish "127.0.0.1:$port:3000" \
     --workdir "$wt" \

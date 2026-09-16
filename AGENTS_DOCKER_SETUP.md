@@ -55,10 +55,10 @@ The following services are reachable over the docker network:
 
 ## What you cannot do here
 
-- **Restart the application.** The long-running `rails`, `worker` and `assets` containers are
-  separate and you have no docker socket. Rails reloads changed application code by itself, but
-  after a change to the `Gemfile`, to `config/initializers/*` or to any other boot-time file, ask
-  the user to run e.g. `docker compose restart rails worker`.
+- **Restart the application.** The long-running `rails`, `worker`, `assets_js` and `assets_css`
+  containers are separate and you have no docker socket. Rails reloads changed application code by
+  itself, but after a change to the `Gemfile`, to `config/initializers/*` or to any other boot-time
+  file, ask the user to run e.g. `docker compose restart rails worker`.
 - **Reach the internet-facing ports.** Your container publishes nothing. The user's browser talks to
   the `rails` container on http://localhost:3000, not to yours. See "Checking a change in the
   running application" below for accessing the webapp.
@@ -87,8 +87,8 @@ Feature specs (`js: true`) need no separate preparation: jsbundling-rails/cssbun
 `javascript:build`/`css:build` into `db:test:prepare` itself, so assets are already built by the
 time you run specs. To rebuild after changing assets without re-running `db:test:prepare`, run
 `bundle exec rake assets:build` from the core; it does not disturb the running application, which
-is served from its own `app/assets/builds` directory by the `assets` container rather than from
-this one's.
+is served from its own `app/assets/builds` directory by the `assets_js` and `assets_css` containers
+rather than from this one's.
 
 ## Checking a change in the running application
 
@@ -146,8 +146,8 @@ script rewrites them to relative ones, which keeps `git status`, `diff`, `log`, 
 `git worktree remove` is the one command that rejects a relative path, which is why removal goes
 through the script too.
 
-The long-running `rails`, `assets` and `worker` containers keep serving the main checkout, so a
-worktree is for editing, specs and rake tasks. `bin/worktree run <name> [port]` serves a worktree's
-own application — forked database, assets and worker, so it cannot disturb the main instance — but
-it needs Docker access and occupies a terminal until stopped. So ask the user to run that command
-when they (or you) want to test a feature implemented in a worktree.
+The long-running `rails`, `assets_js`, `assets_css` and `worker` containers keep serving the main
+checkout, so a worktree is for editing, specs and rake tasks. `bin/worktree run <name> [port]`
+serves a worktree's own application — forked database, assets and worker, so it cannot disturb the
+main instance — but it needs Docker access and occupies a terminal until stopped. So ask the user
+to run that command when they (or you) want to test a feature implemented in a worktree.

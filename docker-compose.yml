@@ -12,7 +12,9 @@ services:
         condition: service_healthy
       mailcatcher:
         condition: service_healthy
-      assets:
+      assets_js:
+        condition: service_started
+      assets_css:
         condition: service_started
     env_file: docker/rails/env
     environment:
@@ -136,11 +138,12 @@ services:
       interval: 5s
       timeout: 5s
 
-  assets:
+  assets_js: &assets
     build:
       context: ./docker/rails
     image: ghcr.io/hitobito/development/rails
     entrypoint: [ "assets-entrypoint.sh" ]
+    command: [ "js" ]
     restart: unless-stopped
     env_file: docker/rails/env
     environment:
@@ -155,6 +158,10 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
+
+  assets_css:
+    <<: *assets
+    command: [ "css" ]
 
   redis:
     image: redis:8-alpine
