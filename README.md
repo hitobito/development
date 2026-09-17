@@ -118,7 +118,8 @@ development-postgres-1          postgres:16                                "dock
 development-mailcatcher-1       ghcr.io/hitobito/development/mailcatcher   "mailcatcher -f --ip…"   mailcatcher       3 hours ago    Up 3 hours          0.0.0.0:1080->1080/tcp, :::1080->1080/tcp
 development-rails-1             ghcr.io/hitobito/development/rails         "rails-entrypoint.sh…"   rails             3 hours ago    Up 3 hours          0.0.0.0:3000->3000/tcp, :::3000->3000/tcp
 development-rails_test_core-1   ghcr.io/hitobito/development/rails         "rails-entrypoint.sh…"   rails_test_core   21 hours ago   Up About a minute
-development-webpack-1           ghcr.io/hitobito/development/rails         "webpack-entrypoint.…"   webpack           3 hours ago    Up About a minute   0.0.0.0:3035->3035/tcp, :::3035->3035/tcp
+development-assets_css-1        ghcr.io/hitobito/development/rails         "assets-entrypoint.s…"   assets_css        3 hours ago    Up About a minute
+development-assets_js-1         ghcr.io/hitobito/development/rails         "assets-entrypoint.s…"   assets_js         3 hours ago    Up About a minute
 development-worker-1            ghcr.io/hitobito/development/rails         "rails-entrypoint.sh…"   worker            3 hours ago    Up About a minute
 ```
 

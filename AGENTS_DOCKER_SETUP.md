@@ -55,10 +55,10 @@ The following services are reachable over the docker network:
 
 ## What you cannot do here
 
-- **Restart the application.** The long-running `rails`, `worker` and `webpack` containers are
-  separate and you have no docker socket. Rails reloads changed application code by itself, but
-  after a change to the `Gemfile`, to `config/initializers/*` or to any other boot-time file, ask
-  the user to run e.g. `docker compose restart rails worker`.
+- **Restart the application.** The long-running `rails`, `worker`, `assets_js` and `assets_css`
+  containers are separate and you have no docker socket. Rails reloads changed application code by
+  itself, but after a change to the `Gemfile`, to `config/initializers/*` or to any other boot-time
+  file, ask the user to run e.g. `docker compose restart rails worker`.
 - **Reach the internet-facing ports.** Your container publishes nothing. The user's browser talks to
   the `rails` container on http://localhost:3000, not to yours. See "Checking a change in the
   running application" below for accessing the webapp.
@@ -83,12 +83,13 @@ specs while the application is up, or in parallel with another worktree, is ther
 database. Ask the user for it when you want a guaranteed-clean schema; the two commands above are
 faster when you are already in here.
 
-Feature specs (`js: true`) need no preparation: `config/webpacker.yml` sets `compile: true` for the
-test environment, so webpacker builds `public/packs-test` by itself the first time a spec needs it.
-That first spec run is half a minute slower; afterwards the build is reused. To force a rebuild
-after changing assets, run `bundle exec ./bin/webpack-test-compile` from the core yourself; it does
-not disturb the running application, which is served by the webpack dev server rather than from
-`public/packs`.
+Feature specs (`js: true`) need no separate preparation: assets are already built automatically
+during the `db:test:prepare` task. To rebuild them afterwards, run `bundle exec rake
+assets:build_for_test` — `assets:build` builds for the environment you are in, which is development.
+
+The core specs build into `app/assets/builds/core`, so they don't interfere with the running app.
+But when running the wagon specs, the build directory is shared with the running app, so rebuilding
+while wagon specs run can make them fail in confusing ways.
 
 ## Checking a change in the running application
 
@@ -146,8 +147,8 @@ script rewrites them to relative ones, which keeps `git status`, `diff`, `log`, 
 `git worktree remove` is the one command that rejects a relative path, which is why removal goes
 through the script too.
 
-The long-running `rails`, `webpack` and `worker` containers keep serving the main checkout, so a
-worktree is for editing, specs and rake tasks. `bin/worktree run <name> [port]` serves a worktree's
-own application — forked database, assets and worker, so it cannot disturb the main instance — but
-it needs Docker access and occupies a terminal until stopped. So ask the user to run that command
-when they (or you) want to test a feature implemented in a worktree.
+The long-running `rails`, `assets_js`, `assets_css` and `worker` containers keep serving the main
+checkout, so a worktree is for editing, specs and rake tasks. `bin/worktree run <name> [port]`
+serves a worktree's own application — forked database, assets and worker, so it cannot disturb the
+main instance — but it needs Docker access and occupies a terminal until stopped. So ask the user
+to run that command when they (or you) want to test a feature implemented in a worktree.
