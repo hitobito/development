@@ -20,7 +20,10 @@ gemfile="${BUNDLE_GEMFILE:-Gemfile.local}"
 
 [ -d "$core" ] || { echo "init-local-files: no hitobito checkout in $root" >&2; exit 1; }
 
-mkdir -p "$core/tmp/pids" "$core/log"
+# app/assets/builds is where the asset containers write. It must exist before rails boots:
+# hotwire-livereload silently drops listen paths that do not exist yet, which would leave
+# asset changes without a live reload until the next restart.
+mkdir -p "$core/tmp/pids" "$core/log" "$core/app/assets/builds"
 
 if [ -z "${SKIP_WAGONFILE:-}" ]; then
   echo "⚙ Activating Wagonfile.development"
