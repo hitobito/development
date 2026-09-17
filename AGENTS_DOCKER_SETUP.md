@@ -83,12 +83,13 @@ specs while the application is up, or in parallel with another worktree, is ther
 database. Ask the user for it when you want a guaranteed-clean schema; the two commands above are
 faster when you are already in here.
 
-Feature specs (`js: true`) need no separate preparation: jsbundling-rails/cssbundling-rails hook
-`javascript:build`/`css:build` into `db:test:prepare` itself, so assets are already built by the
-time you run specs. To rebuild after changing assets without re-running `db:test:prepare`, run
-`bundle exec rake assets:build` from the core; it does not disturb the running application, which
-is served from its own `app/assets/builds` directory by the `assets_js` and `assets_css` containers
-rather than from this one's.
+Feature specs (`js: true`) need no separate preparation: assets are already built automatically
+during the `db:test:prepare` task. To rebuild them afterwards, run `bundle exec rake
+assets:build_for_test` — `assets:build` builds for the environment you are in, which is development.
+
+The core specs build into `app/assets/builds/core`, so they don't interfere with the running app.
+But when running the wagon specs, the build directory is shared with the running app, so rebuilding
+while wagon specs run can make them fail in confusing ways.
 
 ## Checking a change in the running application
 
