@@ -34,33 +34,20 @@ Follow the prerequisites in section _[Windows preparation][windows_preparation]_
 
 ## Preparation
 
-First declare a instance name: (e.g. generic, pbs)
+Hitobito is always a combination of the general "core" plus the wagon extension(s) of a specific organization (e.g. `pbs`, `cevi`, `sac_cas`). The following clones everything needed into a directory of that organization name:
 
 ```bash
-read -p "Enter hitobito instance name: " INSTANCE_NAME
-```
+read -p "Enter hitobito instance name (e.g. pbs, bdp, or generic for the demo version): " INSTANCE
 
-Then you need to clone this repository:
-
-```bash
-git clone https://github.com/hitobito/development.git $INSTANCE_NAME && cd $INSTANCE_NAME
+git clone https://github.com/hitobito/development.git $INSTANCE && cd $INSTANCE
 git clone https://github.com/hitobito/hitobito.git
+git clone https://github.com/hitobito/hitobito_$INSTANCE.git
+
+# some wagons require another wagon in order to work
+for dep in $(grep -h add_dependency hitobito_$INSTANCE/*.gemspec | grep -oE 'hitobito_[a-z_]+'); do
+  git clone https://github.com/hitobito/$dep.git
+done
 ```
-
-Now you need to add at least one wagon project.
-
-If you want to run a generic demo instance of hitobito:
-```bash
-git clone https://github.com/hitobito/hitobito_generic.git
-```
-
-If instead you want to run a PBS instance:
-```bash
-git clone https://github.com/hitobito/hitobito_pbs.git
-git clone https://github.com/hitobito/hitobito_youth.git # pbs also requires the youth wagon
-```
-
-You can adapt the above commands as needed for the wagon(s) you want.
 
 The final structure should look something like this:
 

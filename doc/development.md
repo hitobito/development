@@ -1,29 +1,3 @@
-# Cloning wagons quickly
-
-:race_car: You go ahead and clone your hitobito dev setup by taking full advantage of the `hitobito_clone` script located within `bin/hitobito_clone.rb`
-
-Make sure you execute the script in the folder you want to have your hitobito setup. Make sure you have the following things preinstalled on your device:
-
-```text
-# For script exec
-- Ruby
-# To retrieve the script
-- wget
-# Local development with docker
-- docker + docker compose
-# Version control
-- git
-```
-
-Then execute the following, which clones all hitobito repositories within a new or existing hitobito directory.
-
-```bash
-wget -O - https://raw.githubusercontent.com/hitobito/development/master/bin/hitobito_clone.rb | ruby
-```
-
-&ast;Note: by adding the -h option, you get some good information about what the script is able to do further.
-
-
 # `hit` command
 
 ## Usage
