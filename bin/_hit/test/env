@@ -85,11 +85,11 @@ psql_sql_cmd "DROP DATABASE IF EXISTS $TEST_DB_NAME;"
 psql_sql_cmd "CREATE DATABASE $TEST_DB_NAME;"
 
 if [[ "$HIT_TEST_ENV" == "core" ]]; then
-  PREPARE_RAILS_SPEC_CMD="rake db:migrate"
+  PREPARE_RAILS_SPEC_CMD="rake db:migrate assets:build_for_test"
   WORKDIR="$CHECKOUT/hitobito"
 else
   apply_core_db_migrations
-  PREPARE_RAILS_SPEC_CMD="cp ../hitobito/${BUNDLE_GEMFILE:-Gemfile}.lock . && (cd ../hitobito && rake wagon:migrate)"
+  PREPARE_RAILS_SPEC_CMD="cp ../hitobito/${BUNDLE_GEMFILE:-Gemfile}.lock . && (cd ../hitobito && rake wagon:migrate) && rake app:assets:build_for_test"
   WORKDIR="$CHECKOUT/hitobito_$HIT_TEST_ENV"
   BUNDLE_GEMFILE=Gemfile
 fi

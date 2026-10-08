@@ -128,6 +128,16 @@ Those directories are mounted inside the containers. So every saved file is inst
 agent inside the containers, where it has the whole application available and a sandbox to work in.
 See [AI coding agents](./doc/ai-agents.md).
 
+### Running the tests
+
+`bin/hit test` asks which specs you want, core or a wagon, prepares a test database and the assets
+for them and drops you into a shell:
+
+```bash
+bin/hit test
+rspec spec/models/person_spec.rb
+```
+
 For advanced development, see the [development documentation](./doc/development.md).
 
 ## Windows preparation

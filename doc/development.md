@@ -33,6 +33,13 @@ Get a shell to run core or wagon specs:
 bin/hit test
 ```
 
+This creates a fresh test database, migrates it and builds the assets the specs need. The first
+run on a checkout whose `assets_js` container never ran also installs the node modules, which
+takes a while.
+
+Inside `bin/agent` or `bin/hit rails bash`, the equivalent is `bin/rails db:test:prepare` in the
+core or wagon directory, see [AGENTS_DOCKER_SETUP.md](../AGENTS_DOCKER_SETUP.md#running-specs).
+
 ### Run desired tests
 
 Either, to run all tests:

@@ -79,22 +79,27 @@ that wagon's specs. Once per directory:
     bin/rails db:test:prepare
     bundle exec rspec spec/models/person_spec.rb
 
-`db:test:prepare` builds the right schema either way — for a wagon that is the core schema plus
-that wagon's own migrations. The database name is derived from the working directory's path, so it
-is never the development database, and separate checkouts and worktrees each get their own. Running
-specs while the application is up, or in parallel with another worktree, is therefore safe.
+`db:test:prepare` loads the core schema into the test database and builds the assets of that
+directory's test composition; in a wagon, the first spec run then applies the wagon's migrations and
+seeds. The database name is derived from the working directory's path, so it is never the
+development database, and separate checkouts and worktrees each get their own. Running specs while
+the application is up, or in parallel with another worktree, is therefore safe.
 
 `bin/hit test <wagon>` on the host does the same in a throwaway container with a freshly created
 database. Ask the user for it when you want a guaranteed-clean schema; the two commands above are
 faster when you are already in here.
 
-Feature specs (`js: true`) need no separate preparation: assets are already built automatically
-during the `db:test:prepare` task. To rebuild them afterwards, run `bundle exec rake
-assets:build_for_test` — `assets:build` builds for the environment you are in, which is development.
+Feature specs (`js: true`) and view-rendering specs need no separate preparation: the assets are
+built during `db:test:prepare`. To rebuild only the assets, run `bundle exec rake
+assets:build_for_test` in the core or `bundle exec rake app:assets:build_for_test` in a wagon
+(`assets:build` without the suffix builds for the environment you are in, which is development).
+A failing asset build makes these commands exit non-zero.
 
-The core specs build into `app/assets/builds/core`, so they don't interfere with the running app.
-But when running the wagon specs, the build directory is shared with the running app, so rebuilding
-while wagon specs run can make them fail in confusing ways.
+The builds live in `hitobito/app/assets/builds/<composition>`: `core` for the core specs, the wagon
+names for a wagon's specs (e.g. `pfadi_de`), so they don't interfere with the running app, which
+uses the directory of the whole composition (e.g. `bdp-pfadi_de`). Only a wagon whose test
+composition is the running app's shares the directory with the running app; the test build then
+rewrites the same files and triggers a live reload, nothing worse.
 
 ## Checking a change in the running application
 
