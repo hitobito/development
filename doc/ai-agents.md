@@ -34,8 +34,8 @@ on the first start; the credentials and your conversation history are stored in
 `docker compose down`, rebuilds and image updates. They are per hitobito instance, so a second
 checkout asks you to log in again.
 
-Update the agents by rebuilding the image: `docker compose build rails`. They cannot update
-themselves — the binaries live in `/usr/local/bin` and the container user cannot write there.
+Update the agents by rebuilding the image: `docker compose build --no-cache rails`. They cannot
+update themselves — the binaries live in `/usr/local/bin` and the container user cannot write there.
 
 The agent can use the running hitobito application via Capybara and create and manage worktrees. A
 worktree is for editing, specs and rake tasks; to also *run* one, alongside your main instance:
