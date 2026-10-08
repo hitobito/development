@@ -53,6 +53,11 @@ The following services are reachable over the docker network:
 | Redis | `redis` | |
 | Mailcatcher | `mailcatcher` | SMTP on 1025, web UI on 1080 |
 
+## Git and GitHub
+
+If `gh auth status` says you are not logged in, or a push or `gh` call is refused, ask the user to
+run `bin/agent gh auth login` on the host, as described in `doc/ai-agents.md`.
+
 ## What you cannot do here
 
 - **Restart the application.** The long-running `rails`, `worker`, `assets_js` and `assets_css`

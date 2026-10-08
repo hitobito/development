@@ -66,6 +66,15 @@ services:
       SKIP_INIT: 1
       BUNDLE_GEMFILE: Gemfile.local
       OPENCODE_CONFIG_CONTENT: '{"permission":"allow","autoupdate":false}'
+      GIT_CONFIG_COUNT: 3
+      GIT_CONFIG_KEY_0: url.https://github.com/.insteadOf
+      GIT_CONFIG_VALUE_0: "git@github.com:"
+      GIT_CONFIG_KEY_1: url.https://github.com/.insteadOf
+      GIT_CONFIG_VALUE_1: ssh://git@github.com/
+      GIT_CONFIG_KEY_2: credential.https://github.com.helper
+      GIT_CONFIG_VALUE_2: "!gh auth git-credential"
+      GIT_TERMINAL_PROMPT: 0
+      GH_NO_UPDATE_NOTIFIER: 1
     security_opt:
       - no-new-privileges:true
     cap_drop:

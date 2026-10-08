@@ -37,6 +37,35 @@ checkout asks you to log in again.
 Update the agents by rebuilding the image: `docker compose build --no-cache rails`. They cannot
 update themselves — the binaries live in `/usr/local/bin` and the container user cannot write there.
 
+## Git and GitHub
+
+The user's SSH keys stay on the host: neither the keys nor the user's SSH agent are passed into the
+`agent` container, since either would grant access to every server those keys open. Instead, the
+container talks to GitHub over HTTPS. `docker-compose.yml` rewrites `git@github.com:` URLs to
+`https://github.com/` for git inside the `agent` container only, so the remotes configured in the
+repositories stay unchanged.
+
+Without any further setup, `fetch` and `pull` work for public repositories. Pushing, pulling private
+wagons and opening pull requests with the bundled [GitHub CLI](https://cli.github.com/) need a
+token, which the user provides once on the host:
+
+```bash
+bin/agent gh auth login
+```
+
+choosing *GitHub.com*, *HTTPS* and *Paste an authentication token*. A
+[fine-grained token](https://github.com/settings/personal-access-tokens/new) is preferable to the
+browser login, which grants access to all of the user's repositories: limited to the repositories
+being worked on, with only *Contents* and *Pull requests*, read and write — or *Contents* read-only
+if the agent should only ever pull. git gets its credentials from `gh`.
+
+The token is stored in plain text in `docker/rails/home/.config/gh/hosts.yml` on the host, so like
+the Claude login it survives restarts and rebuilds. Anything the agent can use, it can also read, so
+the token's scope is what limits the agent. Revoking it on GitHub or running
+`bin/agent gh auth logout` takes access away again.
+
+## Worktrees and the running application
+
 The agent can use the running hitobito application via Capybara and create and manage worktrees. A
 worktree is for editing, specs and rake tasks; to also *run* one, alongside your main instance:
 
@@ -74,7 +103,8 @@ want an agent working on its own.
 It does **not** sandbox everything, so keep an eye on:
 
 - **Your repositories.** The whole checkout is mounted read-write, `.git` directories included. An
-  agent can commit, rewrite history and push with your credentials.
+  agent can commit and rewrite history, and push wherever the GitHub token the user provided
+  allows (see "Git and GitHub" above).
 - **The network.** Outbound traffic is unrestricted.
 - **The devcontainer setup.** `.devcontainer/docker-compose.yml` mounts the docker socket and runs
   `privileged: true`, so an agent there can start a container that mounts your whole filesystem.

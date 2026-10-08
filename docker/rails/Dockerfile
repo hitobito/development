@@ -16,7 +16,7 @@ ARG OPENCODE_VERSION=""
 
 # Packages
 ARG BUILD_PACKAGES="nodejs git sqlite3 libsqlite3-dev imagemagick build-essential libvips42"
-ARG DEV_PACKAGES="direnv xvfb chromium chromium-driver pv vim curl less sudo docker-ce-cli libvips42 postgresql-client"
+ARG DEV_PACKAGES="direnv xvfb chromium chromium-driver pv vim curl less sudo docker-ce-cli gh libvips42 postgresql-client"
 
 #################################
 #          Build Stage          #
@@ -51,7 +51,11 @@ RUN export DEBIAN_FRONTEND=noninteractive \
  && chmod a+r /etc/apt/keyrings/docker.asc \
  && echo \
   "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/debian \
-  $(. /etc/os-release && echo "$VERSION_CODENAME") stable" > /etc/apt/sources.list.d/docker.list
+  $(. /etc/os-release && echo "$VERSION_CODENAME") stable" > /etc/apt/sources.list.d/docker.list \
+ # GitHub CLI, see https://github.com/cli/cli/blob/trunk/docs/install_linux.md
+ && curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg -o /etc/apt/keyrings/githubcli-archive-keyring.gpg \
+ && chmod a+r /etc/apt/keyrings/githubcli-archive-keyring.gpg \
+ && echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" > /etc/apt/sources.list.d/github-cli.list
 
 ARG BUILD_PACKAGES
 ARG DEV_PACKAGES

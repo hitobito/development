@@ -46,6 +46,15 @@ EOF
   exit 1
 fi
 
+if command -v git >/dev/null; then
+  mkdir -p "$root/docker/rails/home/.config/git"
+  for key in user.name user.email; do
+    if value="$(git -C "$here" config "$key")"; then
+      git config --file "$root/docker/rails/home/.config/git/config" "$key" "$value"
+    fi
+  done
+fi
+
 agent="${1:-claude}"
 shift || true
 
