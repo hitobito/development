@@ -1,24 +1,30 @@
 #!/usr/bin/env bash
 #
-# Create or remove a git worktree of the core and of every wagon, all on the same branch.
+# Create or remove a git worktree of the core, of every wagon and of the development repo, all on
+# the same branch.
 #
 #   bin/worktree <name> [branch]     # create
 #   bin/worktree run <name> [port]   # serve this worktree's application on another port
 #   bin/worktree remove <name>       # remove, including the branch
 #
-# The worktrees end up in worktrees/<name>/hitobito*, which keeps them inside the directory that
-# is mounted into the containers, and out of the ../hitobito_* glob that Wagonfile uses to find
-# wagons. Works from the host and from inside a container -- see the note on paths below.
+# The worktrees end up in worktrees/<name>/hitobito* and worktrees/<name>/development, which keeps
+# them inside the directory that is mounted into the containers, and out of the ../hitobito_* glob
+# that Wagonfile uses to find wagons. Works from the host and from inside a container -- see the
+# note on paths below.
 
 set -euo pipefail
 
 root="$(cd "$(dirname "$(realpath "${BASH_SOURCE[0]}")")/.." && pwd)"
 
+# Relative to $root, with . for the development repo itself.
 repos() {
+  echo .
   for repo in "$root"/hitobito "$root"/hitobito_*; do
-    [ -d "$repo/.git" ] && echo "$repo"
+    [ -d "$repo/.git" ] && basename "$repo"
   done
 }
+
+checkout_name() { if [ "$1" = . ]; then echo development; else echo "$1"; fi; }
 
 # The admin directory git keeps for a worktree, resolved through the worktree's own .git file.
 admin_dir() {
@@ -38,21 +44,28 @@ create() {
   mkdir -p "$dest"
 
   for repo in $(repos); do
-    local repo_name="$(basename "$repo")"
-    local target="$dest/$repo_name"
-    [ -e "$target" ] && { echo "$repo_name: $target exists, skipping"; continue; }
+    local checkout="$(checkout_name "$repo")"
+    local target="$dest/$checkout"
+    [ -e "$target" ] && { echo "$checkout: $target exists, skipping"; continue; }
 
-    git -C "$repo" worktree add -B "$branch" "$target" >/dev/null
-    echo "$repo_name: $target on $branch"
+    if git -C "$root/$repo" show-ref --quiet --verify "refs/heads/$branch"; then
+      git -C "$root/$repo" worktree add "$target" "$branch" >/dev/null
+    else
+      git -C "$root/$repo" worktree add -b "$branch" "$target" >/dev/null
+    fi
+    echo "$checkout: $target on $branch"
 
     # Manually patch in relative paths after creation, to support git < 2.48.
     # Relative paths are necessary so both the host and the container see a valid path.
     local admin="$(sed 's/^gitdir: //' "$target/.git")"
-    echo "gitdir: ../../../$repo_name/.git/worktrees/$(basename "$admin")" > "$target/.git"
-    echo "../worktrees/$name/$repo_name/.git" > "$admin/gitdir"
+    local git_dir="$repo/.git"
+    local to_root=../
+    [ "$repo" = . ] && git_dir=.git && to_root=
+    echo "gitdir: ../../../$git_dir/worktrees/$(basename "$admin")" > "$target/.git"
+    echo "${to_root}worktrees/$name/$checkout/.git" > "$admin/gitdir"
     # git resolves that path from its own working directory, so a `git gc --auto`
     # started from a subdirectory could fail to find it and prune the worktree.
-    git -C "$repo" config gc.worktreePruneExpire never
+    git -C "$root/$repo" config gc.worktreePruneExpire never
   done
 
   SKIP_WAGONFILE= BUNDLE_GEMFILE=Gemfile.local "$root/docker/rails/init-local-files.sh" "$dest"
@@ -129,15 +142,20 @@ remove() {
   local dest="$root/worktrees/$name"
   [ -d "$dest" ] || { echo "no worktree at $dest" >&2; exit 1; }
 
-  local branches=()
   for repo in $(repos); do
-    local target="$dest/$(basename "$repo")"
+    local checkout="$(checkout_name "$repo")"
+    local target="$dest/$checkout"
     [ -e "$target" ] || continue
-    branches+=("$(git -C "$target" rev-parse --abbrev-ref HEAD)")
+    local branch="$(git -C "$target" rev-parse --abbrev-ref HEAD)"
     # `git worktree remove` on git < 2.48 insists on an absolute gitdir, so put back the one for
     # this side just long enough for it to run.
     echo "$target/.git" > "$(admin_dir "$target")/gitdir"
-    git -C "$repo" worktree remove --force "$target"
+    git -C "$root/$repo" worktree remove --force "$target"
+
+    if ! git -C "$root/$repo" branch -d "$branch" >/dev/null 2>&1; then
+      echo "kept branch $branch in $checkout: it has unmerged commits"
+      echo "  delete it with: git -C $repo branch -D $branch"
+    fi
   done
 
   rmdir "$dest" 2>/dev/null || true
@@ -150,15 +168,6 @@ remove() {
     compose run --rm --no-deps -T --entrypoint bash rails \
       -c "rm -f '/seed/done-$db' '/seed/dump-in-$db'" >/dev/null 2>&1 || true
   fi
-
-  local i=0
-  for repo in $(repos); do
-    if ! git -C "$repo" branch -d "${branches[$i]}" >/dev/null 2>&1; then
-      echo "kept branch ${branches[$i]} in $(basename "$repo"): it has unmerged commits"
-      echo "  delete it with: git -C $(basename "$repo") branch -D ${branches[$i]}"
-    fi
-    i=$((i + 1))
-  done
   echo "removed worktrees/$name"
 }
 

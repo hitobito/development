@@ -3,5 +3,13 @@
   "permissions": {
     "defaultMode": "bypassPermissions"
   },
-  "skipDangerousModePermissionPrompt": true
+  "skipDangerousModePermissionPrompt": true,
+  "worktree": {
+    "bgIsolation": "none"
+  },
+  "hooks": {
+    "WorktreeCreate": [
+      { "hooks": [{ "type": "command", "command": "/usr/src/app/docker/rails/claude-worktree-hook" }] }
+    ]
+  }
 }

@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+#
+# Claude Code WorktreeCreate hook: refuses, because worktrees with absolute paths break on the host.
+
+echo "Refusing to create a worktree: use /usr/src/app/bin/worktree <name> instead." >&2
+exit 1

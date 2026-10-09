@@ -20,7 +20,7 @@ The whole `hitobito/development` checkout is mounted at `/usr/src/app`:
 
 - `/usr/src/app/hitobito` — the core.
 - `/usr/src/app/hitobito_*` — the wagons in use.
-- `/usr/src/app/worktrees/<name>/hitobito*` — git worktrees, if any exist.
+- `/usr/src/app/worktrees/<name>/{hitobito*,development}` — git worktrees, if any exist.
 
 Each of those directories is an independent git repository. The rest of `/usr/src/app` is the
 development environment itself and is a third git repository.
@@ -140,8 +140,9 @@ Bare `rubocop` also reports `Wagons/PatchedMethod`. For a quick single file, kee
 
 ## Worktrees
 
-Worktrees live in `/usr/src/app/worktrees/<name>/` and hold a checkout of the core *and* of every
-wagon, all on the same branch. You can create and remove them:
+Worktrees live in `/usr/src/app/worktrees/<name>/` and hold a checkout of the core, every wagon
+and this development repo, all on the same branch. **Only ever create and remove them with the
+script, never with `git worktree`** — git writes absolute paths, which break on the host:
 
     /usr/src/app/bin/worktree <name> [branch]   # create
     /usr/src/app/bin/worktree remove <name>     # remove, including the branch
@@ -149,13 +150,6 @@ wagon, all on the same branch. You can create and remove them:
 Work in one exactly as in the main checkout. The test databases are separate from the main
 checkout's, so specs run in parallel with them. Run `bin/rails db:test:prepare` once per worktree
 directory.
-
-Use the script rather than `git worktree add` directly. The host and this container see the
-checkout at different paths, so the absolute paths git writes are valid on only one side; the
-script rewrites them to relative ones, which keeps `git status`, `diff`, `log`, `commit`,
-`worktree list` and `worktree prune` correct for you *and* for the user's editor on the host.
-`git worktree remove` is the one command that rejects a relative path, which is why removal goes
-through the script too.
 
 The long-running `rails`, `assets_js`, `assets_css` and `worker` containers keep serving the main
 checkout, so a worktree is for editing, specs and rake tasks. `bin/worktree run <name> [port]`
