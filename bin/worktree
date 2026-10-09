@@ -125,7 +125,7 @@ run() {
   local worker
   worker="$(compose run -d --workdir "$wt" --env "RAILS_DB_NAME=$db" --env SKIP_INIT=1 worker)"
 
-  trap 'docker rm -f "$worker" "$assets_js" "$assets_css" >/dev/null 2>&1' EXIT INT TERM
+  trap "docker rm -f $worker $assets_js $assets_css >/dev/null 2>&1" EXIT INT TERM
   echo "worker:   ${worker:0:12}   assets: ${assets_js:0:12} (js) ${assets_css:0:12} (css)"
 
   # Not exec, so the trap above can stop the worker and the asset watchers again.
