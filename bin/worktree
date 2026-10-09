@@ -104,11 +104,13 @@ run() {
        psql -U hitobito -d postgres -tAc "select 1 from pg_database where datname='$db'" | grep -q 1; then
     echo "forking $db from hitobito_development"
     compose exec -T postgres bash -c \
-      "createdb -U hitobito '$db' && pg_dump -U hitobito hitobito_development | psql -q -U hitobito '$db'"
+      "createdb -U hitobito '$db' &&
+         pg_dump -U hitobito hitobito_development | psql -q -U hitobito '$db' >/dev/null"
     compose run --rm --no-deps -T --entrypoint bash rails \
       -c "date > '/seed/done-$db'
-          [ -f /seed/dump-in-hitobito_development ] &&
-            cp /seed/dump-in-hitobito_development '/seed/dump-in-$db'" >/dev/null 2>&1
+          if [ -f /seed/dump-in-hitobito_development ]; then
+            cp /seed/dump-in-hitobito_development '/seed/dump-in-$db'
+          fi" >/dev/null 2>&1
   fi
 
   echo "serving worktrees/$name on http://localhost:$port  (Ctrl+C to stop)"
