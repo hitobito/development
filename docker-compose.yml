@@ -83,7 +83,6 @@ services:
       - .:/usr/src/app
       - ./docker/empty:/usr/src/app/dumps:ro
       - hitobito_bundle:/opt/bundle
-      - seed:/seed
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
       - ./docker/rails/home/.bashrc:/home/developer/.bashrc

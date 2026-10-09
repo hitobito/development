@@ -6,13 +6,14 @@ you ever need to detect this from a script.
 
 ## IMPORTANT: Stop if a database dump is loaded
 
-**Before anything else, list `/seed/`. If it contains a `dump-in-*` file, stop.** A database dump
-has been loaded, and it may hold production data about real people. Do not query the database, do
-not run specs against it, do not read or summarise its contents, and do not work around this by
-loading a dump yourself. Tell the user which marker you found and stop there.
+**Before anything else, list `/seed/` if it exists. If it contains a `dump-in-*` file, stop.** A
+database dump has been loaded, and it may hold production data about real people. Do not query the
+database, do not run specs against it, do not read or summarise its contents, and do not work around
+this by loading a dump yourself. Tell the user which marker you found and stop there.
 
 This is not the same as the `done-*` files next to it — those only record that seeding has run, and
-are normal.
+are normal. `/seed/` is not mounted in the `bin/agent` container: `bin/agent` refuses to start while
+a dump is loaded, and `bin/load_database` refuses to run while an agent is running.
 
 ## Layout
 

@@ -18,21 +18,21 @@ case "$here" in
   *) echo "bin/agent must be called from inside $root" >&2; exit 1 ;;
 esac
 
-# Which development database this checkout uses, mirroring dev_db() in bin/worktree.
-case "$here" in
-  "$root"/worktrees/*)
-    name="${here#"$root"/worktrees/}"
-    name="${name%%/*}"
-    db="hitobito_dev_${name//[^a-zA-Z0-9_]/_}"
-    ;;
-  *) db="hitobito_development" ;;
-esac
+# Any database counts, because the agent can reach every database on the postgres server.
+# A plain `docker run` on just the seed volume starts much faster than `docker compose run`.
+project="$(docker compose --project-directory "$root" config | sed -n 's/^name: //p')"
+seed_volume="$(docker volume ls -q --filter "label=com.docker.compose.project=$project" \
+  --filter label=com.docker.compose.volume=seed)"
+dumps=""
+if [ -n "$seed_volume" ]; then
+  dumps="$(docker run --rm -v "$seed_volume:/seed:ro" --entrypoint sh \
+    ghcr.io/hitobito/development/rails -c 'cd /seed && ls dump-in-*' 2>/dev/null || true)"
+fi
 
-if docker compose --project-directory "$root" \
-     run --rm --no-deps -T --entrypoint bash rails -c "test -f /seed/dump-in-$db" 2>/dev/null; then
+if [ -n "$dumps" ]; then
   cat >&2 <<EOF
 
-Refusing to start an agent: a database dump has been loaded into $db.
+Refusing to start an agent: a database dump has been loaded into ${dumps//dump-in-/}.
 
 Agents must not run against dumps, which may contain production data.
 
@@ -40,7 +40,7 @@ To get back to a clean state:
   docker compose down --volumes && docker compose up
 
 If you are certain this dump is safe, remove the marker:
-  docker compose run --rm --no-deps --entrypoint rm rails /seed/dump-in-$db
+  docker compose run --rm --no-deps --entrypoint bash rails -c 'rm /seed/dump-in-*'
 
 EOF
   exit 1
