@@ -5,7 +5,9 @@ services:
     - ./shared:/shared
 
   nextcloud:
-    image: nextcloud
+    # Keep the major version within the range supported by the hitobitologin app
+    # (see https://apps.nextcloud.com/apps/hitobitologin) when bumping it.
+    image: nextcloud:35-apache
     environment:
       SMTP_HOST: mailcatcher
       SMTP_PORT: 1025

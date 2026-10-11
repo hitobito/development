@@ -217,14 +217,16 @@ Start the terminal within VSCode, by clicking the _Toggle panel_ button in the t
 
 ## Nextcloud
 
-Hitobito has official support for nextcloud. You can start a nextcloud instance ready and set up for OIDC authentication via hitobito as follows:
+Hitobito has official support for nextcloud. You can start a nextcloud instance ready and set up for authentication via hitobito as follows:
 ```bash
 docker compose -f docker-compose.yml -f nextcloud.yml up
 ```
 
-You can then access your local nextcloud instance at http://localhost.
-To test the hitobito Login part, you can then click on "Login with hitobito".
-Alternatively, to manage the local nextcloud, you can use the credentials `admin` / `hito42bito`.
+You can then access your local nextcloud instance at http://localhost. Two apps for logging in with hitobito are installed and configured:
+- [hitobitologin](https://github.com/cevi/nextcloud-hitobito-login) (button "Login with hitobito (hitobitologin)"): OAuth login which also syncs user information and maps hitobito roles and event participations to nextcloud groups. Every hitobito user with at least one role ends up in the nextcloud group `hitobito-members`.
+- [user_oidc](https://github.com/nextcloud/user_oidc) (button "Login with hitobito"): generic OpenID Connect login, using hitobito's `nextcloud` OIDC scope for group provisioning (requires the `groups.nextcloud` feature to be enabled in the wagon).
+
+Log in with any seeded hitobito user. Alternatively, to manage the local nextcloud, you can use the credentials `admin` / `hito42bito`.
 
 In case you get the following error:
 > Client-Autorisierung MKIM ist fehlgeschlagen: Unbekannter Client, keine Autorisierung mitgeliefert oder Autorisierungsmethode nicht unterstützt.

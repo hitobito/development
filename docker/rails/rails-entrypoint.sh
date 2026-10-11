@@ -21,12 +21,15 @@ initialize() {
     rm -f tmp/pids/server.pid
 
     if [ -d /shared ]; then
-        if [ ! -f /shared/.env.generated ]; then
-            echo "⚙ Generating some environment values"
-            touch /shared/.env.generated
-            echo "NEXTCLOUD_OIDC_CLIENT_ID=$(openssl rand -base64 33)" >> /shared/.env.generated
-            echo "NEXTCLOUD_OIDC_CLIENT_SECRET=$(openssl rand -base64 33)" >> /shared/.env.generated
-        fi
+        # OAuth credentials shared between hitobito (seeded OAuth applications, see
+        # nextcloud/nextcloud_oauth_app_seed.rb) and the nextcloud container (nextcloud/setup/setup.sh)
+        touch /shared/.env.generated
+        for key in NEXTCLOUD_OIDC_CLIENT_ID NEXTCLOUD_OIDC_CLIENT_SECRET HITOBITOLOGIN_CLIENT_ID HITOBITOLOGIN_CLIENT_SECRET; do
+            if ! grep -q "^$key=" /shared/.env.generated; then
+                echo "⚙ Generating $key"
+                echo "$key=$(openssl rand -hex 32)" >> /shared/.env.generated
+            fi
+        done
     fi
 
     if [ ! -f ./jwt_signing_key.pem ]; then

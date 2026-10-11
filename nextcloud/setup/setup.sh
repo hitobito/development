@@ -37,6 +37,16 @@ php occ config:app:set user_oidc provider-1-checkBearer --value=1
 php occ config:app:set user_oidc provider-1-bearerProvisioning --value=0
 php occ config:app:set user_oidc provider-1-sendIdTokenHint --value=0
 
+php occ app:install hitobitologin
+php occ config:system:set hitobitologin base_url --value "http://localhost:3000"
+php occ config:system:set hitobitologin client_id --value "$HITOBITOLOGIN_CLIENT_ID"
+php occ config:system:set hitobitologin client_secret --value "$HITOBITOLOGIN_CLIENT_SECRET"
+php occ config:system:set hitobitologin login_button_text --value "Login with hitobito (hitobitologin)"
+php occ config:system:set hitobitologin options 0 --value prune_groups
+# Every hitobito user with at least one role becomes a member of the "hitobito-members" group
+php occ group:add hitobito-members
+php occ config:app:set hitobitologin group_mappings --type array --value '[{"group":"*","role":"*","targets":["hitobito-members"]}]'
+
 # Activate debug mode, this is required for OIDC to work without HTTPS
 php occ config:system:set debug --value true
 
