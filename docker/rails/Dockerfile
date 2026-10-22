@@ -2,27 +2,34 @@
 #          Variables            #
 #################################
 
-# Keep ruby version in sync with the Hitobito Dockerfile
-# Some tests depend on the ruby version.
+# The toolchain (ruby, node, yarn, bundler, build packages) is inherited
+# from the `base` stage of the hitobito core Dockerfile. The base image is
+# built directly from GitHub – no local checkout of the core repository
+# is needed:
+#
+#   docker build --target base https://github.com/hitobito/hitobito.git
+#
+# or via docker compose (see the `hitobito-base` service):
+#
+#   docker compose --profile manual build hitobito-base
+#
+# It is also rebuilt nightly and published to ghcr.io by the
+# docker-publish workflow, so a simple `docker compose build` resolves
+# it from the registry.
 
-# Versioning
-ARG RUBY_VERSION="3.2"
-ARG BUNDLER_VERSION="4.0.13"
-ARG NODEJS_VERSION="16"
-ARG YARN_VERSION="1.22.19"
+ARG BASE_IMAGE="ghcr.io/hitobito/development/hitobito-base:latest"
 ARG TRANSIFEX_VERSION="1.6.4"
 ARG CLAUDE_CODE_VERSION="stable"
 ARG OPENCODE_VERSION=""
 
-# Packages
-ARG BUILD_PACKAGES="nodejs git sqlite3 libsqlite3-dev imagemagick build-essential libvips42"
-ARG DEV_PACKAGES="direnv xvfb chromium chromium-driver pv vim curl less sudo docker-ce-cli libvips42 postgresql-client"
+# Packages needed on top of the ones the core Dockerfile installs
+ARG DEV_PACKAGES="direnv xvfb chromium chromium-driver pv vim curl less sudo docker-ce-cli sqlite3 libsqlite3-dev imagemagick libvips42 postgresql-client"
 
 #################################
-#          Build Stage          #
+#       Development Stage       #
 #################################
 
-FROM ruby:${RUBY_VERSION} AS build
+FROM ${BASE_IMAGE} AS dev
 
 USER root
 
@@ -35,17 +42,10 @@ ARG USER_GID=$USER_UID
 
 WORKDIR /usr/src/app/hitobito
 
-ARG NODEJS_VERSION
+# Prepare Docker cli install to be able to use it in the devcontainer
 RUN export DEBIAN_FRONTEND=noninteractive \
  && apt-get update \
  && apt-get install -y ca-certificates curl gnupg lsb-release \
- && mkdir -p /etc/apt/keyrings \
- && curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg \
- && echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_${NODEJS_VERSION}.x nodistro main" > /etc/apt/sources.list.d/nodesource.list \
- && echo "Package: nodejs" >> /etc/apt/preferences.d/preferences \
- && echo "Pin: origin deb.nodesource.com" >> /etc/apt/preferences.d/preferences \
- && echo "Pin-Priority: 1001" >> /etc/apt/preferences.d/preferences \
- # Prepare Docker cli install to be able to use it in the devcontainer
  && install -m 0755 -d /etc/apt/keyrings \
  && curl -fsSL https://download.docker.com/linux/debian/gpg -o /etc/apt/keyrings/docker.asc \
  && chmod a+r /etc/apt/keyrings/docker.asc \
@@ -53,22 +53,13 @@ RUN export DEBIAN_FRONTEND=noninteractive \
   "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/debian \
   $(. /etc/os-release && echo "$VERSION_CODENAME") stable" > /etc/apt/sources.list.d/docker.list
 
-ARG BUILD_PACKAGES
 ARG DEV_PACKAGES
 RUN export DEBIAN_FRONTEND=noninteractive \
  && apt-get update \
- && apt-get upgrade -y \
- && apt-get install -y --no-install-recommends ${BUILD_PACKAGES} \
- && apt install -y --no-install-recommends ${DEV_PACKAGES}
-
-ARG YARN_VERSION
-RUN node -v && npm -v && npm install -g yarn && yarn set version "${YARN_VERSION}"
+ && apt-get install -y --no-install-recommends ${DEV_PACKAGES}
 
 ARG TRANSIFEX_VERSION
 RUN curl -L "https://github.com/transifex/cli/releases/download/v${TRANSIFEX_VERSION}/tx-linux-amd64.tar.gz" | tar xz -C /usr/local/bin/
-
-ARG BUNDLER_VERSION
-RUN bash -vxc "gem install bundler -v ${BUNDLER_VERSION}"
 
 ARG CLAUDE_CODE_VERSION
 ARG OPENCODE_VERSION

@@ -17,14 +17,25 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        image: [rails, mailcatcher]
+        include:
+          - image: rails
+            context: ./docker/rails
+          - image: mailcatcher
+            context: ./docker/mailcatcher
+          # Toolchain base image for the rails image, built from the `base`
+          # stage of the core hitobito Dockerfile via remote git context
+          - image: hitobito-base
+            context: https://github.com/hitobito/hitobito.git#master
+            target: base
 
     steps:
       - uses: actions/checkout@v2
 
       - name: Build images
+        env:
+          TARGET: ${{ matrix.target }}
         run: |
-          docker build ./docker/${{ matrix.image }} --tag ${{ matrix.image }}
+          docker build ${TARGET:+--target $TARGET} ${{ matrix.context }} --tag ${{ matrix.image }}
 
       - name: Log into registry
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin

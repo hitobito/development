@@ -108,6 +108,20 @@ services:
     healthcheck:
       disable: true
 
+  # Toolchain base image for the rails image, built from the `base` stage
+  # of the hitobito core Dockerfile. The remote git context means no local
+  # checkout of the core repository is needed. Build it explicitly with:
+  #   docker compose --profile manual build hitobito-base
+  # A nightly CI build also publishes it to ghcr.io, so usually the
+  # registry version is used.
+  hitobito-base:
+    profiles:
+      - manual
+    build:
+      context: https://github.com/hitobito/hitobito.git#master
+      target: base
+    image: ghcr.io/hitobito/development/hitobito-base
+
   # Dependencies
   mailcatcher:
     image: ghcr.io/hitobito/development/mailcatcher

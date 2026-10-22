@@ -88,6 +88,12 @@ When you have made changes to the images of this project, execute the following 
 docker compose build --no-cache
 ```
 
+The `rails` image is built on top of `ghcr.io/hitobito/development/hitobito-base`, which is produced by the `base` stage of the core [hitobito Dockerfile](https://github.com/hitobito/hitobito/blob/master/Dockerfile) and rebuilt nightly by github actions. It is pulled automatically when missing. To build it locally (no local checkout of the core repo needed, the build context is the GitHub URL):
+
+```bash
+docker compose --profile manual build hitobito-base
+```
+
 Images are built and published with github actions.
 
 ## Shutdown
