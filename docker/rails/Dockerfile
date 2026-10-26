@@ -6,7 +6,7 @@
 # Some tests depend on the ruby version.
 
 # Versioning
-ARG RUBY_VERSION="3.2"
+ARG RUBY_VERSION="3.3"
 ARG BUNDLER_VERSION="4.0.22"
 ARG NODEJS_VERSION="22"
 ARG YARN_VERSION="1.22.19"
